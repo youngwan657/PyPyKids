@@ -5,7 +5,7 @@ import datetime
 from .models import Quiz
 
 def index(request):
-    quizs = Quiz.objects.order_by('-question_date')[:5]
+    quizs = Quiz.objects.order_by('-question_date')
     context = {'quizs': quizs}
     return render(request, 'list/index.html', context)
 

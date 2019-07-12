@@ -1,7 +1,7 @@
 {% load static %}
 <html lang="en">
 <head>
-    <title>Python 4 kid</title>
+    <title>Only for Dayeon</title>
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
@@ -19,60 +19,97 @@
     <link href="static/list/open-iconic-bootstrap.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{% static 'list/style.css' %}">
 </head>
+
 <body>
-<div class="container">
-    <div class="fixed-top" style="font-family: 'Notable', sans-serif;"> DAYEON</div>
-
-
-    {% for quiz in quizs %}
-    {% if quiz.right == 1 %}
-    <span class="oi oi-check text-success" title="oi-check" aria-hidden="true"></span>
-    {% elif quiz.right == -1 %}
-    <span class="oi oi-question-mark text-danger"></span>
-    {% endif %}
-
-    <h3>{{ quiz.id }}. {{ quiz.question|linebreaksbr }}</h3>
-
-    {% if quiz.example %}
-    <div class="card" style="width: 18rem;">
-        <div class="card-body">
-            <h5 class="card-title">Example:</h5>
-            <p class="card-text">{{ quiz.example|linebreaksbr }}</p>
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="#"><p style="font-family: 'Notable', sans-serif;">ONLY FOR DAYEON</p></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+                aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Home
+                        <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Services</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Contact</a>
+                </li>
+            </ul>
         </div>
     </div>
-    {% endif %}
+</nav>
 
-    <div class="accordion" id="accordionExample{{ quiz.id }}">
-        <div class="card">
-            <div class="card-header" id="heading{{ quiz.id }}">
-                <h5 class="mb-0">
-                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse{{ quiz.id }}"
-                            aria-expanded="true" aria-controls="collapse{{ quiz.id }}">
-                        Answer
-                    </button>
-                </h5>
-            </div>
+<!-- Header - set the background image for the header in the line below -->
+<section class="py-5 bg-image-full"
+         style="background-image: url('https://mdbootstrap.com/img/Photos/Horizontal/Nature/full%20page/img%20%283%29.jpg');">
+    <div style="height: 300px;"></div>
+</section>
 
-            <div id="collapse{{ quiz.id }}" class="collapse" aria-labelledby="heading{{ quiz.id }}" data-parent="#accordionExample{{ quiz.id }}">
-                <div class="card-body">
-                    <form action="/{{quiz.id}}/" method="POST" class="post-form">{% csrf_token %}
-                        {% if quiz.answer_date %}
-                        <p class="text-muted">Submitted at {{ quiz.answer_date|date:'Y/m/d h:m:s'}}</p>
+{% for quiz in quizs %}
+{% if quiz.visible %}
+<section class="py-5">
+    <div class="container">
+        {{ quiz.explanation|linebreaksbr }}
 
-                        {% endif %}
-                        <div class="form-group">
-                            <textarea class="form-control" id="answer" name="answer" rows="5">{{ quiz.answer }}</textarea>
-                        </div>
-                        <button type="submit" class="save btn btn-secondary">Submit</button>
-                    </form>
-                </div>
+        {% if quiz.right == 1 %}
+        <span class="oi oi-check text-success" title="oi-check" aria-hidden="true"></span>
+        {% elif quiz.right == -1 %}
+        <span class="oi oi-question-mark text-danger"></span>
+        {% endif %}
+
+        <h3>{{ quiz.id }}. {{ quiz.question|linebreaksbr }}</h3>
+
+        {% if quiz.example %}
+        <div class="card" style="width: 18rem;">
+            <div class="card-body">
+                <h5 class="card-title">Example:</h5>
+                <p class="card-text">{{ quiz.example|linebreaksbr }}</p>
             </div>
         </div>
+        {% endif %}
 
+        <a data-toggle="collapse" href="#collapse{{ quiz.id }}" role="button" aria-expanded="false"
+           aria-controls="collapseExample">Answer</a>
+        <div class="collapse" id="collapse{{ quiz.id }}">
+            <div class="card card-body">
+                <form action="/{{quiz.id}}/" method="POST" class="post-form">{% csrf_token %}
+                    {% if quiz.answer_date %}
+                    <div class="alert alert-success" role="alert">
+                        <b>Accepcted</b>
+                        <!--<h5 class="alert-heading">Accecpted</h5>-->
+                    </div>
+                    <p class="text-muted">Submitted at {{ quiz.answer_date|date:'Y/m/d h:m:s'}}</p>
 
-        <div class="row"><p></p></div>
-        {% endfor %}
+                    {% endif %}
+                    <div class="form-group">
+                            <textarea class="form-control" id="answer" name="answer"
+                                      rows="5">{{ quiz.answer }}</textarea>
+                    </div>
+                    <button type="submit" class="save btn btn-secondary">Submit</button>
+                </form>
+            </div>
+        </div>
     </div>
+</section>
+{% endif %}
+{% endfor %}
+
+<footer class="py-5 bg-dark">
+    <div class="container">
+        <p class="m-0 text-center text-white">Copyright &copy; dayeon.com 2019</p>
+    </div>
+</footer>
 </body>
 </html>
 

@@ -16,4 +16,4 @@ def answer(request, quiz_id):
     quiz.save()
 
     quizs = Quiz.objects.order_by('-question_date')[:5]
-    return HttpResponseRedirect('/list')
+    return HttpResponseRedirect('/')

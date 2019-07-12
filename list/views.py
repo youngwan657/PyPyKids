@@ -1,19 +1,19 @@
-from django.shortcuts import render
-from django.urls import reverse
+from django.shortcuts import get_object_or_404, render
+from django.http import HttpResponseRedirect
+import datetime
 
 from .models import Quiz
 
 def index(request):
-    quizzes = Quiz.objects.order_by('-question_date')[:5]
-    context = {'quizzes': quizzes}
+    quizs = Quiz.objects.order_by('-question_date')[:5]
+    context = {'quizs': quizs}
     return render(request, 'list/index.html', context)
 
-def answer(request, quiz):
-    print(quiz.quiz_id)
-    question = get_object_or_404(Quiz, quiz_id=quiz.quiz_id)
-    question.answer = quiz.answer
-    question.update()
+def answer(request, quiz_id):
+    quiz = get_object_or_404(Quiz, pk=quiz_id)
+    quiz.answer = request.POST['answer']
+    quiz.answer_date = datetime.datetime.now()
+    quiz.save()
 
-    quizzes = Quiz.objects.order_by('-question_date')[:5]
-    context = {'quizzes': quizzes}
-    return render(request, 'list/index.html', context)
+    quizs = Quiz.objects.order_by('-question_date')[:5]
+    return HttpResponseRedirect('/list')

@@ -1,7 +1,6 @@
 from django.db import models
 
 class Quiz(models.Model):
-    quiz_id = models.IntegerField(default=0)
     question = models.TextField()
     question_date = models.DateTimeField()
     answer = models.TextField(default=None, blank=True, null=True)

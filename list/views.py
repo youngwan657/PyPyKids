@@ -6,13 +6,13 @@ from .models import Quiz
 
 
 def index(request):
-    quizs = Quiz.objects.order_by('-id')
+    quizs = Quiz.objects.order_by('id')
     context = {'quizs': quizs, 'filter': 1000000}
     return render(request, 'list/index.html', context)
 
 
 def list(request, quiz_id):
-    quizs = Quiz.objects.order_by('-id')
+    quizs = Quiz.objects.order_by('id')
     context = {'quizs': quizs, 'filter': quiz_id}
     return render(request, 'list/index.html', context)
 

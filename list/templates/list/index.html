@@ -54,7 +54,7 @@
     </div>
 </div>
 {% for quiz in quizs %}
-{% if quiz.visible or quiz.id <= filter %}
+{% if quiz.visible %}
 <div class="container">
     <div>
         {{ quiz.explanation|linebreaksbr }}

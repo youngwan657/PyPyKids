@@ -6,9 +6,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-            crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.1.0.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
             integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
             crossorigin="anonymous"></script>
@@ -16,52 +14,55 @@
             integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
             crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css?family=Notable&display=swap" rel="stylesheet">
-    <link href="static/list/open-iconic-bootstrap.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.5/css/mdb.min.css" rel="stylesheet">
+    <link href="{% static 'list/open-iconic-bootstrap.css' %}" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{% static 'list/style.css' %}">
 </head>
 
 <body>
-<!-- Navigation -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-    <div class="container">
-        <a class="navbar-brand" href="#"><p style="font-family: 'Notable', sans-serif;">ONLY FOR DAYEON</p></a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
-                aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+
+<!--Main Navigation-->
+<header>
+
+    <nav class="navbar fixed-top navbar-expand-lg navbar-dark blue">
+        <a class="navbar-brand" href="/"><strong>Only for Dayeon</strong></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">Home
-                        <span class="sr-only">(current)</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">About</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Services</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Contact</a>
-                </li>
-            </ul>
+    </nav>
+
+    <div class="view intro-2">
+        <div class="full-bg-img">
+            <div class="mask rgba-black-light flex-center">
+                <div class="container text-center white-text">
+                    <div class="white-text text-center wow fadeInUp">
+                        <h2>Dayeon,</h2>
+                        <h2>you are the most valuable person in the world.</h2>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-</nav>
 
-<!-- Header - set the background image for the header in the line below -->
-<section class="py-5 bg-image-full"
-         style="background-image: url('https://mdbootstrap.com/img/Photos/Horizontal/Nature/full%20page/img%20%283%29.jpg');">
-    <div style="height: 300px;"></div>
-</section>
+</header>
+<!--Main Navigation-->
 
+<div class="row">
+    <div class="col">
+        <br/><br/>
+    </div>
+</div>
 {% for quiz in quizs %}
-{% if quiz.visible %}
-<section class="py-5">
-    <div class="container">
+{% if quiz.visible or quiz.id <= filter %}
+<div class="container">
+    <div>
         {{ quiz.explanation|linebreaksbr }}
+        <br/>
+        <br/>
+    </div>
 
+    <div id="quiz_{{ quiz.id }}">
         {% if quiz.right == 1 %}
         <span class="oi oi-check text-success" title="oi-check" aria-hidden="true"></span>
         {% elif quiz.right == -1 %}
@@ -69,48 +70,61 @@
         {% endif %}
 
         <h3>{{ quiz.id }}. {{ quiz.question|linebreaksbr }}</h3>
+    </div>
 
-        {% if quiz.example %}
-        <div class="card" style="width: 18rem;">
-            <div class="card-body">
-                <h5 class="card-title">Example:</h5>
-                <p class="card-text">{{ quiz.example|linebreaksbr }}</p>
-            </div>
+    {% if quiz.example %}
+    <div class="card" style="width: 18rem;">
+        <div class="card-body">
+            <h5 class="card-title">Example:</h5>
+            <p class="card-text">{{ quiz.example|linebreaksbr }}</p>
         </div>
-        {% endif %}
+    </div>
+    {% endif %}
 
-        <a data-toggle="collapse" href="#collapse{{ quiz.id }}" role="button" aria-expanded="false"
-           aria-controls="collapseExample">Answer</a>
-        <div class="collapse" id="collapse{{ quiz.id }}">
-            <div class="card card-body">
-                <form action="/{{quiz.id}}/" method="POST" class="post-form">{% csrf_token %}
-                    {% if quiz.answer_date %}
-                    <div class="alert alert-success" role="alert">
-                        <b>Accepcted</b>
-                        <!--<h5 class="alert-heading">Accecpted</h5>-->
-                    </div>
-                    <p class="text-muted">Submitted at {{ quiz.answer_date|date:'Y/m/d h:m:s'}}</p>
+    <a data-toggle="collapse" href="#collapse{{ quiz.id }}" role="button" aria-expanded="false"
+       aria-controls="collapseExample">Answer</a>
+    <div class="collapse {% if quiz.id == filter %} show {% endif %}" id="collapse{{ quiz.id }}">
+        <div class="card card-body">
+            <form action="/answer/{{quiz.id}}/" method="POST" class="post-form">{% csrf_token %}
+                {% if quiz.right == 1 %}
+                <div class="alert alert-success" role="alert">
+                    <b>Accepcted</b>
+                </div>
+                {% elif quiz.right == -1 %}
+                <div class="alert alert-danger" role="alert">
+                    <b>Wrong</b>
+                </div>
+                {% endif %}
 
-                    {% endif %}
-                    <div class="form-group">
+                {% if quiz.answer_date %}
+                <p class="text-muted">Submitted at {{ quiz.answer_date|date:'Y/m/d h:m:s'}}</p>
+                {% endif %}
+
+                <div class="form-group">
                             <textarea class="form-control" id="answer" name="answer"
                                       rows="5">{{ quiz.answer }}</textarea>
-                    </div>
-                    <button type="submit" class="save btn btn-secondary">Submit</button>
-                </form>
-            </div>
+                </div>
+                <button type="submit" class="save btn btn-secondary">Submit</button>
+            </form>
         </div>
     </div>
-</section>
+    <div class="row">
+        <div class="col">
+            <hr>
+        </div>
+    </div>
+</div>
 {% endif %}
 {% endfor %}
-
-<footer class="py-5 bg-dark">
-    <div class="container">
-        <p class="m-0 text-center text-white">Copyright &copy; dayeon.com 2019</p>
-    </div>
-</footer>
 </body>
+<script type="text/javascript">
+    $(document).ready(function () {
+    $('html, body').animate({
+        scrollTop: $('#quiz_{{ filter }}').offset().top
+    }, 'slow');
+});
+</script>
+
 </html>
 
 

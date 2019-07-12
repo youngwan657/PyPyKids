@@ -4,16 +4,28 @@ import datetime
 
 from .models import Quiz
 
+
 def index(request):
-    quizs = Quiz.objects.order_by('-question_date')
-    context = {'quizs': quizs}
+    quizs = Quiz.objects.order_by('-id')
+    context = {'quizs': quizs, 'filter': 1000000}
     return render(request, 'list/index.html', context)
+
+
+def list(request, quiz_id):
+    quizs = Quiz.objects.order_by('-id')
+    context = {'quizs': quizs, 'filter': quiz_id}
+    return render(request, 'list/index.html', context)
+
 
 def answer(request, quiz_id):
     quiz = get_object_or_404(Quiz, pk=quiz_id)
     quiz.answer = request.POST['answer']
     quiz.answer_date = datetime.datetime.now()
+    if quiz.correct_answer != "":
+        if quiz.answer.strip() == quiz.correct_answer:
+            quiz.right = 1
+        else:
+            quiz.right = -1
     quiz.save()
 
-    quizs = Quiz.objects.order_by('-question_date')[:5]
-    return HttpResponseRedirect('/')
+    return HttpResponseRedirect('/' + str(quiz.id))

@@ -15,4 +15,4 @@ class Quiz(models.Model):
     visible = models.BooleanField(default=True)
 
     def __str__(self):
-        return self.question
+        return str(self.id) + ". " + self.question

@@ -1,25 +1,3 @@
-<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
-
-<!--{% if quizs %}-->
-    <!--<ul>-->
-    <!--{% for quiz in quizs %}-->
-        <!--<li>{{ quiz.question }}</li>-->
-        <!--<h3>{{ quiz.answer }}</h3>-->
-<!---->
-        <!--<form action="/{{quiz.id}}/" method="post">-->
-        <!--{% csrf_token %}-->
-            <!--<label for="answer">Answer: </label>-->
-            <!--<input id="answer" type="text" name="answer">-->
-            <!--<input type="submit" value="OK">-->
-        <!--</form>-->
-    <!--{% endfor %}-->
-    <!--</ul>-->
-<!--{% else %}-->
-    <!--<p>No polls are available.</p>-->
-<!--{% endif %}-->
-
-
 {% load static %}
 <html>
     <head>
@@ -28,13 +6,14 @@
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
     </head>
     <body>
-        <div>
-            <h1><a href="/">Python for Dayeon</a></h1>
-        </div>
-
         {% for quiz in quizs %}
             <div>
                 <p>{{ quiz.id }}. {{ quiz.question|linebreaksbr }}</p>
+                <p>{{ quiz.answer|linebreaksbr }}</p>
+                <form action="/{{quiz.id}}/" method="POST" class="post-form">{% csrf_token %}
+                    <input id="answer" type="text" name="answer">
+                    <button type="submit" class="save btn btn-default">Save</button>
+                </form>
             </div>
         {% endfor %}
     </body>

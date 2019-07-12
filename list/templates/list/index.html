@@ -25,7 +25,7 @@
 <header>
 
     <nav class="navbar fixed-top navbar-expand-lg navbar-dark blue">
-        <a class="navbar-brand" href="/"><strong>Only for Dayeon</strong></a>
+        <a class="navbar-brand" href="/" style="font-family: 'Notable', sans-serif;"><strong>Only for Dayeon</strong></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -73,10 +73,9 @@
     </div>
 
     {% if quiz.example %}
-    <div class="card" style="width: 18rem;">
+    <div class="card">
         <div class="card-body">
-            <h5 class="card-title">Example:</h5>
-            <p class="card-text">{{ quiz.example|linebreaksbr }}</p>
+            <p class="card-text"><pre><code>{{ quiz.example }}</code></pre></p>
         </div>
     </div>
     {% endif %}

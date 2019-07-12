@@ -22,7 +22,7 @@ def answer(request, quiz_id):
     quiz.answer = request.POST['answer']
     quiz.answer_date = datetime.datetime.now()
     if quiz.correct_answer != "":
-        if quiz.answer.strip() == quiz.correct_answer:
+        if quiz.answer.replace(" ", "") == quiz.correct_answer:
             quiz.right = 1
         else:
             quiz.right = -1

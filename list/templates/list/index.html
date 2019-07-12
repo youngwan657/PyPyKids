@@ -1,20 +1,80 @@
 {% load static %}
-<html>
-    <head>
-        <title>Python 4 kid</title>
-        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
-    </head>
-    <body>
-        {% for quiz in quizs %}
-            <div>
-                <p>{{ quiz.id }}. {{ quiz.question|linebreaksbr }}</p>
-                <p>{{ quiz.answer|linebreaksbr }}</p>
-                <form action="/{{quiz.id}}/" method="POST" class="post-form">{% csrf_token %}
-                    <input id="answer" type="text" name="answer">
-                    <button type="submit" class="save btn btn-default">Save</button>
-                </form>
+<html lang="en">
+<head>
+    <title>Python 4 kid</title>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css?family=Notable&display=swap" rel="stylesheet">
+    <link href="static/list/open-iconic-bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static 'list/style.css' %}">
+</head>
+<body>
+<div class="container">
+    <div class="fixed-top" style="font-family: 'Notable', sans-serif;"> DAYEON</div>
+
+
+    {% for quiz in quizs %}
+    {% if quiz.right == 1 %}
+    <span class="oi oi-check text-success" title="oi-check" aria-hidden="true"></span>
+    {% elif quiz.right == -1 %}
+    <span class="oi oi-question-mark text-danger"></span>
+    {% endif %}
+
+    <h3>{{ quiz.id }}. {{ quiz.question|linebreaksbr }}</h3>
+
+    {% if quiz.example %}
+    <div class="card" style="width: 18rem;">
+        <div class="card-body">
+            <h5 class="card-title">Example:</h5>
+            <p class="card-text">{{ quiz.example|linebreaksbr }}</p>
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="accordion" id="accordionExample{{ quiz.id }}">
+        <div class="card">
+            <div class="card-header" id="heading{{ quiz.id }}">
+                <h5 class="mb-0">
+                    <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapse{{ quiz.id }}"
+                            aria-expanded="true" aria-controls="collapse{{ quiz.id }}">
+                        Answer
+                    </button>
+                </h5>
             </div>
+
+            <div id="collapse{{ quiz.id }}" class="collapse" aria-labelledby="heading{{ quiz.id }}" data-parent="#accordionExample{{ quiz.id }}">
+                <div class="card-body">
+                    <form action="/{{quiz.id}}/" method="POST" class="post-form">{% csrf_token %}
+                        {% if quiz.answer_date %}
+                        <p class="text-muted">Submitted at {{ quiz.answer_date|date:'Y/m/d h:m:s'}}</p>
+
+                        {% endif %}
+                        <div class="form-group">
+                            <textarea class="form-control" id="answer" name="answer" rows="5">{{ quiz.answer }}</textarea>
+                        </div>
+                        <button type="submit" class="save btn btn-secondary">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row"><p></p></div>
         {% endfor %}
-    </body>
+    </div>
+</body>
 </html>
+
+
+

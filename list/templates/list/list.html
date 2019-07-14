@@ -61,31 +61,6 @@
     </div>
     {% endif %}
 
-    <div class="collapse {% if quiz.id == filter %} show {% endif %}" id="collapse{{ quiz.id }}">
-        <div class="card card-body">
-            <form action="/answer/{{quiz.id}}/" method="POST" class="post-form">{% csrf_token %}
-                {% if quiz.right == 1 %}
-                <div class="alert alert-success" role="alert">
-                    <b>Accepcted</b>
-                </div>
-                {% elif quiz.right == -1 %}
-                <div class="alert alert-danger" role="alert">
-                    <b>Wrong</b>
-                </div>
-                {% endif %}
-
-                {% if quiz.answer_date %}
-                <p class="text-muted">Submitted at {{ quiz.answer_date|date:'Y/m/d h:m:s'}}</p>
-                {% endif %}
-
-                <div class="form-group">
-                            <textarea class="form-control" id="answer" name="answer"
-                                      rows="5">{{ quiz.answer }}</textarea>
-                </div>
-                <button type="submit" class="save btn btn-secondary">Submit</button>
-            </form>
-        </div>
-    </div>
     <div class="row">
         <div class="col">
             <hr>
@@ -94,11 +69,4 @@
 </div>
 {% endif %}
 {% endfor %}
-<script type="text/javascript">
-    $(document).ready(function () {
-    $('html, body').animate({
-        scrollTop: $('#quiz_{{ filter }}').offset().top
-    }, 'slow');
-});
-</script>
 {% endblock %}

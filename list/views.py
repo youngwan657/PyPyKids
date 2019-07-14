@@ -5,16 +5,10 @@ import datetime
 from .models import Quiz
 
 
-def index(request):
+def list(request):
     quizs = Quiz.objects.order_by('id')
     context = {'quizs': quizs, 'filter': 1000000}
-    return render(request, 'list/index.html', context)
-
-
-def list(request, quiz_id):
-    quizs = Quiz.objects.order_by('id')
-    context = {'quizs': quizs, 'filter': quiz_id}
-    return render(request, 'list/index.html', context)
+    return render(request, 'list/list.html', context)
 
 
 def show(request, quiz_id):
@@ -36,4 +30,3 @@ def answer(request, quiz_id):
     quiz.save()
 
     return HttpResponseRedirect('/' + str(quiz.id) + "?right=" + str(quiz.right))
-

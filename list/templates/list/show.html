@@ -1,0 +1,127 @@
+{% extends 'list/base.html' %}
+
+{% block content %}
+<!--Main Navigation-->
+<nav class="navbar fixed-top navbar-dark blue">
+    <a class="navbar-brand" href="/" style="font-family: 'Notable', sans-serif;"><strong>Only for Dayeon</strong></a>
+</nav>
+<!--Main Navigation-->
+
+<div class="row">
+    <div class="col">
+        <br/><br/>
+    </div>
+</div>
+{% if quiz.visible %}
+<div class="container">
+    <div>
+        {{ quiz.explanation|linebreaksbr }}
+        <br/>
+        <br/>
+    </div>
+
+    <div id="quiz_{{ quiz.id }}">
+        {% if quiz.right == 1 %}
+        <span class="oi oi-check text-success" title="oi-check" aria-hidden="true"></span>
+        {% elif quiz.right == -1 %}
+        <span class="oi oi-question-mark text-danger"></span>
+        {% endif %}
+
+        <h3><a href="/{{ quiz.id }}">{{ quiz.id }}. {{ quiz.question|linebreaksbr }}</a></h3>
+    </div>
+
+    {% if quiz.example %}
+    <div class="card">
+        <div class="card-body">
+            <p class="card-text">
+            <pre><code>{{ quiz.example }}</code></pre>
+            </p>
+        </div>
+    </div>
+    {% endif %}
+
+    <br/>
+    <div class="collapse show" id="collapse{{ quiz.id }}">
+        <div class="card card-body">
+            <form action="/answer/{{quiz.id}}/" method="POST" class="post-form">{% csrf_token %}
+                {% if quiz.right == 1 %}
+                <div class="alert alert-success" role="alert">
+                    <b>Accepcted</b>
+                </div>
+                {% elif quiz.right == -1 %}
+                <div class="alert alert-danger" role="alert">
+                    <b>Wrong Answer</b>
+                </div>
+                {% endif %}
+
+                {% if quiz.answer_date %}
+                <p class="text-muted">Submitted at {{ quiz.answer_date|date:'Y/m/d h:m:s'}}</p>
+                {% endif %}
+
+                <div class="form-group">
+                            <textarea class="form-control" id="answer" name="answer"
+                                      rows="5">{{ quiz.answer }}</textarea>
+                </div>
+                <button type="submit" class="save btn btn-secondary">Submit</button>
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <hr>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<!-- Modal: Accepted -->
+<div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-success" id="modalLabel"><b>Accepted</b></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Congratulations!
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary">Next</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal: Wrong Answer -->
+<div class="modal fade" id="wrongModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-wrong text-danger" id="modalLabel"><b>Wrong Answer</b></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Can you try again?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal" >Again</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    {% if right == "1" %}
+        $('#successModal').modal('show')
+    {% elif right == "-1" %}
+        $('#wrongModal').modal('show')
+    {% endif %}
+</script>
+{% endblock %}
+

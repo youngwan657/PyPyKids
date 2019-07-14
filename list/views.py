@@ -17,15 +17,23 @@ def list(request, quiz_id):
     return render(request, 'list/index.html', context)
 
 
+def show(request, quiz_id):
+    quiz = Quiz.objects.filter(id=quiz_id)
+    right = request.GET.get('right')
+    context = {'quiz': quiz[0], 'right': right}
+    return render(request, 'list/show.html', context)
+
+
 def answer(request, quiz_id):
     quiz = get_object_or_404(Quiz, pk=quiz_id)
     quiz.answer = request.POST['answer']
     quiz.answer_date = datetime.datetime.now()
     if quiz.correct_answer != "":
-        if quiz.answer.replace(" ", "") == quiz.correct_answer:
+        if quiz.answer.replace(" ", "").strip() == quiz.correct_answer:
             quiz.right = 1
         else:
             quiz.right = -1
     quiz.save()
 
-    return HttpResponseRedirect('/' + str(quiz.id))
+    return HttpResponseRedirect('/' + str(quiz.id) + "?right=" + str(quiz.right))
+

@@ -11,6 +11,7 @@ class Quiz(models.Model):
     answer_date = models.DateTimeField(default=None, blank=True, null=True)
     correct_answer = models.TextField(default=None, blank=True, null=True)
     right = models.IntegerField(default=0)
+    testcase = models.TextField(default=None, blank=True, null=True)
     wrong_testcase = models.TextField(default=None, blank=True, null=True)
     visible = models.BooleanField(default=True)
 

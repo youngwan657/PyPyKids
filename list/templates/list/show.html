@@ -41,30 +41,44 @@
     {% endif %}
 
     <br/>
-    <div class="collapse show" id="collapse{{ quiz.id }}">
-        <div class="card card-body">
-            <form action="/answer/{{quiz.id}}/" method="POST" class="post-form">{% csrf_token %}
-                {% if quiz.right == 1 %}
-                <div class="alert alert-success" role="alert">
-                    <b>Accepcted</b>
-                </div>
-                {% elif quiz.right == -1 %}
-                <div class="alert alert-danger" role="alert">
-                    <b>Wrong Answer</b>
-                </div>
-                {% endif %}
+    <div class="card card-body">
+        <form action="/answer/{{quiz.id}}/" method="POST" class="post-form">{% csrf_token %}
+            {% if quiz.right == 1 %}
+            <div class="alert alert-success" role="alert">
+                <b>Accepcted</b>
+            </div>
+            {% elif quiz.right == -1 %}
+            <div class="alert alert-danger" role="alert">
+                <b>Wrong Answer</b>
+            </div>
+            <table class="table">
+                <tbody>
+                <tr>
+                    <th scope="row" style="width: 20%">Input:</th>
+                    <td>{{ wrong_testcase }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Output:</th>
+                    <td>{{ actual_answer }}</span></td>
+                </tr>
+                <tr>
+                    <th scope="row">Expected:</th>
+                    <td>{{ expected_answer }}</span></td>
+                </tr>
+                </tbody>
+            </table>
+            {% endif %}
 
-                {% if quiz.answer_date %}
-                <p class="text-muted">Submitted at {{ quiz.answer_date|date:'Y/m/d h:m:s'}}</p>
-                {% endif %}
+            {% if quiz.answer_date %}
+            <p class="text-muted">Submitted at {{ quiz.answer_date|date:'Y/m/d h:m:s'}}</p>
+            {% endif %}
 
-                <div class="form-group">
+            <div class="form-group">
                             <textarea class="form-control" id="answer" name="answer"
                                       rows="5">{{ quiz.answer }}</textarea>
-                </div>
-                <button type="submit" class="save btn btn-secondary">Submit</button>
-            </form>
-        </div>
+            </div>
+            <button type="submit" class="save btn btn-secondary">Submit</button>
+        </form>
     </div>
     <div class="row">
         <div class="col">
@@ -131,6 +145,7 @@
     {% elif right == "-1" %}
         $('#wrongModal').modal('show')
     {% endif %}
+
 
 
 </script>

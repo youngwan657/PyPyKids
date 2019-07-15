@@ -3,9 +3,9 @@
 {% block content %}
 <!--Main Navigation-->
 <header>
-
     <nav class="navbar fixed-top navbar-expand-lg navbar-dark blue">
-        <a class="navbar-brand" href="/" style="font-family: 'Notable', sans-serif;"><strong>Only for Dayeon</strong></a>
+        <a class="navbar-brand" href="/" style="font-family: 'Notable', sans-serif;"><strong>Only for
+            Dayeon</strong></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -34,6 +34,48 @@
         <br/><br/>
     </div>
 </div>
+
+<div>
+</div>
+
+<div class="container">
+    <table class="table">
+        <thead>
+        <tr class="table-primary">
+            <th scope="col" colspan="2"><b>DAYEON</b></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <th scope="row" style="width: 20%">Global Ranking</th>
+            <td><span class="badge badge-pill badge-success">1</span></td>
+        </tr>
+        <tr>
+            <th scope="row">Solved Question</th>
+            <td><span class="badge badge-pill badge-success">{{ right }} / {{ total_quiz }}</span></td>
+        </tr>
+        <tr>
+            <th scope="row">Wrong Answer</th>
+            <td><span class="badge badge-pill badge-danger">{{ wrong }}</span></td>
+        </tr>
+        <tr>
+            <th scope="row">Progress</th>
+            <td>
+                <div class="progress" style="height: 30px;">
+                    <div class="progress-bar bg-success" role="progressbar" style="width: {{ right_percent }}%"
+                         aria-valuenow="{{ right_percent }}" aria-valuemin="0" aria-valuemax="100">{{ right }}
+                    </div>
+                    <div class="progress-bar bg-danger" role="progressbar" style="width: {{ wrong_percent }}%"
+                         aria-valuenow="{{ wrong_percent }}" aria-valuemin="0" aria-valuemax="100">{{ wrong }}
+                    </div>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+
 {% for quiz in quizs %}
 {% if quiz.visible %}
 <div class="container">
@@ -56,7 +98,9 @@
     {% if quiz.example %}
     <div class="card">
         <div class="card-body">
-            <p class="card-text"><pre><code>{{ quiz.example }}</code></pre></p>
+            <p class="card-text">
+            <pre><code>{{ quiz.example }}</code></pre>
+            </p>
         </div>
     </div>
     {% endif %}
@@ -70,3 +114,6 @@
 {% endif %}
 {% endfor %}
 {% endblock %}
+
+
+

@@ -74,7 +74,7 @@
             {% endif %}
 
             <div class="form-group">
-                <textarea class="form-control" id="answer" name="answer" rows="5"
+                <textarea class="form-control" id="answer" name="answer" rows="10"
                           onkeydown="if(event.keyCode===9){var v=this.value,s=this.selectionStart,e=this.selectionEnd;this.value=v.substring(0, s)+'    '+v.substring(e);this.selectionStart=this.selectionEnd=s+4;return false;}">{{ quiz.answer }}</textarea>
             </div>
             <button type="submit" class="save btn btn-secondary">Submit</button>
@@ -145,10 +145,6 @@
     {% elif right == "-1" %}
         $('#wrongModal').modal('show')
     {% endif %}
-
-
-
-
 </script>
 {% endblock %}
 

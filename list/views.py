@@ -27,7 +27,9 @@ def show(request, quiz_id):
 
     # 1: right, -1: wrong, 0: default
     right = request.GET.get('right')
-    wrong_testcase, actual_answer, expected_answer = quiz[0].wrong_testcase.split("\n")
+    wrong_testcase, actual_answer, expected_answer = "", "", ""
+    if quiz[0].wrong_testcase != "":
+        wrong_testcase, actual_answer, expected_answer = quiz[0].wrong_testcase.split("\n")
 
     context = {
         'quiz': quiz[0],

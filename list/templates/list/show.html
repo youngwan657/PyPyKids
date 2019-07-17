@@ -20,10 +20,11 @@
         <br/>
     </div>
 
+    <!-- solved, wrong icon -->
     <div id="quiz_{{ quiz.id }}">
-        {% if quiz.right == 1 %}
+        {% if answer.right == 1 %}
         <span class="oi oi-check text-success" title="oi-check" aria-hidden="true"></span>
-        {% elif quiz.right == -1 %}
+        {% elif answer.right == -1 %}
         <span class="oi oi-question-mark text-danger"></span>
         {% endif %}
 
@@ -43,11 +44,11 @@
     <br/>
     <div class="card card-body">
         <form action="/answer/{{quiz.id}}/" method="POST" class="post-form">{% csrf_token %}
-            {% if quiz.right == 1 %}
+            {% if answer.right == 1 %}
             <div class="alert alert-success" role="alert">
                 <b>Accepcted</b>
             </div>
-            {% elif quiz.right == -1 %}
+            {% elif answer.right == -1 %}
             <div class="alert alert-danger" role="alert">
                 <b>Wrong Answer</b>
             </div>
@@ -69,8 +70,8 @@
             </table>
             {% endif %}
 
-            {% if quiz.answer_date %}
-            <p class="text-muted">Submitted at {{ quiz.answer_date|date:'Y/m/d h:m:s'}}</p>
+            {% if answer.date %}
+            <p class="text-muted">Submitted at {{ answer.date|date:'Y/m/d h:m:s'}}</p>
             {% endif %}
 
             <div class="form-group">

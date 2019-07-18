@@ -125,7 +125,7 @@ if __name__ == "__main__":
     for testset in testsets:
         actual_answer = "None"
         try:
-            subprocess.run(['python', 'checking.py', testset.test], stdout=subprocess.PIPE,
+            subprocess.run(['python', 'checking.py'] + testset.test.split(), stdout=subprocess.PIPE,
                            stderr=subprocess.STDOUT, shell=False, check=True)
             if os.path.exists("checking_answer"):
                 f = open("checking_answer", "r")

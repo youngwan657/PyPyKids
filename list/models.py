@@ -41,7 +41,7 @@ class TestSet(models.Model):
 
 
 class Answer(models.Model):
-    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
+    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE, blank=True, null=True)
     answer = models.TextField(default=None, blank=True, null=True)
     date = models.DateTimeField(auto_now_add=True)
     name = models.CharField(max_length=20)
@@ -51,4 +51,4 @@ class Answer(models.Model):
     expected_answer = models.TextField(default=None, blank=True, null=True)
 
     def __str__(self):
-        return str(self.id)
+        return str(self.id) + ". " + self.name

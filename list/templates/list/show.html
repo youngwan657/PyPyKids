@@ -113,16 +113,7 @@
                 Congratulations!
             </div>
             <div class="modal-footer">
-                {% if next != None %}
                 <a href="/{{ next.id }}" class="btn btn-primary">Next</a>
-                {% else %}
-                <span class="text-danger"><b>You </b></span>
-                <span class="text-warning"><b>have </b></span>
-                <span class="text-success"><b>reached </b></span>
-                <span class="text-info"><b>the </b></span>
-                <span class="text-primary"><b>end</b></span>
-                <span class="text-secondary"><b>!!</b></span>
-                {% endif %}
             </div>
         </div>
     </div>

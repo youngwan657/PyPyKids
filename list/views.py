@@ -22,6 +22,9 @@ def list(request):
         if answer.right == 1:
             filtered_quizs = filtered_quizs.filter(~Q(id=answer.quiz.id))
 
+    if len(filtered_quizs) == 0:
+        return render(request, 'list/congrats.html')
+
     context = {
         'quizs': filtered_quizs,
         'total_quiz': quizs.count(),
@@ -81,6 +84,11 @@ def answer(request, quiz_id):
             answer.wrong_result = answer.answer
 
     answer.save()
+
+    quizs = Quiz.objects.order_by('id').filter(visible=1).count()
+    answers = Answer.objects.filter(name="Dayeon", right=1).count()
+    if quizs == answers:
+        return render(request, 'list/congrats.html')
 
     return HttpResponseRedirect('/' + str(quiz.id) + "?right_modal=" + str(answer.right))
 

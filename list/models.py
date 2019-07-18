@@ -1,7 +1,7 @@
 from django.db import models
 
 
-# Answer, MultipleChoice, Code
+# Answer, Code
 class QuizType(models.Model):
     name = models.CharField(max_length=20)
 
@@ -28,6 +28,7 @@ class Quiz(models.Model):
     quiz_type = models.ForeignKey(QuizType, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     visible = models.BooleanField(default=True)
+    answer_header = models.TextField(default=None, blank=True, null=True)
 
     def __str__(self):
         return str(self.id) + ". " + self.question
@@ -45,8 +46,9 @@ class Answer(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     name = models.CharField(max_length=20)
     right = models.IntegerField(default=0)
-    case = models.ForeignKey(TestSet, on_delete=models.CASCADE, blank=True, null=True)
+    testcase = models.TextField(default=None, blank=True, null=True)
     wrong_result = models.TextField(default=None, blank=True, null=True)
+    expected_answer = models.TextField(default=None, blank=True, null=True)
 
     def __str__(self):
-        return str(self.id) + ". " + self.writer
+        return str(self.id)

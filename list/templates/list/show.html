@@ -22,9 +22,9 @@
 
     <!-- solved, wrong icon -->
     <div id="quiz_{{ quiz.id }}">
-        {% if answer.right == 1 %}
+        {% if right == 1 %}
         <span class="oi oi-check text-success" title="oi-check" aria-hidden="true"></span>
-        {% elif answer.right == -1 %}
+        {% elif right == -1 %}
         <span class="oi oi-question-mark text-danger"></span>
         {% endif %}
 
@@ -44,19 +44,20 @@
     <br/>
     <div class="card card-body">
         <form action="/answer/{{quiz.id}}/" method="POST" class="post-form">{% csrf_token %}
-            {% if answer.right == 1 %}
+            {% if right == 1 %}
             <div class="alert alert-success" role="alert">
-                <b>Accepcted</b>
+                <b>Accepted</b>
             </div>
-            {% elif answer.right == -1 %}
+            {% elif right == -1 %}
             <div class="alert alert-danger" role="alert">
                 <b>Wrong Answer</b>
             </div>
             <table class="table">
+                {% if quiz.quiz_type.name == "Code" %}
                 <tbody>
                 <tr>
                     <th scope="row" style="width: 20%">Input:</th>
-                    <td>{{ wrong_testcase }}</td>
+                    <td>{{ testcase }}</td>
                 </tr>
                 <tr>
                     <th scope="row">Output:</th>
@@ -67,6 +68,14 @@
                     <td>{{ expected_answer }}</span></td>
                 </tr>
                 </tbody>
+                {% elif quiz.quiz_type.name == "Answer" %}
+                <tbody>
+                <tr>
+                    <th scope="row" style="width: 20%">Previous Answer:</th>
+                    <td>{{ actual_answer }}</span></td>
+                </tr>
+                </tbody>
+                {% endif %}
             </table>
             {% endif %}
 
@@ -76,7 +85,7 @@
 
             <div class="form-group">
                 <textarea class="form-control" id="answer" name="answer" rows="10"
-                          onkeydown="if(event.keyCode===9){var v=this.value,s=this.selectionStart,e=this.selectionEnd;this.value=v.substring(0, s)+'    '+v.substring(e);this.selectionStart=this.selectionEnd=s+4;return false;}">{{ quiz.answer }}</textarea>
+                          onkeydown="if(event.keyCode===9){var v=this.value,s=this.selectionStart,e=this.selectionEnd;this.value=v.substring(0, s)+'    '+v.substring(e);this.selectionStart=this.selectionEnd=s+4;return false;}">{{ user_answer }}</textarea>
             </div>
             <button type="submit" class="save btn btn-secondary">Submit</button>
         </form>
@@ -141,9 +150,9 @@
 </div>
 
 <script>
-    {% if right == "1" %}
+    {% if right_modal == "1" %}
         $('#successModal').modal('show')
-    {% elif right == "-1" %}
+    {% elif right_modal == "-1" %}
         $('#wrongModal').modal('show')
     {% endif %}
 </script>

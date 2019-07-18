@@ -76,6 +76,11 @@
 </div>
 
 
+{% if right_percent == 100 %}
+Congrats!!
+
+{% endif %}
+
 {% for quiz in quizs %}
 {% if quiz.visible %}
 <div class="container">
@@ -114,6 +119,3 @@
 {% endif %}
 {% endfor %}
 {% endblock %}
-
-
-

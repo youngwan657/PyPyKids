@@ -1,5 +1,7 @@
 from django.db import models
 
+from markdownx.models import MarkdownxField
+from markdownx.utils import markdownify
 
 # Answer, Code
 class QuizType(models.Model):
@@ -20,7 +22,7 @@ class Category(models.Model):
 # TODO:: reorder
 # TODO:: multiple-choice problem
 class Quiz(models.Model):
-    explanation = models.TextField(default=None, blank=True, null=True)
+    explanation = MarkdownxField()
     question = models.TextField(default=None, blank=True, null=True)
     example = models.TextField(default=None, blank=True, null=True)
     date = models.DateTimeField(auto_now_add=True)
@@ -33,6 +35,8 @@ class Quiz(models.Model):
     def __str__(self):
         return str(self.id) + ". " + self.question
 
+    def formatted_markdown(self):
+        return markdownify(self.explanation)
 
 class TestSet(models.Model):
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)

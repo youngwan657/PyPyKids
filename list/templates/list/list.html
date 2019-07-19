@@ -76,20 +76,9 @@
 </div>
 
 
-{% if right_percent == 100 %}
-Congrats!!
-
-{% endif %}
-
 {% for quiz in quizs %}
 {% if quiz.visible %}
 <div class="container">
-    <div>
-        {{ quiz.explanation|linebreaksbr }}
-        <br/>
-        <br/>
-    </div>
-
     <div id="quiz_{{ quiz.id }}">
         {% if quiz.right == 1 %}
         <span class="oi oi-check text-success" title="oi-check" aria-hidden="true"></span>

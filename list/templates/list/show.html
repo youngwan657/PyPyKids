@@ -15,7 +15,8 @@
 {% if quiz.visible %}
 <div class="container">
     <div>
-        {{ quiz.explanation|linebreaksbr }}
+        <br/>
+        {{ quiz.formatted_markdown|safe }}
         <br/>
         <br/>
     </div>

@@ -20,7 +20,6 @@ class Category(models.Model):
 
 
 # TODO:: reorder
-# TODO:: multiple-choice problem
 class Quiz(models.Model):
     explanation = MarkdownxField()
     question = models.TextField(default=None, blank=True, null=True)
@@ -31,6 +30,10 @@ class Quiz(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     visible = models.BooleanField(default=True)
     answer_header = models.TextField(default=None, blank=True, null=True)
+    option1 = models.TextField(default=None, blank=True, null=True)
+    option2 = models.TextField(default=None, blank=True, null=True)
+    option3 = models.TextField(default=None, blank=True, null=True)
+    option4 = models.TextField(default=None, blank=True, null=True)
 
     def __str__(self):
         return str(self.id) + ". " + self.question

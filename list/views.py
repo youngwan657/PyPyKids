@@ -40,7 +40,6 @@ def show(request, quiz_id):
     quiz = get_object_or_404(Quiz, pk=quiz_id)
     next = Quiz.objects.filter(visible=True).filter(id__gt=quiz_id).first()
 
-    # 1: right, -1: wrong, 0: default
     right_modal = request.GET.get('right_modal')
     right, user_answer, testcase, actual_answer, expected_answer = 0, "", "", "", ""
     answer = Answer.objects.filter(quiz__id=quiz_id, name=User)
@@ -75,7 +74,7 @@ def answer(request, quiz_id):
     answer.date = datetime.datetime.now()
     if quiz.quiz_type.name == "Code":
         checkAnswer(quiz, testsets, answer)
-    elif quiz.quiz_type.name == "Answer":
+    elif quiz.quiz_type.name == "Answer" or quiz.quiz_type.name == "MultipleChoice":
         # answer
         if answer.answer.replace(" ", "").strip() == testsets[0].expected_answer:
             answer.right = 1
@@ -86,7 +85,7 @@ def answer(request, quiz_id):
     answer.save()
 
     quizs = Quiz.objects.order_by('id').filter(visible=1).count()
-    answers = Answer.objects.filter(name="Dayeon", right=1).count()
+    answers = Answer.objects.filter(name=User, right=1).count()
     if quizs == answers:
         return render(request, 'list/congrats.html')
 

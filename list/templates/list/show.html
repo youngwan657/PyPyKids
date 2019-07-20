@@ -43,6 +43,7 @@
     {% endif %}
 
     <br/>
+    {% if quiz.quiz_type.name == "Code" or quiz.quiz_type.name == "Answer" %}
     <div class="card card-body">
         <form action="/answer/{{quiz.id}}/" method="POST" class="post-form">{% csrf_token %}
             {% if right == 1 %}
@@ -69,13 +70,6 @@
                     <td>{{ expected_answer }}</span></td>
                 </tr>
                 </tbody>
-                {% elif quiz.quiz_type.name == "Answer" %}
-                <tbody>
-                <tr>
-                    <th scope="row" style="width: 20%">Previous Answer:</th>
-                    <td>{{ actual_answer }}</span></td>
-                </tr>
-                </tbody>
                 {% endif %}
             </table>
             {% endif %}
@@ -91,6 +85,45 @@
             <button type="submit" class="save btn btn-secondary">Submit</button>
         </form>
     </div>
+    {% elif quiz.quiz_type.name == "MultipleChoice" %}
+    <div class="card card-body">
+        <form action="/answer/{{quiz.id}}/" method="POST" class="post-form">{% csrf_token %}
+            {% if quiz.option1 != None %}
+            <div class="form-check">
+                <input class="form-check-input" name="answer" type="radio" value="1" id="radio1">
+                <label class="form-check-label" for="radio1">
+                    {{ quiz.option1 }}
+                </label>
+            </div>
+            {% endif %}
+            {% if quiz.option2 != None %}
+            <div class="form-check">
+                <input class="form-check-input" name="answer" type="radio" value="2" id="radio2">
+                <label class="form-check-label" for="radio2">
+                    {{ quiz.option2 }}
+                </label>
+            </div>
+            {% endif %}
+            {% if quiz.option3 != None %}
+            <div class="form-check">
+                <input class="form-check-input" name="answer" type="radio" value="3" id="radio3">
+                <label class="form-check-label" for="radio3">
+                    {{ quiz.option3 }}
+                </label>
+            </div>
+            {% endif %}
+            {% if quiz.option4 != None %}
+            <div class="form-check">
+                <input class="form-check-input" name="answer" type="radio" value="4" id="radio4">
+                <label class="form-check-label" for="radio4">
+                    {{ quiz.option4 }}
+                </label>
+            </div>
+            {% endif %}
+            <button type="submit" class="save btn btn-secondary">Submit</button>
+        </form>
+    </div>
+    {% endif %}
     <div class="row">
         <div class="col">
             <hr>

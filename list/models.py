@@ -21,7 +21,7 @@ class Category(models.Model):
 
 # TODO:: reorder
 class Quiz(models.Model):
-    explanation = MarkdownxField()
+    explanation = MarkdownxField(default=None, blank=True, null=True)
     question = models.TextField(default=None, blank=True, null=True)
     example = models.TextField(default=None, blank=True, null=True)
     date = models.DateTimeField(auto_now_add=True)

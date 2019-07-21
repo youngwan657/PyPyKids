@@ -5,115 +5,133 @@
 
 {% if quiz.visible %}
 <div class="container">
-    <div>
-        <br/>
-        {{ quiz.formatted_markdown|safe }}
-        <br/>
-        <br/>
-    </div>
-
-    <!-- solved, wrong icon -->
-    <div id="quiz_{{ quiz.id }}">
-        {% if right == 1 %}
-        <span class="oi oi-check text-success" title="oi-check" aria-hidden="true"></span>
-        {% elif right == -1 %}
-        <span class="oi oi-question-mark text-danger"></span>
-        {% endif %}
-
-        <h3><a href="/{{ quiz.id }}">{{ quiz.id }}. {{ quiz.question|linebreaksbr }}</a></h3>
-    </div>
-
-    {% if quiz.example %}
     <div class="card">
         <div class="card-body">
+            {% if quiz.explanation %}
+            <p class="card-text">
+                {{ quiz.formatted_markdown|safe }}
+            </p>
+            {% endif %}
+
+            <hr>
+
+            <h3><b>{{ quiz.id }}. {{ quiz.question|linebreaksbr }}</b></h3>
+
+            {% if quiz.example %}
             <p class="card-text">
             <pre><code>{{ quiz.example }}</code></pre>
             </p>
+            {% endif %}
+
         </div>
     </div>
-    {% endif %}
 
-    <br/>
-    {% if quiz.quiz_type.name == "Code" or quiz.quiz_type.name == "Answer" %}
-    <div class="card card-body">
-        <form action="/answer/{{quiz.id}}/" method="POST" class="post-form">{% csrf_token %}
-            {% if right == 1 %}
-            <div class="alert alert-success" role="alert">
-                <b>Accepted</b>
-            </div>
-            {% elif right == -1 %}
-            <div class="alert alert-danger" role="alert">
-                <b>Wrong Answer</b>
-            </div>
-            <table class="table">
+    <div class="card mb-3 wow fadeIn">
+        <div class="card-header font-weight-bold">Your answer</div>
+        <div class="card-body">
+            {% if quiz.quiz_type.name == "Code" or quiz.quiz_type.name == "Answer" %}
+            <form action="/answer/{{quiz.id}}/" method="POST" class="post-form">{% csrf_token %}
+                {% if right == 1 %}
+                <div class="alert alert-success" role="alert">
+                    <b>Accepted</b>
+                </div>
+                {% elif right == -1 %}
+                <div class="alert alert-danger" role="alert">
+                    <b>Wrong Answer</b>
+                </div>
                 {% if quiz.quiz_type.name == "Code" %}
-                <tbody>
-                <tr>
-                    <th scope="row" style="width: 20%">Input:</th>
-                    <td>{{ testcase }}</td>
-                </tr>
-                <tr>
-                    <th scope="row">Output:</th>
-                    <td>{{ actual_answer }}</span></td>
-                </tr>
-                <tr>
-                    <th scope="row">Expected:</th>
-                    <td>{{ expected_answer }}</span></td>
-                </tr>
-                </tbody>
+                <table class="table">
+                    <tbody>
+                    <tr>
+                        <th scope="row" style="width: 20%">Input:</th>
+                        <td>{{ testcase }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Output:</th>
+                        <td>{{ actual_answer }}</span></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Expected:</th>
+                        <td>{{ expected_answer }}</span></td>
+                    </tr>
+                    </tbody>
+                </table>
                 {% endif %}
-            </table>
-            {% endif %}
+                {% endif %}
 
-            {% if answer.date %}
-            <p class="text-muted">Submitted at {{ answer.date|date:'Y/m/d h:m:s'}}</p>
-            {% endif %}
+                {% if answer.date %}
+                <p class="text-muted">Submitted at {{ answer.date|date:'Y/m/d h:m:s'}}</p>
+                {% endif %}
 
-            <div class="form-group">
-                <textarea class="form-control" id="answer" name="answer" rows="10">{{ user_answer }}</textarea>
-            </div>
-            <button type="submit" class="save btn btn-secondary">Submit</button>
-        </form>
+                <div class="form-group">
+                    <textarea class="form-control" id="answer" name="answer" rows="10">{{ user_answer }}</textarea>
+                </div>
+                <button type="submit" class="save btn btn-secondary">Submit</button>
+            </form>
+            {% elif quiz.quiz_type.name == "MultipleChoice" %}
+            <form action="/answer/{{quiz.id}}/" method="POST" class="post-form">{% csrf_token %}
+                {% if right == 1 %}
+                <div class="alert alert-success" role="alert">
+                    <b>Accepted</b>
+                </div>
+                {% elif right == -1 %}
+                <div class="alert alert-danger" role="alert">
+                    <b>Wrong Answer</b>
+                </div>
+                {% endif %}
+                {% if quiz.option1 != None %}
+                <div class="form-check">
+                    {% if user_answer == None or user_answer == "1" %}
+                    <input class="form-check-input" name="answer" type="radio" value="1" id="radio1" checked>
+                    {% else %}
+                    <input class="form-check-input" name="answer" type="radio" value="1" id="radio1">
+                    {% endif %}
+                    <label class="form-check-label" for="radio1">
+                        {{ quiz.option1 }}
+                    </label>
+                </div>
+                {% endif %}
+                {% if quiz.option2 != None %}
+                <div class="form-check">
+                    {% if user_answer == "2" %}
+                    <input class="form-check-input" name="answer" type="radio" value="2" id="radio2" checked>
+                    {% else %}
+                    <input class="form-check-input" name="answer" type="radio" value="2" id="radio2">
+                    {% endif %}
+                    <label class="form-check-label" for="radio2">
+                        {{ quiz.option2 }}
+                    </label>
+                </div>
+                {% endif %}
+                {% if quiz.option3 != None %}
+                <div class="form-check">
+                    {% if user_answer == "3" %}
+                    <input class="form-check-input" name="answer" type="radio" value="3" id="radio3" checked>
+                    {% else %}
+                    <input class="form-check-input" name="answer" type="radio" value="3" id="radio3">
+                    {% endif %}
+                    <label class="form-check-label" for="radio3">
+                        {{ quiz.option3 }}
+                    </label>
+                </div>
+                {% endif %}
+                {% if quiz.option4 != None %}
+                <div class="form-check">
+                    {% if user_answer == 4 %}
+                    <input class="form-check-input" name="answer" type="radio" value="3" id="radio4" checked>
+                    {% else %}
+                    <input class="form-check-input" name="answer" type="radio" value="3" id="radio4">
+                    {% endif %}
+                    <label class="form-check-label" for="radio4">
+                        {{ quiz.option4 }}
+                    </label>
+                </div>
+                {% endif %}
+                <button type="submit" class="save btn btn-secondary">Submit</button>
+            </form>
+            {% endif %}
+        </div>
     </div>
-    {% elif quiz.quiz_type.name == "MultipleChoice" %}
-    <div class="card card-body">
-        <form action="/answer/{{quiz.id}}/" method="POST" class="post-form">{% csrf_token %}
-            {% if quiz.option1 != None %}
-            <div class="form-check">
-                <input class="form-check-input" name="answer" type="radio" value="1" id="radio1" checked>
-                <label class="form-check-label" for="radio1">
-                    {{ quiz.option1 }}
-                </label>
-            </div>
-            {% endif %}
-            {% if quiz.option2 != None %}
-            <div class="form-check">
-                <input class="form-check-input" name="answer" type="radio" value="2" id="radio2">
-                <label class="form-check-label" for="radio2">
-                    {{ quiz.option2 }}
-                </label>
-            </div>
-            {% endif %}
-            {% if quiz.option3 != None %}
-            <div class="form-check">
-                <input class="form-check-input" name="answer" type="radio" value="3" id="radio3">
-                <label class="form-check-label" for="radio3">
-                    {{ quiz.option3 }}
-                </label>
-            </div>
-            {% endif %}
-            {% if quiz.option4 != None %}
-            <div class="form-check">
-                <input class="form-check-input" name="answer" type="radio" value="4" id="radio4">
-                <label class="form-check-label" for="radio4">
-                    {{ quiz.option4 }}
-                </label>
-            </div>
-            {% endif %}
-            <button type="submit" class="save btn btn-secondary">Submit</button>
-        </form>
-    </div>
-    {% endif %}
     <div class="row">
         <div class="col">
             <hr>
@@ -121,29 +139,6 @@
     </div>
 </div>
 {% endif %}
-
-
-<!-- Modal -->
-<div class="modal fade show" id="basicExampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                ...
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
-        </div>
-    </div>
-</div>
 
 
 <!-- Modal: Accepted -->

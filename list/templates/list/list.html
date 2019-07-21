@@ -43,31 +43,44 @@
         </section>
     </div>
 
-    {% for quiz in quizs %}
-    {% if quiz.visible %}
-    <hr class="my-5">
+    <!-- TODO -->
+    <!--{% if quiz.right == 1 %}-->
+    <!--<span class="oi oi-check text-success" title="oi-check" aria-hidden="true"></span>-->
+    <!--{% elif quiz.right == -1 %}-->
+    <!--<span class="oi oi-question-mark text-danger"></span>-->
+    <!--{% endif %}-->
+
+
     <div class="container">
-        <div id="quiz_{{ quiz.id }}">
-            {% if quiz.right == 1 %}
-            <span class="oi oi-check text-success" title="oi-check" aria-hidden="true"></span>
-            {% elif quiz.right == -1 %}
-            <span class="oi oi-question-mark text-danger"></span>
-            {% endif %}
+        <div class="row mt-1">
+            <div class="col-md-12">
+                <ul class="stepper stepper-vertical">
+                    {% for quiz in quizs %}
+                    {% if quiz.visible %}
+                    <li class="completed">
+                        <a href="/{{ quiz.id }}">
+                            <span class="circle">{{ quiz.id }}</span>
+                            <span class="label step-title waves-effect waves-dark">{{ quiz.question|linebreaksbr }}</span>
+                        </a>
 
-            <h3><a href="/{{ quiz.id }}">{{ quiz.id }}. {{ quiz.question|linebreaksbr }}</a></h3>
-        </div>
-
-        {% if quiz.example %}
-        <div class="card">
-            <div class="card-body">
-                <p class="card-text">
-                <pre><code>{{ quiz.example }}</code></pre>
-                </p>
+                        <div class="step-content lighten-3">
+                            {% if quiz.example %}
+                            <pre><code>{{ quiz.example }}</code></pre>
+                            {% endif %}
+                        </div>
+                    </li>
+                    {% endif %}
+                    {% endfor %}
+                    <li class="warning">
+                        <a href="#!">
+                            <span class="circle"> !! </span>
+                            <span class="label">You have reached the end.</span>
+                        </a>
+                    </li>
+                </ul>
             </div>
         </div>
-        {% endif %}
     </div>
 </main>
-{% endif %}
-{% endfor %}
 {% endblock %}
+

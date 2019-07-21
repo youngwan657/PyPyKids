@@ -55,8 +55,8 @@ def show(request, quiz_id):
     context = {
         'quiz': quiz,
         'user_answer': user_answer,
-        'right': right,
-        'right_modal': right_modal,
+        'right': right,             # accepted(1) or wrong(-1)
+        'right_modal': right_modal,     # accepted(1) or wrong(-1)
         'testcase': testcase,
         'actual_answer': actual_answer,
         'expected_answer': expected_answer,
@@ -78,6 +78,7 @@ def answer(request, quiz_id):
         # answer
         if answer.answer.replace(" ", "").strip() == testsets[0].expected_answer:
             answer.right = 1
+            answer.wrong_result = ""
         else:
             answer.right = -1
             answer.wrong_result = answer.answer

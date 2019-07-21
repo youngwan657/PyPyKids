@@ -23,6 +23,10 @@
     <!-- Main Stylesheet File -->
     <link rel="stylesheet" type="text/css" href="{% static 'list/style.css' %}">
 
+    <!-- Page transition -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animsition/4.0.2/css/animsition.min.css" rel="stylesheet">
+
+
 
 
     <!-- Javascript -->
@@ -41,6 +45,10 @@
 
     <!-- MDB core JavaScript -->
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.5/js/mdb.min.js"></script>
+
+    <!-- Page transition -->
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/animsition/4.0.2/js/animsition.min.js"></script>
+
 
 
     <!-- Custom -->
@@ -84,7 +92,7 @@
 
 <body>
 <!--Main Navigation-->
-<header>
+<header class="animsition">
     <!-- Navbar -->
     <nav class="navbar fixed-top navbar-expand-lg navbar-dark scrolling-navbar">
         <div class="container">
@@ -140,13 +148,12 @@
                 </ul>
 
             </div>
-
         </div>
     </nav>
     <!-- Navbar -->
 
     <!--Carousel Wrapper-->
-    <div id="carousel-example-1z" class="carousel slide carousel-fade" data-ride="carousel">
+    <div id="carousel-example-1z" class="carousel slide carousel-fade animsition" data-ride="carousel">
 
         <!--Indicators-->
         <ol class="carousel-indicators">
@@ -331,6 +338,11 @@
 <!-- Initializations -->
 <script type="text/javascript">
     new WOW().init();
+
+    // page transition
+    $(document).ready(function() {
+        $('.animsition').animsition();
+    });
 </script>
 </body>
 </html>

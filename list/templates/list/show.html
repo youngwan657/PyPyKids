@@ -4,7 +4,7 @@
 {% block content %}
 
 {% if quiz.visible %}
-<div class="container">
+<div class="container animsition">
     <div class="card">
         <div class="card-body">
             {% if quiz.explanation %}
@@ -177,17 +177,19 @@
     </div>
 </div>
 
+
 <script>
+    // modal animation
     {% if right_modal == "1" %}
+        $('#animated-img1').addClass('animated zoomIn');
         $('#successModal').modal('show');
-        setTimeout(function() { $('#animated-img1').addClass('animated bounceOutRight') }, 1000);
-        setTimeout(function() { $('#successModal').modal('hide'); document.location.href = "http://dayeon.com/{{ next.id }}"}, 1500);
+        setTimeout(function() { $('#successModal').modal('hide'); document.location.href = "http://dayeon.com/{{ next.id }}"}, 2000);
     {% elif right_modal == "-1" %}
         $('#wrongModal').modal('show')
     {% endif %}
 
 
-
+    // textarea tab
     textarea = document.getElementById('answer');
     textarea.onkeydown = function(event) {
         //support tab on textarea
@@ -228,6 +230,9 @@
             return false;
         }
     }
+
+
+
 
 </script>
 {% endblock %}

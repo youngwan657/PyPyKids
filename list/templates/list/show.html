@@ -121,6 +121,29 @@
 </div>
 {% endif %}
 
+<!-- Modal -->
+<div class="modal fade show" id="basicExampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <!-- Modal: Accepted -->
 <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel1"
      aria-hidden="true">
@@ -172,44 +195,44 @@
 
     textarea = document.getElementById('answer');
     textarea.onkeydown = function(event) {
-    //support tab on textarea
-    if (event.keyCode == 9) { //tab was pressed
-        var v = textarea.value, s = textarea.selectionStart,e = textarea.selectionEnd;
-        textarea.value = v.substring(0, s) + '    ' + v.substring(e);
-        textarea.selectionStart = textarea.selectionEnd = s + 4;
-        return false;
-    }
-    if (event.keyCode == 13) {
-        var v = textarea.value, s = textarea.selectionStart,e = textarea.selectionEnd;
-        var lines = textarea.value.split("\n");
-        var startPos = 0;
-        var previousLine = lines[lines.length-1];
-        var i = 0
-        for(i = 0; i < lines.length; i++) {
-            if(textarea.selectionStart < startPos) {
-                previousLine = lines[i-1];
-                break;
-            }
-            startPos += (lines[i].length+1);
-        }
-        for(i = 0; i < previousLine.length; i++) {
-            if(previousLine.charAt(i) != ' ') {
-                break;
-            }
-        }
-        var space = "\n";
-        if (previousLine.charAt(previousLine.length - 1) == ':') {
-            space += ' '.repeat(i + 4);
-        } else {
-            space += ' '.repeat(i);
+        //support tab on textarea
+        if (event.keyCode == 9) { //tab was pressed
+            var v = textarea.value, s = textarea.selectionStart,e = textarea.selectionEnd;
+            textarea.value = v.substring(0, s) + '    ' + v.substring(e);
+            textarea.selectionStart = textarea.selectionEnd = s + 4;
+            return false;
         }
 
-        textarea.value = v.substring(0, s) + space + v.substring(e);
-        textarea.selectionStart = textarea.selectionEnd=s + space.length;
-        return false;
-    }
-}
+        if (event.keyCode == 13) {
+            var v = textarea.value, s = textarea.selectionStart,e = textarea.selectionEnd;
+            var lines = textarea.value.split("\n");
+            var startPos = 0;
+            var previousLine = lines[lines.length-1];
+            var i = 0
+            for(i = 0; i < lines.length; i++) {
+                if(textarea.selectionStart < startPos) {
+                    previousLine = lines[i-1];
+                    break;
+                }
+                startPos += (lines[i].length+1);
+            }
+            for(i = 0; i < previousLine.length; i++) {
+                if(previousLine.charAt(i) != ' ') {
+                    break;
+                }
+            }
+            var space = "\n";
+            if (previousLine.charAt(previousLine.length - 1) == ':') {
+                space += ' '.repeat(i + 4);
+            } else {
+                space += ' '.repeat(i);
+            }
 
+            textarea.value = v.substring(0, s) + space + v.substring(e);
+            textarea.selectionStart = textarea.selectionEnd=s + space.length;
+            return false;
+        }
+    }
 </script>
 {% endblock %}
 

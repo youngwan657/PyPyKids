@@ -1,110 +1,73 @@
 {% extends 'list/base.html' %}
 
 {% block content %}
-<!--Main Navigation-->
-<header>
-    <nav class="navbar fixed-top navbar-expand-lg navbar-dark blue">
-        <a class="navbar-brand" href="/" style="font-family: 'Notable', sans-serif;"><strong>Only for
-            Dayeon</strong></a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-    </nav>
 
-    <div class="view intro-2">
-        <div class="full-bg-img">
-            <div class="mask rgba-black-light flex-center">
-                <div class="container text-center white-text">
-                    <div class="white-text text-center wow fadeInUp">
-                        <h2>Dayeon,</h2>
-                        <h2>you are the most valuable person in the world.</h2>
-                        <h2>Let's win the competition this November.</h2>
-                    </div>
-                </div>
+
+<main>
+    <div class="container">
+        <section class="mt-5 wow fadeIn">
+            <table class="table">
+                <thead>
+                <tr class="table-primary">
+                    <th scope="col" colspan="2"><b>DAYEON</b></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <th scope="row" style="width: 20%">Global Ranking</th>
+                    <td><span class="badge badge-pill badge-success">1</span></td>
+                </tr>
+                <tr>
+                    <th scope="row">Solved Question</th>
+                    <td><span class="badge badge-pill badge-success">{{ right }} / {{ total_quiz }}</span></td>
+                </tr>
+                <tr>
+                    <th scope="row">Wrong Answer</th>
+                    <td><span class="badge badge-pill badge-danger">{{ wrong }}</span></td>
+                </tr>
+                <tr>
+                    <th scope="row">Progress</th>
+                    <td>
+                        <div class="progress" style="height: 30px;">
+                            <div class="progress-bar bg-success" role="progressbar" style="width: {{ right_percent }}%"
+                                 aria-valuenow="{{ right_percent }}" aria-valuemin="0" aria-valuemax="100">{{ right }}
+                            </div>
+                            <div class="progress-bar bg-danger" role="progressbar" style="width: {{ wrong_percent }}%"
+                                 aria-valuenow="{{ wrong_percent }}" aria-valuemin="0" aria-valuemax="100">{{ wrong }}
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </section>
+    </div>
+
+    {% for quiz in quizs %}
+    {% if quiz.visible %}
+    <hr class="my-5">
+    <div class="container">
+        <div id="quiz_{{ quiz.id }}">
+            {% if quiz.right == 1 %}
+            <span class="oi oi-check text-success" title="oi-check" aria-hidden="true"></span>
+            {% elif quiz.right == -1 %}
+            <span class="oi oi-question-mark text-danger"></span>
+            {% endif %}
+
+            <h3><a href="/{{ quiz.id }}">{{ quiz.id }}. {{ quiz.question|linebreaksbr }}</a></h3>
+        </div>
+
+        {% if quiz.example %}
+        <div class="card">
+            <div class="card-body">
+                <p class="card-text">
+                <pre><code>{{ quiz.example }}</code></pre>
+                </p>
             </div>
         </div>
-    </div>
-
-</header>
-<!--Main Navigation-->
-
-<div class="row">
-    <div class="col">
-        <br/><br/>
-    </div>
-</div>
-
-<div>
-</div>
-
-<div class="container">
-    <table class="table">
-        <thead>
-        <tr class="table-primary">
-            <th scope="col" colspan="2"><b>DAYEON</b></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <th scope="row" style="width: 20%">Global Ranking</th>
-            <td><span class="badge badge-pill badge-success">1</span></td>
-        </tr>
-        <tr>
-            <th scope="row">Solved Question</th>
-            <td><span class="badge badge-pill badge-success">{{ right }} / {{ total_quiz }}</span></td>
-        </tr>
-        <tr>
-            <th scope="row">Wrong Answer</th>
-            <td><span class="badge badge-pill badge-danger">{{ wrong }}</span></td>
-        </tr>
-        <tr>
-            <th scope="row">Progress</th>
-            <td>
-                <div class="progress" style="height: 30px;">
-                    <div class="progress-bar bg-success" role="progressbar" style="width: {{ right_percent }}%"
-                         aria-valuenow="{{ right_percent }}" aria-valuemin="0" aria-valuemax="100">{{ right }}
-                    </div>
-                    <div class="progress-bar bg-danger" role="progressbar" style="width: {{ wrong_percent }}%"
-                         aria-valuenow="{{ wrong_percent }}" aria-valuemin="0" aria-valuemax="100">{{ wrong }}
-                    </div>
-                </div>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-</div>
-
-
-{% for quiz in quizs %}
-{% if quiz.visible %}
-<div class="container">
-    <div id="quiz_{{ quiz.id }}">
-        {% if quiz.right == 1 %}
-        <span class="oi oi-check text-success" title="oi-check" aria-hidden="true"></span>
-        {% elif quiz.right == -1 %}
-        <span class="oi oi-question-mark text-danger"></span>
         {% endif %}
-
-        <h3><a href="/{{ quiz.id }}">{{ quiz.id }}. {{ quiz.question|linebreaksbr }}</a></h3>
     </div>
-
-    {% if quiz.example %}
-    <div class="card">
-        <div class="card-body">
-            <p class="card-text">
-            <pre><code>{{ quiz.example }}</code></pre>
-            </p>
-        </div>
-    </div>
-    {% endif %}
-
-    <div class="row">
-        <div class="col">
-            <hr>
-        </div>
-    </div>
-</div>
+</main>
 {% endif %}
 {% endfor %}
 {% endblock %}

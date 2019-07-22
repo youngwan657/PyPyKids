@@ -132,7 +132,7 @@ if __name__ == "__main__":
                 actual_answer = f.read()
                 f.close()
         except subprocess.CalledProcessError as suberror:
-            actual_answer = suberror.stdout.decode('utf-8')
+            actual_answer = "\n".join(suberror.stdout.decode('utf-8').split("\n")[1:])
 
         if str(actual_answer) != testset.expected_answer:
             answer.right = -1

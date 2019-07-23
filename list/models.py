@@ -1,8 +1,5 @@
 from django.db import models
 
-from markdownx.models import MarkdownxField
-from markdownx.utils import markdownify
-
 # Answer, Code
 class QuizType(models.Model):
     name = models.CharField(max_length=20)
@@ -21,7 +18,8 @@ class Category(models.Model):
 
 # TODO:: reorder
 class Quiz(models.Model):
-    explanation = MarkdownxField(default=None, blank=True, null=True)
+    explanation = models.TextField(default=None, blank=True, null=True)
+    video = models.TextField(default=None, blank=True, null=True)
     question = models.TextField(default=None, blank=True, null=True)
     example = models.TextField(default=None, blank=True, null=True)
     date = models.DateTimeField(auto_now_add=True)
@@ -37,9 +35,6 @@ class Quiz(models.Model):
 
     def __str__(self):
         return str(self.id) + ". " + self.question
-
-    def formatted_markdown(self):
-        return markdownify(self.explanation)
 
 class TestSet(models.Model):
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)

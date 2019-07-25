@@ -9,7 +9,7 @@
         <div class="card-body">
             {% if quiz.explanation %}
             <p class="card-text">
-                {{ quiz.explanation|linebreaksbr }}
+                {{ quiz.explanation | safe }}
             </p>
             {% endif %}
 

@@ -1,5 +1,7 @@
 from django.db import models
 
+from ckeditor.fields import RichTextField
+
 # Answer, Code
 class QuizType(models.Model):
     name = models.CharField(max_length=20)
@@ -18,7 +20,7 @@ class Category(models.Model):
 
 # TODO:: reorder
 class Quiz(models.Model):
-    explanation = models.TextField(default=None, blank=True, null=True)
+    explanation = RichTextField()
     video = models.TextField(default=None, blank=True, null=True)
     question = models.TextField(default=None, blank=True, null=True)
     example = models.TextField(default=None, blank=True, null=True)

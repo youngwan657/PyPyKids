@@ -256,14 +256,27 @@
     textarea = document.getElementById('answer');
     textarea.onkeydown = function(event) {
         //support tab on textarea
-        if (event.keyCode == 9) { //tab was pressed
-            var v = textarea.value, s = textarea.selectionStart,e = textarea.selectionEnd;
-            textarea.value = v.substring(0, s) + '    ' + v.substring(e);
+        if (event.keyCode == 8 || event.keyCode == 9 && event.shiftKey) {    // shift+tab or backspace
+            var v = textarea.value, s = textarea.selectionStart, e = textarea.selectionEnd;
+            if (textarea.value.substring(s-4, s) == ' '.repeat(4)) {
+                textarea.value = v.substring(0, s-4) + v.substring(e);
+                textarea.selectionStart = textarea.selectionEnd = s - 4;
+                return false
+            }
+
+            if (event.keyCode == 9 && evevnt.shiftKey) {
+                return false;
+            }
+            return true;
+        } else if (event.keyCode == 9) { // tab
+            var v = textarea.value, s = textarea.selectionStart, e = textarea.selectionEnd;
+            textarea.value = v.substring(0, s) + ' '.repeat(4) + v.substring(e);
             textarea.selectionStart = textarea.selectionEnd = s + 4;
             return false;
         }
 
-        if (event.keyCode == 13) {
+
+        if (event.keyCode == 13) {  // enter
             var v = textarea.value, s = textarea.selectionStart,e = textarea.selectionEnd;
             var lines = textarea.value.split("\n");
             var startPos = 0;
@@ -289,13 +302,10 @@
             }
 
             textarea.value = v.substring(0, s) + space + v.substring(e);
-            textarea.selectionStart = textarea.selectionEnd=s + space.length;
+            textarea.selectionStart = textarea.selectionEnd = s + space.length;
             return false;
         }
     }
-
-
-
 
 
 </script>

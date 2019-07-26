@@ -1,5 +1,6 @@
 from django.db import models
 
+from django.utils.timezone import now
 from ckeditor.fields import RichTextField
 
 # Answer, Code
@@ -20,7 +21,7 @@ class Category(models.Model):
 
 # TODO:: reorder
 class Quiz(models.Model):
-    explanation = RichTextField()
+    explanation = RichTextField(default=None, blank=True, null=True)
     video = models.TextField(default=None, blank=True, null=True)
     question = models.TextField(default=None, blank=True, null=True)
     example = models.TextField(default=None, blank=True, null=True)
@@ -34,6 +35,7 @@ class Quiz(models.Model):
     option2 = models.TextField(default=None, blank=True, null=True)
     option3 = models.TextField(default=None, blank=True, null=True)
     option4 = models.TextField(default=None, blank=True, null=True)
+    date = models.DateTimeField(default=now)
 
     def __str__(self):
         return str(self.id) + ". " + self.question

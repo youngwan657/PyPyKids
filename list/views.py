@@ -55,8 +55,8 @@ def show(request, quiz_id):
     context = {
         'quiz': quiz,
         'user_answer': user_answer,
-        'right': right,             # accepted(1) or wrong(-1)
-        'right_modal': right_modal,     # accepted(1) or wrong(-1)
+        'right': right,  # accepted(1) or wrong(-1)
+        'right_modal': right_modal,  # accepted(1) or wrong(-1)
         'testcase': testcase,
         'actual_answer': actual_answer,
         'expected_answer': expected_answer,
@@ -113,7 +113,12 @@ if __name__ == "__main__":
     if os.path.exists("checking_answer"):
         os.remove("checking_answer")
     f = open("checking_answer", "w+")
-    f.write("%s" % answer)
+    if type(answer) == tuple:
+        for line in answer:
+            print(line)
+            f.write("%s\\n" % line)
+    else:
+        f.write("%s" % answer)
     f.close()
 """
 
@@ -129,12 +134,13 @@ if __name__ == "__main__":
                            stderr=subprocess.STDOUT, shell=False, check=True)
             if os.path.exists("checking_answer"):
                 f = open("checking_answer", "r")
-                actual_answer = f.read()
+                actual_answer = f.read().strip()
                 f.close()
         except subprocess.CalledProcessError as suberror:
             actual_answer = "\n".join(suberror.stdout.decode('utf-8').split("\n")[1:])
 
-        if str(actual_answer) != testset.expected_answer:
+        testset.expected_answer = testset.expected_answer.replace("\r\n", "\n")
+        if str(actual_answer) != testset.expected_answer.strip():
             answer.right = -1
             answer.testcase = testset.test
             answer.expected_answer = testset.expected_answer

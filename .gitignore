@@ -3,3 +3,5 @@ db.sqlite3
 *.pyc
 checking.py
 checking_answer
+resource
+.DS_Store

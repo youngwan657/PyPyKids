@@ -2,6 +2,7 @@ from django.db import models
 
 from django.utils.timezone import now
 from ckeditor.fields import RichTextField
+from adminsortable.models import SortableMixin
 
 
 # Answer, Code
@@ -21,14 +22,18 @@ class Difficulty(models.Model):
 
 
 # For, If, Function, Class, Integer, String, List, Set, Dictionary
-class Category(models.Model):
+class Category(SortableMixin):
     difficulty = models.ForeignKey(Difficulty, on_delete=models.CASCADE, default=None, blank=True, null=True)
-    order = models.IntegerField(default=0)
+    order = models.PositiveIntegerField(default=0, editable=False, db_index=True)
     name = models.CharField(max_length=20)
     image = models.CharField(max_length=200, default=None, blank=True, null=True)
     desc = models.TextField(default=None, blank=True, null=True)
     total_quiz = 0
     unsolved_quiz = 0
+
+    class Meta:
+        ordering = ['order']
+        verbose_name_plural = 'Categories'
 
     def __str__(self):
         if self.difficulty == None:

@@ -1,0 +1,247 @@
+{% extends 'list/base.html' %}
+
+{% block content %}
+
+
+<main>
+    <div class="container">
+        <section class="mt-5 wow fadeIn">
+            <table class="table">
+                <thead>
+                <tr class="table-primary">
+                    <th scope="col" colspan="2"><b>DAYEON</b></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <th scope="row" style="width: 20%">Global Ranking</th>
+                    <td><span class="badge badge-pill badge-success">1</span></td>
+                </tr>
+                <tr>
+                    <th scope="row">Solved Question</th>
+                    <td><span class="badge badge-pill badge-success">{{ right }} / {{ total_quiz }}</span></td>
+                </tr>
+                <tr>
+                    <th scope="row">Wrong Answer</th>
+                    <td><span class="badge badge-pill badge-danger">{{ wrong }}</span></td>
+                </tr>
+                <tr>
+                    <th scope="row">Progress</th>
+                    <td>
+                        <div class="progress" style="height: 30px;">
+                            <div class="progress-bar bg-success" role="progressbar" style="width: {{ right_percent }}%"
+                                 aria-valuenow="{{ right_percent }}" aria-valuemin="0" aria-valuemax="100">{{ right }}
+                            </div>
+                            <div class="progress-bar bg-danger" role="progressbar" style="width: {{ wrong_percent }}%"
+                                 aria-valuenow="{{ wrong_percent }}" aria-valuemin="0" aria-valuemax="100">{{ wrong }}
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </section>
+    </div>
+
+    <div class="container">
+        <!-- Level 0 -->
+        <hr/>
+        <section>
+            <h3 class="h3 text-center mb-5">{{ difficulties.0.name }}</h3>
+            {% for category in level1 %}
+            {% if forloop.counter0|divisibleby:3 %}
+            <div class="card-deck">
+                {% endif %}
+
+                <!-- Card -->
+                <div class="card mb-4">
+                    <!--Card image-->
+                    <div class="view overlay">
+                        <img class="card-img-top" src="https://mdbootstrap.com/img/Photos/Others/images/16.jpg"
+                             alt="Card image cap">
+                        <a href="/category/{{ category.name }}">
+                            <div class="mask rgba-white-slight"></div>
+                        </a>
+                    </div>
+
+                    <!--Card content-->
+                    <div class="card-body">
+
+                        <!--Title-->
+                        <h4 class="card-title">{{ category.name }}
+                            <!--badge badge-danger ml-2-->
+
+                        </h4>
+                        <!--Text-->
+                        <p class="card-text">{{ category.desc }}</p>
+                        {% if category.total_quiz == 0 %}
+                        <button type="button" class="btn btn-secondary btn-md" disabled>Coming Soon !!!</button>
+                        {% else %}
+                        <a href="/category/{{ category.name }}" class="btn btn-light-blue btn-md">Read more
+                            {% if category.unsolved_quiz == 0 %}
+                            <span class="badge badge-pill badge-success ml-2"><span class="oi oi-check"></span></span>
+                            {% else %}
+                            <span class="badge badge-pill badge-danger ml-2">{{ category.unsolved_quiz }}</span>
+                            {% endif %}
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+                <!-- Card -->
+
+                {% if forloop.counter|divisibleby:3 %}
+                <!-- Card deck -->
+            </div>
+            {% endif %}
+            {% endfor %}
+        </section>
+
+        <!-- Level 1 -->
+        <hr/>
+        <section>
+            <h3 class="h3 text-center mb-5">{{ difficulties.1.name }}</h3>
+            {% for category in level2 %}
+            {% if forloop.counter0|divisibleby:3 %}
+            <div class="card-deck">
+                {% endif %}
+
+                <!-- Card -->
+                <div class="card mb-4">
+                    <!--Card image-->
+                    <div class="view overlay">
+                        <img class="card-img-top" src="https://mdbootstrap.com/img/Photos/Others/images/16.jpg"
+                             alt="Card image cap">
+                        <a href="/category/{{ category.name }}">
+                            <div class="mask rgba-white-slight"></div>
+                        </a>
+                    </div>
+
+                    <!--Card content-->
+                    <div class="card-body">
+
+                        <!--Title-->
+                        <h4 class="card-title">{{ category.name }}
+                            <!--badge badge-danger ml-2-->
+
+                        </h4>
+                        <!--Text-->
+                        <p class="card-text">{{ category.desc }}</p>
+                        <a href="/category/{{ category.name }}" class="btn btn-light-blue btn-md">Read more
+                            {% if category.unsolved_quiz == 0 %}
+                            <span class="badge badge-pill badge-success ml-2"><span class="oi oi-check"></span></span>
+                            {% else %}
+                            <span class="badge badge-pill badge-danger ml-2">{{ category.unsolved_quiz }}</span>
+                            {% endif %}
+                        </a>
+                    </div>
+                </div>
+                <!-- Card -->
+
+                {% if forloop.counter|divisibleby:3 %}
+                <!-- Card deck -->
+            </div>
+            {% endif %}
+            {% endfor %}
+        </section>
+
+        <!-- Level 2 -->
+        <hr/>
+        <section>
+            <h3 class="h3 text-center mb-5">{{ difficulties.2.name }}</h3>
+            {% for category in level3 %}
+            {% if forloop.counter0|divisibleby:3 %}
+            <div class="card-deck">
+                {% endif %}
+
+                <!-- Card -->
+                <div class="card mb-4">
+                    <!--Card image-->
+                    <div class="view overlay">
+                        <img class="card-img-top" src="https://mdbootstrap.com/img/Photos/Others/images/16.jpg"
+                             alt="Card image cap">
+                        <a href="/category/{{ category.name }}">
+                            <div class="mask rgba-white-slight"></div>
+                        </a>
+                    </div>
+
+                    <!--Card content-->
+                    <div class="card-body">
+
+                        <!--Title-->
+                        <h4 class="card-title">{{ category.name }}
+                            <!--badge badge-danger ml-2-->
+
+                        </h4>
+                        <!--Text-->
+                        <p class="card-text">{{ category.desc }}</p>
+                        <a href="/category/{{ category.name }}" class="btn btn-light-blue btn-md">Read more
+                            {% if category.unsolved_quiz == 0 %}
+                            <span class="badge badge-pill badge-success ml-2"><span class="oi oi-check"></span></span>
+                            {% else %}
+                            <span class="badge badge-pill badge-danger ml-2">{{ category.unsolved_quiz }}</span>
+                            {% endif %}
+                        </a>
+                    </div>
+                </div>
+                <!-- Card -->
+
+                {% if forloop.counter|divisibleby:3 %}
+                <!-- Card deck -->
+            </div>
+            {% endif %}
+            {% endfor %}
+        </section>
+
+        <!-- Level 3 -->
+        <hr/>
+        <section>
+            <h3 class="h3 text-center mb-5">{{ difficulties.3.name }}</h3>
+            {% for category in level4 %}
+            {% if forloop.counter0|divisibleby:3 %}
+            <div class="card-deck">
+                {% endif %}
+
+                <!-- Card -->
+                <div class="card mb-4">
+                    <!--Card image-->
+                    <div class="view overlay">
+                        <img class="card-img-top" src="https://mdbootstrap.com/img/Photos/Others/images/16.jpg"
+                             alt="Card image cap">
+                        <a href="/category/{{ category.name }}">
+                            <div class="mask rgba-white-slight"></div>
+                        </a>
+                    </div>
+
+                    <!--Card content-->
+                    <div class="card-body">
+
+                        <!--Title-->
+                        <h4 class="card-title">{{ category.name }}
+                            <!--badge badge-danger ml-2-->
+
+                        </h4>
+                        <!--Text-->
+                        <p class="card-text">{{ category.desc }}</p>
+                        <a href="/category/{{ category.name }}" class="btn btn-light-blue btn-md">Read more
+                            {% if category.unsolved_quiz == 0 %}
+                            <span class="badge badge-pill badge-success ml-2"><span class="oi oi-check"></span></span>
+                            {% else %}
+                            <span class="badge badge-pill badge-danger ml-2">{{ category.unsolved_quiz }}</span>
+                            {% endif %}
+                        </a>
+                    </div>
+                </div>
+                <!-- Card -->
+
+                {% if forloop.counter|divisibleby:3 %}
+                <!-- Card deck -->
+            </div>
+            {% endif %}
+            {% endfor %}
+        </section>
+
+
+    </div>
+</main>
+{% endblock %}
+

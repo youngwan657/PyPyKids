@@ -14,16 +14,8 @@
                 </thead>
                 <tbody>
                 <tr>
-                    <th scope="row" style="width: 20%">Global Ranking</th>
-                    <td><span class="badge badge-pill badge-success">1</span></td>
-                </tr>
-                <tr>
-                    <th scope="row">Solved Question</th>
+                    <th scope="row" style="width: 20%">Solved Question</th>
                     <td><span class="badge badge-pill badge-success">{{ right }} / {{ total_quiz }}</span></td>
-                </tr>
-                <tr>
-                    <th scope="row">Wrong Answer</th>
-                    <td><span class="badge badge-pill badge-danger">{{ wrong }}</span></td>
                 </tr>
                 <tr>
                     <th scope="row">Progress</th>
@@ -31,9 +23,6 @@
                         <div class="progress" style="height: 30px;">
                             <div class="progress-bar bg-success" role="progressbar" style="width: {{ right_percent }}%"
                                  aria-valuenow="{{ right_percent }}" aria-valuemin="0" aria-valuemax="100">{{ right }}
-                            </div>
-                            <div class="progress-bar bg-danger" role="progressbar" style="width: {{ wrong_percent }}%"
-                                 aria-valuenow="{{ wrong_percent }}" aria-valuemin="0" aria-valuemax="100">{{ wrong }}
                             </div>
                         </div>
                     </td>
@@ -44,12 +33,19 @@
     </div>
 
     <div class="container">
+        <hr/>
+        <h3 class="h3 text-center mb-5">{{ category }}</h3>
         <div class="row mt-1">
             <div class="col-md-12">
                 <ul class="stepper stepper-vertical">
                     {% for quiz in quizs %}
                     {% if quiz.visible %}
-                    <li class="completed">
+                    {% if quiz.right == 0 %}
+                    <li>{% endif %}
+                        {% if quiz.right == -1 %}
+                    <li class="warning">{% endif %}
+                        {% if quiz.right == 1 %}
+                    <li class="completed">{% endif %}
                         <a href="/{{ quiz.id }}">
                             <span class="circle">{{ quiz.id }}</span>
                             <span class="label step-title waves-effect waves-dark">{{ quiz.question|linebreaksbr }}</span>
@@ -63,12 +59,6 @@
                     </li>
                     {% endif %}
                     {% endfor %}
-                    <li class="warning">
-                        <a href="#!">
-                            <span class="circle"> !! </span>
-                            <span class="label">You have reached the end.</span>
-                        </a>
-                    </li>
                 </ul>
             </div>
         </div>

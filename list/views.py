@@ -6,27 +6,68 @@ import os
 
 from django.db.models import Q
 
-from .models import Quiz, Answer, TestSet
+from .models import Quiz, Answer, TestSet, Category, Difficulty
 
 User = "Dayeon"
 
 
+def all_category(request):
+    difficulties = Difficulty.objects.order_by('id')
+    answers = Answer.objects.filter(name=User)
+    right_quizs = answers.filter(right=1).count()
+    wrong_quizs = answers.filter(right=-1).count()
+    quizs = Quiz.objects.order_by('id').filter(visible=1)
+    unsolved_quizs = quizs
+    for answer in answers:
+        if answer.right == 1:
+            unsolved_quizs = unsolved_quizs.filter(~Q(id=answer.quiz.id))
+
+    # For profile
+    context = {
+        "difficulties": difficulties,
+        "quizs": unsolved_quizs,
+        "total_quiz": quizs.count(),
+        "right": right_quizs,
+        "wrong": wrong_quizs,
+        "right_percent": right_quizs / quizs.count() * 100,
+        "wrong_percent": wrong_quizs / quizs.count() * 100,
+    }
+
+    for difficulty in difficulties:
+        categories = Category.objects.order_by('order').filter(difficulty=difficulty.id)
+        all_quizs = Quiz.objects;
+        answers = Answer.objects.filter(name=User, right=1)
+        for category in categories:
+            quizs = all_quizs.filter(category__name=category.name, visible=True)
+            category.total_quiz = quizs.count()
+            category.unsolved_quiz = quizs.count()
+            for quiz in quizs:
+                if len(answers.filter(quiz__id=quiz.id)) == 1:
+                    print(answers.filter(quiz__id=quiz.id))
+                    category.unsolved_quiz -= 1
+
+        context["level" + str(difficulty.id)] = categories
+
+    return render(request, 'list/all_category.html', context)
+
+
+# TODO:: delete
 def list(request):
     quizs = Quiz.objects.order_by('id').filter(visible=1)
-    answers = Answer.objects.filter(name="Dayeon")
+    answers = Answer.objects.filter(name=User)
     right_quizs = answers.filter(right=1).count()
     wrong_quizs = answers.filter(right=-1).count()
 
-    filtered_quizs = quizs
+    unsolved_quizs = quizs
     for answer in answers:
         if answer.right == 1:
-            filtered_quizs = filtered_quizs.filter(~Q(id=answer.quiz.id))
+            unsolved_quizs = unsolved_quizs.filter(~Q(id=answer.quiz.id))
 
-    if len(filtered_quizs) == 0:
+    if len(unsolved_quizs) == 0:
         return render(request, 'list/congrats.html')
 
     context = {
-        'quizs': filtered_quizs,
+        'quizs': unsolved_quizs,
         'total_quiz': quizs.count(),
         'right': right_quizs,
         'wrong': wrong_quizs,
@@ -34,6 +75,35 @@ def list(request):
         'wrong_percent': wrong_quizs / quizs.count() * 100,
     }
     return render(request, 'list/list.html', context)
+
+
+def category(request, category):
+    quizs = Quiz.objects.filter(category__name=category, visible=True).order_by('id')
+    answers = Answer.objects.filter(name=User)
+    right_quizs = 0
+    for quiz in quizs:
+        answer = answers.filter(quiz__id=quiz.id)
+        quiz.right = 0
+        if len(answer) > 0:
+            quiz.right = answer[0].right
+        if quiz.right == 1:
+            right_quizs += 1
+
+    if quizs.count() == 0:
+        right_percent = 100
+    else:
+        right_percent = right_quizs / quizs.count() * 100
+
+    context = {
+        "category": category,
+        "quizs": quizs,
+
+        "total_quiz": quizs.count(),
+        "right": right_quizs,
+        "right_percent": right_percent,
+    }
+
+    return render(request, 'list/category.html', context)
 
 
 def show(request, quiz_id):

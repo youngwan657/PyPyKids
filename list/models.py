@@ -3,6 +3,7 @@ from django.db import models
 from django.utils.timezone import now
 from ckeditor.fields import RichTextField
 
+
 # Answer, Code
 class QuizType(models.Model):
     name = models.CharField(max_length=20)
@@ -11,12 +12,29 @@ class QuizType(models.Model):
         return str(self.name)
 
 
-# For, If, Function, Class, Integer, String, List, Set, Dictionary
-class Category(models.Model):
+# Beginner, Intermediate, Advanced
+class Difficulty(models.Model):
     name = models.CharField(max_length=20)
 
     def __str__(self):
         return str(self.name)
+
+
+# For, If, Function, Class, Integer, String, List, Set, Dictionary
+class Category(models.Model):
+    difficulty = models.ForeignKey(Difficulty, on_delete=models.CASCADE, default=None, blank=True, null=True)
+    order = models.IntegerField(default=0)
+    name = models.CharField(max_length=20)
+    image = models.CharField(max_length=200, default=None, blank=True, null=True)
+    desc = models.TextField(default=None, blank=True, null=True)
+    total_quiz = 0
+    unsolved_quiz = 0
+
+    def __str__(self):
+        if self.difficulty == None:
+            return str(self.name)
+
+        return self.difficulty.name + "-" + str(self.order) + ". " + str(self.name)
 
 
 # TODO:: reorder
@@ -36,9 +54,14 @@ class Quiz(models.Model):
     option3 = models.TextField(default=None, blank=True, null=True)
     option4 = models.TextField(default=None, blank=True, null=True)
     date = models.DateTimeField(default=now)
+    right = 0
 
     def __str__(self):
-        return str(self.id) + ". " + self.question
+        visible = "  "
+        if self.visible == False:
+            visible = "x "
+        return visible + str(self.id) + ". " + self.question
+
 
 class TestSet(models.Model):
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)

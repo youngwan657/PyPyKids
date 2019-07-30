@@ -40,11 +40,11 @@
                 <ul class="stepper stepper-vertical">
                     {% for quiz in quizs %}
                     {% if quiz.visible %}
-                    {% if quiz.right == 0 %}
+                    {% if quiz.right == 1 %}
                     <li>{% endif %}
                         {% if quiz.right == -1 %}
                     <li class="warning">{% endif %}
-                        {% if quiz.right == 1 %}
+                        {% if quiz.right == 0 %}
                     <li class="completed">{% endif %}
                         <a href="/{{ quiz.id }}">
                             <span class="circle">{{ quiz.id }}</span>

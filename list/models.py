@@ -5,7 +5,6 @@ from ckeditor.fields import RichTextField
 from adminsortable.models import SortableMixin
 
 
-# Answer, Code
 class QuizType(models.Model):
     name = models.CharField(max_length=20)
 
@@ -13,7 +12,6 @@ class QuizType(models.Model):
         return str(self.name)
 
 
-# Beginner, Intermediate, Advanced
 class Difficulty(models.Model):
     name = models.CharField(max_length=20)
 
@@ -21,7 +19,6 @@ class Difficulty(models.Model):
         return str(self.name)
 
 
-# For, If, Function, Class, Integer, String, List, Set, Dictionary
 class Category(SortableMixin):
     difficulty = models.ForeignKey(Difficulty, on_delete=models.CASCADE, default=None, blank=True, null=True)
     order = models.PositiveIntegerField(default=0, editable=False, db_index=True)
@@ -42,7 +39,7 @@ class Category(SortableMixin):
         return self.difficulty.name + "-" + str(self.order) + ". " + str(self.name)
 
 
-# TODO:: reorder
+# TODO:: reorder, admin filter
 class Quiz(models.Model):
     explanation = RichTextField(default=None, blank=True, null=True)
     video = models.TextField(default=None, blank=True, null=True)

@@ -126,6 +126,9 @@
                         </h4>
                         <!--Text-->
                         <p class="card-text">{{ category.desc }}</p>
+                        {% if category.total_quiz == 0 %}
+                        <button type="button" class="btn btn-secondary btn-md" disabled>Coming Soon !!!</button>
+                        {% else %}
                         <a href="/category/{{ category.name }}" class="btn btn-light-blue btn-md">Read more
                             {% if category.unsolved_quiz == 0 %}
                             <span class="badge badge-pill badge-success ml-2"><span class="oi oi-check"></span></span>
@@ -133,6 +136,7 @@
                             <span class="badge badge-pill badge-danger ml-2">{{ category.unsolved_quiz }}</span>
                             {% endif %}
                         </a>
+                        {% endif %}
                     </div>
                 </div>
                 <!-- Card -->
@@ -174,6 +178,9 @@
                         </h4>
                         <!--Text-->
                         <p class="card-text">{{ category.desc }}</p>
+                        {% if category.total_quiz == 0 %}
+                        <button type="button" class="btn btn-secondary btn-md" disabled>Coming Soon !!!</button>
+                        {% else %}
                         <a href="/category/{{ category.name }}" class="btn btn-light-blue btn-md">Read more
                             {% if category.unsolved_quiz == 0 %}
                             <span class="badge badge-pill badge-success ml-2"><span class="oi oi-check"></span></span>
@@ -181,6 +188,7 @@
                             <span class="badge badge-pill badge-danger ml-2">{{ category.unsolved_quiz }}</span>
                             {% endif %}
                         </a>
+                        {% endif %}
                     </div>
                 </div>
                 <!-- Card -->
@@ -222,6 +230,9 @@
                         </h4>
                         <!--Text-->
                         <p class="card-text">{{ category.desc }}</p>
+                        {% if category.total_quiz == 0 %}
+                        <button type="button" class="btn btn-secondary btn-md" disabled>Coming Soon !!!</button>
+                        {% else %}
                         <a href="/category/{{ category.name }}" class="btn btn-light-blue btn-md">Read more
                             {% if category.unsolved_quiz == 0 %}
                             <span class="badge badge-pill badge-success ml-2"><span class="oi oi-check"></span></span>
@@ -229,6 +240,7 @@
                             <span class="badge badge-pill badge-danger ml-2">{{ category.unsolved_quiz }}</span>
                             {% endif %}
                         </a>
+                        {% endif %}
                     </div>
                 </div>
                 <!-- Card -->
@@ -240,6 +252,58 @@
             {% endfor %}
         </section>
 
+
+        <!-- Level 4 -->
+        <hr/>
+        <section>
+            <h3 class="h3 text-center mb-5">{{ difficulties.4.name }}</h3>
+            {% for category in level5 %}
+            {% if forloop.counter0|divisibleby:3 %}
+            <div class="card-deck">
+                {% endif %}
+
+                <!-- Card -->
+                <div class="card mb-4">
+                    <!--Card image-->
+                    <div class="view overlay">
+                        <img class="card-img-top" src="https://mdbootstrap.com/img/Photos/Others/images/16.jpg"
+                             alt="Card image cap">
+                        <a href="/category/{{ category.name }}">
+                            <div class="mask rgba-white-slight"></div>
+                        </a>
+                    </div>
+
+                    <!--Card content-->
+                    <div class="card-body">
+
+                        <!--Title-->
+                        <h4 class="card-title">{{ category.name }}
+                            <!--badge badge-danger ml-2-->
+
+                        </h4>
+                        <!--Text-->
+                        <p class="card-text">{{ category.desc }}</p>
+                        {% if category.total_quiz == 0 %}
+                        <button type="button" class="btn btn-secondary btn-md" disabled>Coming Soon !!!</button>
+                        {% else %}
+                        <a href="/category/{{ category.name }}" class="btn btn-light-blue btn-md">Read more
+                            {% if category.unsolved_quiz == 0 %}
+                            <span class="badge badge-pill badge-success ml-2"><span class="oi oi-check"></span></span>
+                            {% else %}
+                            <span class="badge badge-pill badge-danger ml-2">{{ category.unsolved_quiz }}</span>
+                            {% endif %}
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+                <!-- Card -->
+
+                {% if forloop.counter|divisibleby:3 %}
+                <!-- Card deck -->
+            </div>
+            {% endif %}
+            {% endfor %}
+        </section>
 
     </div>
 </main>

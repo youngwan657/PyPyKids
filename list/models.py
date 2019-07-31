@@ -50,7 +50,7 @@ class Quiz(models.Model):
     quiz_type = models.ForeignKey(QuizType, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     visible = models.BooleanField(default=True)
-    answer_header = models.TextField(default=None, blank=True, null=True)
+    answer_header = models.TextField(default="class Solution:\n    def solve(self, num):", blank=True, null=True)
     option1 = models.TextField(default=None, blank=True, null=True)
     option2 = models.TextField(default=None, blank=True, null=True)
     option3 = models.TextField(default=None, blank=True, null=True)

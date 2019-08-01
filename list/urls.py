@@ -8,4 +8,5 @@ urlpatterns = [
     path('list/', views.list, name='list'),
     path('<int:quiz_id>/', views.show, name='show'),
     path('answer/<int:quiz_id>/', views.answer, name='answer'),
+    path('badge/', views.badge, name='badge'),
 ]

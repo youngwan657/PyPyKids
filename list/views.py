@@ -22,6 +22,7 @@ def all_category(request):
         if answer.right == 1:
             unsolved_quizs = unsolved_quizs.filter(~Q(id=answer.quiz.id))
 
+    # Chart
     now = date.today() + timedelta(days=+1)
     labels, counts = [], []
     for i in range(0, 31):
@@ -32,18 +33,14 @@ def all_category(request):
             labels.insert(0, now.strftime("%d"))
         counts.insert(0, answers.filter(date__date=now, right=1).count())
 
-    # For profile
-    context = {
-        "difficulties": difficulties,
-        "quizs": unsolved_quizs,
-        "total_quiz": quizs.count(),
-        "right": right_quizs,
-        "wrong": wrong_quizs,
-        "right_percent": right_quizs / quizs.count() * 100,
-        "wrong_percent": wrong_quizs / quizs.count() * 100,
-        "labels": labels,
-        "counts": counts,
-    }
+    context = {}
+    context['difficulties'] = difficulties
+    context['labels'] = labels
+    context['counts'] = counts
+
+    # Circle chart
+    context['total_labels'] = ["Right", "Wrong", "Not Try"]
+    context['total_counts'] = [right_quizs, wrong_quizs, quizs.count() - right_quizs - wrong_quizs]
 
     for difficulty in difficulties:
         categories = Category.objects.order_by('order').filter(difficulty=difficulty.id)
@@ -61,6 +58,9 @@ def all_category(request):
 
     return render(request, 'list/all_category.html', context)
 
+
+def badge(request):
+    return render(request, 'list/badge.html')
 
 # TODO:: delete
 def list(request):
@@ -122,7 +122,7 @@ def show(request, quiz_id):
     next = Quiz.objects.filter(visible=True).filter(id__gt=quiz_id).first()
 
     right_modal = request.GET.get('right_modal')
-    right, user_answer, testcase, output, expected_answer = 0, "", "", "", ""
+    right, user_answer, testcase, output, stdout, expected_answer = 0, "", "", "", "", ""
     answer = Answer.objects.filter(quiz__id=quiz_id, name=User)
     if len(answer) == 1:
         right = answer[0].right

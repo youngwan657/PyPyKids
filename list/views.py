@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponseRedirect
-import datetime
+from datetime import datetime, date, timedelta
 import subprocess
 import os
 
@@ -22,6 +22,16 @@ def all_category(request):
         if answer.right == 1:
             unsolved_quizs = unsolved_quizs.filter(~Q(id=answer.quiz.id))
 
+    now = date.today() + timedelta(days=+1)
+    labels, counts = [], []
+    for i in range(0, 30):
+        now += timedelta(days=-1)
+        if now.strftime("%d") == "01":
+            labels.insert(0, now.strftime("%b %d"))
+        else:
+            labels.insert(0, now.strftime("%d"))
+        counts.insert(0, answers.filter(date__date=now).count())
+
     # For profile
     context = {
         "difficulties": difficulties,
@@ -31,6 +41,8 @@ def all_category(request):
         "wrong": wrong_quizs,
         "right_percent": right_quizs / quizs.count() * 100,
         "wrong_percent": wrong_quizs / quizs.count() * 100,
+        "labels": labels,
+        "counts": counts,
     }
 
     for difficulty in difficulties:
@@ -43,7 +55,6 @@ def all_category(request):
             category.unsolved_quiz = quizs.count()
             for quiz in quizs:
                 if len(answers.filter(quiz__id=quiz.id)) == 1:
-                    print(answers.filter(quiz__id=quiz.id))
                     category.unsolved_quiz -= 1
 
         context["level" + str(difficulty.id)] = categories
@@ -141,7 +152,7 @@ def answer(request, quiz_id):
     answer, created = Answer.objects.get_or_create(quiz__id=quiz_id, name=User)
     answer.quiz = quiz
     answer.answer = request.POST['answer']
-    answer.date = datetime.datetime.now()
+    answer.date = datetime.now()
     if quiz.quiz_type.name == "Code":
         checkAnswer(quiz, testsets, answer)
     elif quiz.quiz_type.name == "Answer" or quiz.quiz_type.name == "MultipleChoice":

@@ -70,6 +70,9 @@ class TestSet(models.Model):
     test = models.TextField(default=None, blank=True, null=True)
     expected_answer = models.TextField(default=None, blank=True, null=True)
 
+    def __str__(self):
+        return str(self.quiz.id) + ". " + self.test
+
 
 class Answer(models.Model):
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE, blank=True, null=True)
@@ -80,6 +83,7 @@ class Answer(models.Model):
     testcase = models.TextField(default=None, blank=True, null=True)
     wrong_result = models.TextField(default=None, blank=True, null=True)
     expected_answer = models.TextField(default=None, blank=True, null=True)
+    date = models.DateTimeField(default=now)
 
     def __str__(self):
         return str(self.id) + ". " + self.name

@@ -129,6 +129,7 @@ def show(request, quiz_id):
         user_answer = answer[0].answer
         testcase = answer[0].testcase
         actual_answer = answer[0].wrong_result
+        stdout = answer[0].stdout
         expected_answer = answer[0].expected_answer
     else:
         user_answer = quiz.answer_header
@@ -140,6 +141,7 @@ def show(request, quiz_id):
         'right_modal': right_modal,  # accepted(1) or wrong(-1)
         'testcase': testcase,
         'actual_answer': actual_answer,
+        'stdout': stdout,
         'expected_answer': expected_answer,
         'next': next,
     }
@@ -152,7 +154,8 @@ def answer(request, quiz_id):
     answer, created = Answer.objects.get_or_create(quiz__id=quiz_id, name=User)
     answer.quiz = quiz
     answer.answer = request.POST['answer']
-    answer.date = datetime.now()
+    if answer.right != 1:
+        answer.date = datetime.now()
     if quiz.quiz_type.name == "Code":
         checkAnswer(quiz, testsets, answer)
     elif quiz.quiz_type.name == "Answer" or quiz.quiz_type.name == "MultipleChoice":
@@ -196,7 +199,6 @@ if __name__ == "__main__":
     f = open("checking_answer", "w+")
     if type(answer) == tuple:
         for line in answer:
-            print(line)
             f.write("%s\\n" % line)
     else:
         f.write("%s" % answer)
@@ -211,7 +213,7 @@ if __name__ == "__main__":
     for testset in testsets:
         actual_answer = "None"
         try:
-            subprocess.run(['python', 'checking.py'] + testset.test.split("\n"), stdout=subprocess.PIPE,
+            process = subprocess.run(['python', 'checking.py'] + testset.test.split("\n"), stdout=subprocess.PIPE,
                            stderr=subprocess.STDOUT, shell=False, check=True)
             if os.path.exists("checking_answer"):
                 f = open("checking_answer", "r")
@@ -226,9 +228,11 @@ if __name__ == "__main__":
             answer.testcase = testset.test
             answer.expected_answer = testset.expected_answer
             answer.wrong_result = actual_answer
+            answer.stdout = process.stdout.decode("utf-8")
             return
 
     answer.right = 1
     answer.testcase = ""
     answer.expected_answer = ""
     answer.wrong_result = ""
+    answer.stdout = ""

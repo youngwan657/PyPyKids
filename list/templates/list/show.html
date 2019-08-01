@@ -109,6 +109,12 @@
                         <th scope="row" style="width: 20%">Input:</th>
                         <td>{{ testcase }}</td>
                     </tr>
+                    {% if stdout != "" %}
+                    <tr>
+                        <th scope="row">stdout:</th>
+                        <td>{{ stdout }}</span></td>
+                    </tr>
+                    {% endif %}
                     <tr>
                         <th scope="row">Output:</th>
                         <td>{{ actual_answer|linebreaksbr }}</span></td>

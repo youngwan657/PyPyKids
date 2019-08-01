@@ -62,7 +62,7 @@ class Quiz(models.Model):
         visible = "  "
         if self.visible == False:
             visible = "x "
-        return visible + str(self.id) + ". " + self.question
+        return visible + "[" + self.category.name + "] " + str(self.id) + ". " + self.question
 
 
 class TestSet(models.Model):
@@ -81,9 +81,10 @@ class Answer(models.Model):
     name = models.CharField(max_length=20)
     right = models.IntegerField(default=0)
     testcase = models.TextField(default=None, blank=True, null=True)
+    stdout = models.TextField(default=None, blank=True, null=True)
     wrong_result = models.TextField(default=None, blank=True, null=True)
     expected_answer = models.TextField(default=None, blank=True, null=True)
     date = models.DateTimeField(default=now)
 
     def __str__(self):
-        return str(self.id) + ". " + self.name
+        return str(self.quiz.id) + ". " + self.name + " " + str(self.date)

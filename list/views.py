@@ -24,13 +24,13 @@ def all_category(request):
 
     now = date.today() + timedelta(days=+1)
     labels, counts = [], []
-    for i in range(0, 30):
+    for i in range(0, 31):
         now += timedelta(days=-1)
-        if now.strftime("%d") == "01":
+        if now.strftime("%d") == "01" or i == 30:
             labels.insert(0, now.strftime("%b %d"))
         else:
             labels.insert(0, now.strftime("%d"))
-        counts.insert(0, answers.filter(date__date=now).count())
+        counts.insert(0, answers.filter(date__date=now, right=1).count())
 
     # For profile
     context = {

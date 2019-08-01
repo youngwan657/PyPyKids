@@ -5,8 +5,8 @@
 
 <main>
     <div class="container">
-<canvas id="myChart" width="400" height="100"></canvas>
-<script>
+        <canvas id="myChart" width="400" height="100"></canvas>
+        <script>
 var ctx = document.getElementById('myChart').getContext('2d');
 var myChart = new Chart(ctx, {
     type: 'line',
@@ -28,11 +28,13 @@ var myChart = new Chart(ctx, {
                     beginAtZero: true,
                     precision: 0
                 }
-            }]
+            }
+            ]
         }
     }
 });
-</script>
+
+        </script>
 
         <section class="mt-5 wow fadeIn">
             <table class="table">

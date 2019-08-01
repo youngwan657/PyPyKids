@@ -6,7 +6,7 @@ import os
 
 from django.db.models import Q
 
-from .models import Quiz, Answer, TestSet, Category, Difficulty
+from .models import Quiz, Answer, Testcase, Category, Difficulty
 
 User = "Dayeon"
 
@@ -122,13 +122,13 @@ def show(request, quiz_id):
     next = Quiz.objects.filter(visible=True).filter(id__gt=quiz_id).first()
 
     right_modal = request.GET.get('right_modal')
-    right, user_answer, testcase, actual_answer, expected_answer = 0, "", "", "", ""
+    right, user_answer, testcase, output, expected_answer = 0, "", "", "", ""
     answer = Answer.objects.filter(quiz__id=quiz_id, name=User)
     if len(answer) == 1:
         right = answer[0].right
         user_answer = answer[0].answer
         testcase = answer[0].testcase
-        actual_answer = answer[0].wrong_result
+        output = answer[0].output
         stdout = answer[0].stdout
         expected_answer = answer[0].expected_answer
     else:
@@ -140,7 +140,7 @@ def show(request, quiz_id):
         'right': right,  # accepted(1) or wrong(-1)
         'right_modal': right_modal,  # accepted(1) or wrong(-1)
         'testcase': testcase,
-        'actual_answer': actual_answer,
+        'output': output,
         'stdout': stdout,
         'expected_answer': expected_answer,
         'next': next,
@@ -150,22 +150,22 @@ def show(request, quiz_id):
 
 def answer(request, quiz_id):
     quiz = get_object_or_404(Quiz, pk=quiz_id)
-    testsets = TestSet.objects.filter(quiz__id=quiz_id)
+    testcases = Testcase.objects.filter(quiz__id=quiz_id)
     answer, created = Answer.objects.get_or_create(quiz__id=quiz_id, name=User)
     answer.quiz = quiz
     answer.answer = request.POST['answer']
     if answer.right != 1:
         answer.date = datetime.now()
     if quiz.quiz_type.name == "Code":
-        checkAnswer(quiz, testsets, answer)
+        checkAnswer(testcases, answer)
     elif quiz.quiz_type.name == "Answer" or quiz.quiz_type.name == "MultipleChoice":
         # answer
-        if answer.answer.replace(" ", "").strip() == testsets[0].expected_answer:
+        if answer.answer.replace(" ", "").strip() == testcases[0].expected_answer:
             answer.right = 1
-            answer.wrong_result = ""
+            answer.output = ""
         else:
             answer.right = -1
-            answer.wrong_result = answer.answer
+            answer.output = answer.answer
 
     answer.save()
 
@@ -177,7 +177,7 @@ def answer(request, quiz_id):
     return HttpResponseRedirect('/' + str(quiz.id) + "?right_modal=" + str(answer.right))
 
 
-def checkAnswer(quiz, testsets, answer):
+def checkAnswer(testcases, answer):
     header = """import sys, ast, os
 """
 
@@ -210,29 +210,29 @@ if __name__ == "__main__":
     f.write(code)
     f.close()
 
-    for testset in testsets:
-        actual_answer = "None"
+    for testcase in testcases:
+        output = "None"
         try:
-            process = subprocess.run(['python', 'checking.py'] + testset.test.split("\n"), stdout=subprocess.PIPE,
+            process = subprocess.run(['python', 'checking.py'] + testcase.test.split("\n"), stdout=subprocess.PIPE,
                            stderr=subprocess.STDOUT, shell=False, check=True)
             if os.path.exists("checking_answer"):
                 f = open("checking_answer", "r")
-                actual_answer = f.read().strip()
+                output = f.read().strip()
                 f.close()
         except subprocess.CalledProcessError as suberror:
-            actual_answer = "\n".join(suberror.stdout.decode('utf-8').split("\n")[1:])
+            output = "\n".join(suberror.stdout.decode('utf-8').split("\n")[1:])
 
-        testset.expected_answer = testset.expected_answer.replace("\r\n", "\n")
-        if str(actual_answer) != testset.expected_answer.strip():
+        testcase.expected_answer = testcase.expected_answer.replace("\r\n", "\n")
+        if str(output) != testcase.expected_answer.strip():
             answer.right = -1
-            answer.testcase = testset.test
-            answer.expected_answer = testset.expected_answer
-            answer.wrong_result = actual_answer
+            answer.testcase = testcase.test
+            answer.expected_answer = testcase.expected_answer
+            answer.output = output
             answer.stdout = process.stdout.decode("utf-8")
             return
 
     answer.right = 1
     answer.testcase = ""
     answer.expected_answer = ""
-    answer.wrong_result = ""
+    answer.output = ""
     answer.stdout = ""

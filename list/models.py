@@ -65,7 +65,7 @@ class Quiz(models.Model):
         return visible + "[" + self.category.name + "] " + str(self.id) + ". " + self.question
 
 
-class TestSet(models.Model):
+class Testcase(models.Model):
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
     test = models.TextField(default=None, blank=True, null=True)
     expected_answer = models.TextField(default=None, blank=True, null=True)
@@ -82,7 +82,7 @@ class Answer(models.Model):
     right = models.IntegerField(default=0)
     testcase = models.TextField(default=None, blank=True, null=True)
     stdout = models.TextField(default=None, blank=True, null=True)
-    wrong_result = models.TextField(default=None, blank=True, null=True)
+    output = models.TextField(default=None, blank=True, null=True)
     expected_answer = models.TextField(default=None, blank=True, null=True)
     date = models.DateTimeField(default=now)
 

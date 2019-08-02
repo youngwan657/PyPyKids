@@ -50,8 +50,8 @@
                     {% for quiz in quizs %}
                     {% if quiz.visible %}
                     <li class="completed">
-                        <a href="/{{ quiz.id }}">
-                            <span class="circle">{{ quiz.id }}</span>
+                        <a href="/{{ quiz.order }}">
+                            <span class="circle">{{ quiz.order }}</span>
                             <span class="label step-title waves-effect waves-dark">{{ quiz.question|linebreaksbr }}</span>
                         </a>
 

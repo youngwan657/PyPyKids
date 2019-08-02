@@ -16,11 +16,11 @@ def all_category(request):
     answers = Answer.objects.filter(name=UserName)
     right_quizs = answers.filter(right=1).count()
     wrong_quizs = answers.filter(right=-1).count()
-    quizs = Quiz.objects.order_by('id').filter(visible=True)
+    quizs = Quiz.objects.order_by('order').filter(visible=True)
     unsolved_quizs = quizs
     for answer in answers:
         if answer.right == 1:
-            unsolved_quizs = unsolved_quizs.filter(~Q(id=answer.quiz.id))
+            unsolved_quizs = unsolved_quizs.filter(~Q(order=answer.quiz.order))
 
     # Chart
     now = date.today() + timedelta(days=+1)
@@ -57,7 +57,7 @@ def all_category(request):
             category.total_quiz = quizs.count()
             category.unsolved_quiz = quizs.count()
             for quiz in quizs:
-                if len(answers.filter(quiz__id=quiz.id)) == 1:
+                if len(answers.filter(quiz__order=quiz.order)) == 1:
                     category.unsolved_quiz -= 1
 
         context["level" + str(difficulty.id)] = categories
@@ -87,7 +87,7 @@ def list(request):
     unsolved_quizs = quizs
     for answer in answers:
         if answer.right == 1:
-            unsolved_quizs = unsolved_quizs.filter(~Q(id=answer.quiz.id))
+            unsolved_quizs = unsolved_quizs.filter(~Q(order=answer.quiz.order))
 
     if len(unsolved_quizs) == 0:
         return render(request, 'list/congrats.html')
@@ -104,11 +104,11 @@ def list(request):
 
 
 def category(request, category):
-    quizs = Quiz.objects.filter(category__name=category, visible=True).order_by('id')
+    quizs = Quiz.objects.filter(category__name=category, visible=True).order_by('order')
     answers = Answer.objects.filter(name=UserName)
     right_quizs = 0
     for quiz in quizs:
-        answer = answers.filter(quiz__id=quiz.id)
+        answer = answers.filter(quiz__order=quiz.order)
         quiz.right = 0
         if len(answer) > 0:
             quiz.right = answer[0].right
@@ -132,13 +132,13 @@ def category(request, category):
     return render(request, 'list/category.html', context)
 
 
-def show(request, quiz_id):
-    quiz = get_object_or_404(Quiz, pk=quiz_id)
-    next = Quiz.objects.filter(visible=True).filter(id__gt=quiz_id).first()
+def show(request, quiz_order):
+    quiz = get_object_or_404(Quiz, order=quiz_order)
+    next = Quiz.objects.filter(visible=True).filter(order__gt=quiz_order).first()
 
     right_modal = request.GET.get('right_modal')
     right, user_answer, testcase, output, stdout, expected_answer = 0, "", "", "", "", ""
-    answer = Answer.objects.filter(quiz__id=quiz_id, name=UserName)
+    answer = Answer.objects.filter(quiz__order=quiz_order, name=UserName)
     if len(answer) == 1:
         right = answer[0].right
         user_answer = answer[0].answer
@@ -163,10 +163,10 @@ def show(request, quiz_id):
     return render(request, 'list/show.html', context)
 
 
-def answer(request, quiz_id):
-    quiz = get_object_or_404(Quiz, pk=quiz_id)
-    testcases = Testcase.objects.filter(quiz__id=quiz_id)
-    answer, created = Answer.objects.get_or_create(quiz__id=quiz_id, name=UserName)
+def answer(request, quiz_order):
+    quiz = get_object_or_404(Quiz, order=quiz_order)
+    testcases = Testcase.objects.filter(quiz__order=quiz_order)
+    answer, created = Answer.objects.get_or_create(quiz__order=quiz_order, name=UserName)
     answer.quiz = quiz
     answer.answer = request.POST['answer']
     if answer.right != 1:
@@ -189,12 +189,11 @@ def answer(request, quiz_id):
     if quizs == answers:
         return render(request, 'list/congrats.html')
 
-    return HttpResponseRedirect('/' + str(quiz.id) + "?right_modal=" + str(answer.right))
+    return HttpResponseRedirect('/' + str(quiz.order) + "?right_modal=" + str(answer.right))
 
 
 def checkAnswer(testcases, answer):
-    header = """import sys, ast, os
-"""
+    header = "import sys, ast, os"
 
     footer = """
 def main(argv):

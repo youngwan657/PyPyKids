@@ -60,7 +60,8 @@ class Category(SortableMixin):
 
 
 # TODO:: reorder, admin filter by category
-class Quiz(models.Model):
+class Quiz(SortableMixin):
+    order = models.PositiveIntegerField(default=0, editable=False, db_index=True)
     explanation = RichTextField(default=None, blank=True, null=True)
     video = models.TextField(default=None, blank=True, null=True)
     question = models.TextField(default=None, blank=True, null=True)
@@ -78,11 +79,15 @@ class Quiz(models.Model):
     date = models.DateTimeField(default=now)
     right = 0
 
+    class Meta:
+        ordering = ['order']
+        verbose_name_plural = 'Quizs'
+
     def __str__(self):
         visible = "  "
         if self.visible == False:
             visible = "x "
-        return visible + str(self.category.difficulty.id) + "[" + self.category.name + "] " + str(self.id) + ". " + self.question
+        return visible + str(self.category.difficulty.id) + "[" + self.category.name + "] " + str(self.order) + ". " + self.question
 
 
 class Testcase(models.Model):
@@ -91,7 +96,7 @@ class Testcase(models.Model):
     expected_answer = models.TextField(default=None, blank=True, null=True)
 
     def __str__(self):
-        return str(self.quiz.id) + ". " + self.test
+        return str(self.quiz.order) + ". " + self.test
 
 
 class Answer(models.Model):
@@ -107,4 +112,4 @@ class Answer(models.Model):
     date = models.DateTimeField(default=now)
 
     def __str__(self):
-        return str(self.quiz.id) + ". " + self.name + " " + str(self.date)
+        return str(self.quiz.order) + ". " + self.name + " " + str(self.date)

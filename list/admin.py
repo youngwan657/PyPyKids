@@ -4,7 +4,7 @@ from .models import Quiz, Answer, Testcase, QuizType, Category, Difficulty, User
 
 from adminsortable.admin import SortableAdmin
 
-admin.site.register(Quiz)
+admin.site.register(Quiz, SortableAdmin)
 admin.site.register(Answer)
 admin.site.register(Testcase)
 admin.site.register(QuizType)

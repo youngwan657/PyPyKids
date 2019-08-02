@@ -78,7 +78,7 @@
 
             <hr>
 
-            <h3><b>{{ quiz.id }}. {{ quiz.question|linebreaksbr }}</b></h3>
+            <h3><b>{{ quiz.order }}. {{ quiz.question|linebreaksbr }}</b></h3>
 
             {% if quiz.example %}
             <p class="card-text">
@@ -93,7 +93,7 @@
         <div class="card-header font-weight-bold">Your answer</div>
         <div class="card-body">
             {% if quiz.quiz_type.name == "Code" or quiz.quiz_type.name == "Answer" %}
-            <form action="/answer/{{quiz.id}}/" method="POST" class="post-form">{% csrf_token %}
+            <form action="/answer/{{quiz.order}}/" method="POST" class="post-form">{% csrf_token %}
                 {% if right == 1 %}
                 <div class="alert alert-success" role="alert">
                     <b>Accepted</b>
@@ -138,7 +138,7 @@
                 <button type="submit" class="save btn btn-secondary">Submit</button>
             </form>
             {% elif quiz.quiz_type.name == "MultipleChoice" %}
-            <form action="/answer/{{quiz.id}}/" method="POST" class="post-form">{% csrf_token %}
+            <form action="/answer/{{quiz.order}}/" method="POST" class="post-form">{% csrf_token %}
                 {% if right == 1 %}
                 <div class="alert alert-success" role="alert">
                     <b>Accepted</b>

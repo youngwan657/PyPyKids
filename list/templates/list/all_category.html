@@ -79,14 +79,14 @@
                     <div class="col-md-12">
                         <ul class="stepper stepper-vertical">
                             <li class="completed">
-                                <a href="/{{ today_quiz.id }}" class="blue-text">
+                                <a href="/{{ today_quiz.order }}" class="blue-text">
                                     <h3>
                                         <i class="fas fa-chess"></i>
                                         <strong>Today's Question</strong>
                                     </h3>
                                 </a>
-                                <a href="/{{ today_quiz.id }}">
-                                    <span class="circle">{{ today_quiz.id }}</span>
+                                <a href="/{{ today_quiz.order }}">
+                                    <span class="circle">{{ today_quiz.order }}</span>
                                     <span class="label step-title waves-effect waves-dark">{{ today_quiz.question|linebreaksbr }}</span>
                                 </a>
 

@@ -40,31 +40,65 @@
                     }
                 }
             });
-
         </script>
 
-        <canvas id="myChart2" width="400" height="100"></canvas>
-        <script>
-            var ctx = document.getElementById('myChart2').getContext('2d');
-            var myChart = new Chart(ctx, {
-                type: 'doughnut',
-                data: {
-                    labels: {{ total_labels|safe }},
-                    datasets: [{
-                        label: 'Total',
-                        data: {{ total_counts|safe }},
-                        backgroundColor: [
-                            'rgba(0, 200, 81, 1)',
-                            'rgba(255, 70, 70, 1)',
-                            'rgba(150, 150, 150, 1)',
-                        ],
-                        fill: false,
-                    }]
-                }
-            });
+        <div class="row">
+            <div class="col-lg-4 col-md-12">
+                <canvas id="myChart2" width="400" height="400"></canvas>
+                <script>
+                    var ctx = document.getElementById('myChart2').getContext('2d');
+                    var myChart = new Chart(ctx, {
+                        type: 'doughnut',
+                        data: {
+                            labels: {{ total_labels|safe }},
+                            datasets: [{
+                                label: 'Total',
+                                data: {{ total_counts|safe }},
+                                backgroundColor: [
+                                    'rgba(0, 200, 81, 1)',
+                                    'rgba(255, 70, 70, 1)',
+                                    'rgba(150, 150, 150, 1)',
+                                ],
+                                fill: false,
+                            }]
+                        }
+                    });
 
-        </script>
+
+
+                </script>
+            </div>
+
+            <!-- Today's question -->
+            <div class="col-lg-8 col-md-12">
+                <div class="row mt-1">
+                    <div class="col-md-12">
+                        <ul class="stepper stepper-vertical">
+                            <li class="completed">
+                                <a href="/{{ today_quiz.id }}" class="blue-text">
+                                    <h3>
+                                        <i class="fas fa-chess"></i>
+                                        <strong>Today's Question</strong>
+                                    </h3>
+                                </a>
+                                <a href="/{{ today_quiz.id }}">
+                                    <span class="circle">{{ today_quiz.id }}</span>
+                                    <span class="label step-title waves-effect waves-dark">{{ today_quiz.question|linebreaksbr }}</span>
+                                </a>
+
+                                <div class="step-content lighten-3">
+                                    {% if today_quiz.example %}
+                                    <pre><code>{{ today_quiz.example }}</code></pre>
+                                    {% endif %}
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+
 
     <div class="container">
         <hr/>
@@ -103,7 +137,7 @@
                             <p class="dark-grey-text">
                                 <strong>{{ category.name }}</strong>
                                 {% if category.total_quiz == 0 %}
-                                <span class="badge badge-pill badge-secondary ml-2">Coming Soon !!</span>
+                                <span class="badge badge-pill badge-secondary ml-2">Coming</span>
                                 {% elif category.unsolved_quiz == 0 %}
                                 <span class="badge badge-pill badge-success ml-2"><span
                                         class="oi oi-check"></span></span>
@@ -157,7 +191,7 @@
                             <p class="dark-grey-text">
                                 <strong>{{ category.name }}</strong>
                                 {% if category.total_quiz == 0 %}
-                                <span class="badge badge-pill badge-secondary ml-2">Coming Soon !!</span>
+                                <span class="badge badge-pill badge-secondary ml-2">Coming</span>
                                 {% elif category.unsolved_quiz == 0 %}
                                 <span class="badge badge-pill badge-success ml-2"><span
                                         class="oi oi-check"></span></span>
@@ -219,7 +253,7 @@
                             <p class="dark-grey-text">
                                 <strong>{{ category.name }}</strong>
                                 {% if category.total_quiz == 0 %}
-                                <span class="badge badge-pill badge-secondary ml-2">Coming Soon !!</span>
+                                <span class="badge badge-pill badge-secondary ml-2">Coming</span>
                                 {% elif category.unsolved_quiz == 0 %}
                                 <span class="badge badge-pill badge-success ml-2"><span
                                         class="oi oi-check"></span></span>
@@ -273,7 +307,7 @@
                             <p class="dark-grey-text">
                                 <strong>{{ category.name }}</strong>
                                 {% if category.total_quiz == 0 %}
-                                <span class="badge badge-pill badge-secondary ml-2">Coming Soon !!</span>
+                                <span class="badge badge-pill badge-secondary ml-2">Coming<span>
                                 {% elif category.unsolved_quiz == 0 %}
                                 <span class="badge badge-pill badge-success ml-2"><span
                                         class="oi oi-check"></span></span>

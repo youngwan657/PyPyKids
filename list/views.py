@@ -16,7 +16,7 @@ def all_category(request):
     answers = Answer.objects.filter(name=UserName)
     right_quizs = answers.filter(right=1).count()
     wrong_quizs = answers.filter(right=-1).count()
-    quizs = Quiz.objects.order_by('id').filter(visible=1)
+    quizs = Quiz.objects.order_by('id').filter(visible=True)
     unsolved_quizs = quizs
     for answer in answers:
         if answer.right == 1:
@@ -44,6 +44,9 @@ def all_category(request):
 
     # Badge
     context['badges'] = Badge.objects.filter(user__name=UserName)
+
+    # Today's Question
+    context['today_quiz'] = unsolved_quizs.order_by('?').first()
 
     for difficulty in difficulties:
         categories = Category.objects.order_by('order').filter(difficulty=difficulty.id)

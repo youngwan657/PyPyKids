@@ -18,6 +18,22 @@ class Difficulty(models.Model):
     def __str__(self):
         return str(self.name)
 
+class Badge(models.Model):
+    name = models.CharField(max_length=20)
+    condition = models.CharField(max_length=20)
+    value = models.IntegerField(default=0)
+    html = models.TextField(default=None, blank=True, null=True)
+
+    def __str__(self):
+        return "[" + str(self.name) + "] " + self.condition + str(self.value)
+
+class User(models.Model):
+    name = models.CharField(max_length=30)
+    badges = models.ManyToManyField(Badge)
+
+    def __str__(self):
+        return str(self.name)
+
 
 class Category(SortableMixin):
     difficulty = models.ForeignKey(Difficulty, on_delete=models.CASCADE, default=None, blank=True, null=True)
@@ -39,7 +55,7 @@ class Category(SortableMixin):
         return self.difficulty.name + "-" + str(self.order) + ". " + str(self.name)
 
 
-# TODO:: reorder, admin filter
+# TODO:: reorder, admin filter by category
 class Quiz(models.Model):
     explanation = RichTextField(default=None, blank=True, null=True)
     video = models.TextField(default=None, blank=True, null=True)
@@ -62,7 +78,7 @@ class Quiz(models.Model):
         visible = "  "
         if self.visible == False:
             visible = "x "
-        return visible + "[" + self.category.name + "] " + str(self.id) + ". " + self.question
+        return visible + str(self.category.difficulty.id) + "[" + self.category.name + "] " + str(self.id) + ". " + self.question
 
 
 class Testcase(models.Model):

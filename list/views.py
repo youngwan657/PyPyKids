@@ -6,14 +6,14 @@ import os
 
 from django.db.models import Q
 
-from .models import Quiz, Answer, Testcase, Category, Difficulty
+from .models import Quiz, Answer, Testcase, Category, Difficulty, User, Badge
 
-User = "Dayeon"
+UserName = "Dayeon"
 
 
 def all_category(request):
     difficulties = Difficulty.objects.order_by('id')
-    answers = Answer.objects.filter(name=User)
+    answers = Answer.objects.filter(name=UserName)
     right_quizs = answers.filter(right=1).count()
     wrong_quizs = answers.filter(right=-1).count()
     quizs = Quiz.objects.order_by('id').filter(visible=1)
@@ -42,10 +42,13 @@ def all_category(request):
     context['total_labels'] = ["Right", "Wrong", "Not Try"]
     context['total_counts'] = [right_quizs, wrong_quizs, quizs.count() - right_quizs - wrong_quizs]
 
+    # Badge
+    context['badges'] = Badge.objects.filter(user__name=UserName)
+
     for difficulty in difficulties:
         categories = Category.objects.order_by('order').filter(difficulty=difficulty.id)
         all_quizs = Quiz.objects;
-        answers = Answer.objects.filter(name=User, right=1)
+        answers = Answer.objects.filter(name=UserName, right=1)
         for category in categories:
             quizs = all_quizs.filter(category__name=category.name, visible=True)
             category.total_quiz = quizs.count()
@@ -59,13 +62,18 @@ def all_category(request):
     return render(request, 'list/all_category.html', context)
 
 
+# TODO:: category master, how many quiz are solved
 def badge(request):
-    return render(request, 'list/badge.html')
+    context = {
+        'badges': Badge.objects.all(),
+    }
+    return render(request, 'list/badge.html', context)
+
 
 # TODO:: delete
 def list(request):
     quizs = Quiz.objects.order_by('id').filter(visible=1)
-    answers = Answer.objects.filter(name=User)
+    answers = Answer.objects.filter(name=UserName)
     right_quizs = answers.filter(right=1).count()
     wrong_quizs = answers.filter(right=-1).count()
 
@@ -90,7 +98,7 @@ def list(request):
 
 def category(request, category):
     quizs = Quiz.objects.filter(category__name=category, visible=True).order_by('id')
-    answers = Answer.objects.filter(name=User)
+    answers = Answer.objects.filter(name=UserName)
     right_quizs = 0
     for quiz in quizs:
         answer = answers.filter(quiz__id=quiz.id)
@@ -123,7 +131,7 @@ def show(request, quiz_id):
 
     right_modal = request.GET.get('right_modal')
     right, user_answer, testcase, output, stdout, expected_answer = 0, "", "", "", "", ""
-    answer = Answer.objects.filter(quiz__id=quiz_id, name=User)
+    answer = Answer.objects.filter(quiz__id=quiz_id, name=UserName)
     if len(answer) == 1:
         right = answer[0].right
         user_answer = answer[0].answer
@@ -151,7 +159,7 @@ def show(request, quiz_id):
 def answer(request, quiz_id):
     quiz = get_object_or_404(Quiz, pk=quiz_id)
     testcases = Testcase.objects.filter(quiz__id=quiz_id)
-    answer, created = Answer.objects.get_or_create(quiz__id=quiz_id, name=User)
+    answer, created = Answer.objects.get_or_create(quiz__id=quiz_id, name=UserName)
     answer.quiz = quiz
     answer.answer = request.POST['answer']
     if answer.right != 1:
@@ -170,7 +178,7 @@ def answer(request, quiz_id):
     answer.save()
 
     quizs = Quiz.objects.order_by('id').filter(visible=1).count()
-    answers = Answer.objects.filter(name=User, right=1).count()
+    answers = Answer.objects.filter(name=UserName, right=1).count()
     if quizs == answers:
         return render(request, 'list/congrats.html')
 
@@ -212,9 +220,11 @@ if __name__ == "__main__":
 
     for testcase in testcases:
         output = "None"
+        stdout = ""
         try:
             process = subprocess.run(['python', 'checking.py'] + testcase.test.split("\n"), stdout=subprocess.PIPE,
-                           stderr=subprocess.STDOUT, shell=False, check=True)
+                                     stderr=subprocess.STDOUT, shell=False, check=True)
+            stdout = process.stdout.decode("utf-8")
             if os.path.exists("checking_answer"):
                 f = open("checking_answer", "r")
                 output = f.read().strip()
@@ -228,7 +238,7 @@ if __name__ == "__main__":
             answer.testcase = testcase.test
             answer.expected_answer = testcase.expected_answer
             answer.output = output
-            answer.stdout = process.stdout.decode("utf-8")
+            answer.stdout = stdout
             return
 
     answer.right = 1

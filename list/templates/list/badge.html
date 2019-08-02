@@ -1,4 +1,5 @@
 {% extends 'list/base.html' %}
+{% load static %}
 
 {% block content %}
 
@@ -7,33 +8,10 @@
     <!-- Badge -->
     <div class="container">
         <hr/>
-        <h3 class="h3 text-center mb-5">Login</h3>
-        <button class="btn btn-primary"><i class="fas fa-running"></i></button>
-        <button class="btn btn-secondary"><i class="fas fa-running"></i><i class="fas fa-running"></i></button>
-        <button class="btn btn-success"><i class="fas fa-running"></i><i class="fas fa-running"></i><i class="fas fa-running"></i></button>
-        <button class="btn btn-danger"><i class="fas fa-running"></i><i class="fas fa-running"></i><i class="fas fa-running"></i><i class="fas fa-running"></i></button>
-        <button class="btn btn-warning"><i class="fas fa-running"></i><i class="fas fa-running"></i><i class="fas fa-running"></i><i class="fas fa-running"></i><i class="fas fa-running"></i></button>
-        <button class="btn btn-info"><i class="fas fa-running"></i><i class="fas fa-running"></i><i class="fas fa-running"></i><i class="fas fa-running"></i><i class="fas fa-running"></i><i class="fas fa-running"></i></button>
-        <button class="btn peach-gradient"><i class="fas fa-running"></i><i class="fas fa-running"></i><i class="fas fa-running"></i><i class="fas fa-running"></i><i class="fas fa-running"></i><i class="fas fa-running"></i><i class="fas fa-running"></i></button>
-        <button class="btn purple-gradient"><i class="fas fa-running"></i><i class="fas fa-running"></i><i class="fas fa-running"></i><i class="fas fa-running"></i><i class="fas fa-running"></i><i class="fas fa-running"></i><i class="fas fa-running"></i><i class="fas fa-running"></i></button>
-        <button class="btn blue-gradient"><i class="fas fa-running"></i><i class="fas fa-running"></i><i class="fas fa-running"></i><i class="fas fa-running"></i><i class="fas fa-running"></i><i class="fas fa-running"></i><i class="fas fa-running"></i><i class="fas fa-running"></i><i class="fas fa-running"></i></button>
-        <button class="btn aqua-gradient"><i class="fas fa-running fa-3x"></i></button>
-
+        {% for badge in badges %}
+        {{ badge.html|safe }}
+        {% endfor %}
         <hr/>
-        <h3 class="h3 text-center mb-5">Quiz per day</h3>
-        <button class="btn btn-unique"><i class="fas fa-crown"></i></button>
-        <button class="btn btn-pink"><i class="fas fa-crown"></i><i class="fas fa-crown"></i></button>
-        <button class="btn btn-purple"><i class="fas fa-crown"></i><i class="fas fa-crown"></i><i class="fas fa-crown"></i></button>
-        <button class="btn btn-deep-purple"><i class="fas fa-crown"></i><i class="fas fa-crown"></i><i class="fas fa-crown"></i><i class="fas fa-crown"></i></button>
-        <button class="btn btn-indigo"><i class="fas fa-crown"></i><i class="fas fa-crown"></i><i class="fas fa-crown"></i><i class="fas fa-crown"></i><i class="fas fa-crown"></i></button>
-        <button class="btn btn-light-blue"><i class="fas fa-crown"></i><i class="fas fa-crown"></i><i class="fas fa-crown"></i><i class="fas fa-crown"></i><i class="fas fa-crown"></i><i class="fas fa-crown"></i></button>
-        <button class="btn btn-cyan"><i class="fas fa-crown"></i><i class="fas fa-crown"></i><i class="fas fa-crown"></i><i class="fas fa-crown"></i><i class="fas fa-crown"></i><i class="fas fa-crown"></i><i class="fas fa-crown"></i></button>
-        <button class="btn btn-dark-green"><i class="fas fa-crown"></i><i class="fas fa-crown"></i><i class="fas fa-crown"></i><i class="fas fa-crown"></i><i class="fas fa-crown"></i><i class="fas fa-crown"></i><i class="fas fa-crown"></i><i class="fas fa-crown"></i></button>
-        <button class="btn peach-gradient"><i class="fas fa-crown"></i><i class="fas fa-crown"></i><i class="fas fa-crown"></i><i class="fas fa-crown"></i><i class="fas fa-crown"></i><i class="fas fa-crown"></i><i class="fas fa-crown"></i><i class="fas fa-crown"></i><i class="fas fa-crown"></i></button>
-        <button class="btn purple-gradient"><i class="fas fa-crown fa-3x"></i></button>
-        <hr/>
-
-        <h3 class="h3 text-center mb-5">...</h3>
     </div>
 
 </main>

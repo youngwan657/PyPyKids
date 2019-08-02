@@ -41,6 +41,7 @@ class Category(SortableMixin):
     name = models.CharField(max_length=20)
     image = models.CharField(max_length=200, default=None, blank=True, null=True)
     desc = models.TextField(default=None, blank=True, null=True)
+    visible = models.BooleanField(default=False)
     total_quiz = 0
     unsolved_quiz = 0
 
@@ -52,7 +53,10 @@ class Category(SortableMixin):
         if self.difficulty == None:
             return str(self.name)
 
-        return self.difficulty.name + "-" + str(self.order) + ". " + str(self.name)
+        visible = "  "
+        if self.visible == False:
+            visible = "x "
+        return visible + self.difficulty.name + "-" + str(self.order) + ". " + str(self.name)
 
 
 # TODO:: reorder, admin filter by category

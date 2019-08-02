@@ -49,7 +49,7 @@ def all_category(request):
     context['today_quiz'] = unsolved_quizs.order_by('?').first()
 
     for difficulty in difficulties:
-        categories = Category.objects.order_by('order').filter(difficulty=difficulty.id)
+        categories = Category.objects.order_by('order').filter(difficulty=difficulty.id, visible=True)
         all_quizs = Quiz.objects;
         answers = Answer.objects.filter(name=UserName, right=1)
         for category in categories:
@@ -71,6 +71,7 @@ def badge(request):
         'badges': Badge.objects.all(),
     }
     return render(request, 'list/badge.html', context)
+
 
 def check_badge(request):
     return

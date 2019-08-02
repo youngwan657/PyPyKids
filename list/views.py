@@ -72,6 +72,9 @@ def badge(request):
     }
     return render(request, 'list/badge.html', context)
 
+def check_badge(request):
+    return
+
 
 # TODO:: delete
 def list(request):

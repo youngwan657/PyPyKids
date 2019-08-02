@@ -219,7 +219,7 @@
                 <h5 class="modal-title text-success" id="modalLabel1"><b>Accepted</b></h5>
             </div>
             <div class="modal-body">
-                <img src="{% static 'list/congratulations.jpg' %}" id="animated-img1">
+                <img src="{% static 'list/congratulations.jpg' %}" id="animated-accepted">
             </div>
         </div>
     </div>
@@ -237,10 +237,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                Can you try again?
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-dismiss="modal">Again</button>
+                <img src="{% static 'list/wrong.png' %}" id="animated-wrong">
             </div>
         </div>
     </div>
@@ -250,11 +247,13 @@
 <script>
     // modal animation
     {% if right_modal == "1" %}
-        $('#animated-img1').addClass('animated zoomIn');
+        $('#animated-accepted').addClass('animated zoomIn');
         $('#successModal').modal('show');
-        setTimeout(function() { $('#successModal').modal('hide'); document.location.href = "http://dayeon.com/{{ next.id }}"}, 2000);
+        setTimeout(function() { $('#successModal').modal('hide');}, 2000);
     {% elif right_modal == "-1" %}
-        $('#wrongModal').modal('show')
+        $('#animated-wrong').addClass('animated zoomIn');
+        $('#wrongModal').modal('show');
+        setTimeout(function() { $('#wrongModal').modal('hide');}, 2000);
     {% endif %}
 
 

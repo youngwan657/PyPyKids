@@ -244,6 +244,29 @@
 </div>
 
 
+<!-- Frame Modal Bottom -->
+<div class="modal fade top" id="badgeModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel3"
+     aria-hidden="true">
+
+    <div class="modal-dialog modal-frame modal-top" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title w-100" id="myModalLabel">{{ new_badge.name }}</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row d-flex justify-content-center align-items-center">
+                    {{ new_badge.html|safe }} {{ new_badge.desc }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Frame Modal Bottom -->
+
+
 <script>
     // modal animation
     {% if right_modal == "1" %}
@@ -254,6 +277,10 @@
         $('#animated-wrong').addClass('animated zoomIn');
         $('#wrongModal').modal('show');
         setTimeout(function() { $('#wrongModal').modal('hide');}, 2000);
+    {% endif %}
+
+    {% if new_badge != None %}
+        $('#badgeModal').modal('show');
     {% endif %}
 
 
@@ -311,6 +338,7 @@
             return false;
         }
     }
+
 
 
 </script>

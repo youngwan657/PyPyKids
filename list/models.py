@@ -14,18 +14,26 @@ class QuizType(models.Model):
 
 class Difficulty(models.Model):
     name = models.CharField(max_length=20)
+    desc = models.TextField(default=None, blank=True, null=True)
+
+    def __str__(self):
+        return str(self.name)
+
+class BadgeType(models.Model):
+    name = models.CharField(max_length=30)
 
     def __str__(self):
         return str(self.name)
 
 class Badge(models.Model):
     name = models.CharField(max_length=20)
-    condition = models.CharField(max_length=20)
+    type = models.ForeignKey(BadgeType, on_delete=models.CASCADE, default=None, blank=True, null=True)
     value = models.IntegerField(default=0)
     html = models.TextField(default=None, blank=True, null=True)
+    desc = models.TextField(default=None, blank=True, null=True)
 
     def __str__(self):
-        return "[" + str(self.name) + "] " + self.condition + str(self.value)
+        return str(self.name)
 
 class User(models.Model):
     name = models.CharField(max_length=30)
@@ -59,7 +67,7 @@ class Category(SortableMixin):
         return visible + self.difficulty.name + "-" + str(self.order) + ". " + str(self.name)
 
 
-# TODO:: reorder, admin filter by category
+# TODO:: admin filter by category
 class Quiz(SortableMixin):
     order = models.PositiveIntegerField(default=0, editable=False, db_index=True)
     explanation = RichTextField(default=None, blank=True, null=True)

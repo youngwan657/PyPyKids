@@ -73,8 +73,25 @@ def badge(request):
     return render(request, 'list/badge.html', context)
 
 
-def check_badge(request):
-    return
+def add_badge():
+    user = User.objects.get(name=UserName)
+    untaken_badges = Badge.objects.filter(~Q(user__name=UserName))
+
+    # total quiz
+    right_answer_count = Answer.objects.filter(name=UserName, right=1).count()
+
+    for badge in untaken_badges:
+        print(badge.type.name, badge.value, right_answer_count)
+        if badge.type.name == "TotalQuiz" and badge.value <= right_answer_count:
+            user.badges.add(badge)
+            user.save()
+            return badge
+
+    # day steak
+
+    # quiz per day
+
+    return None
 
 
 # TODO:: delete
@@ -136,6 +153,7 @@ def show(request, quiz_order):
     quiz = get_object_or_404(Quiz, order=quiz_order)
     next = Quiz.objects.filter(visible=True).filter(order__gt=quiz_order).first()
 
+    # TODO: use get instead of filter
     right_modal = request.GET.get('right_modal')
     right, user_answer, testcase, output, stdout, expected_answer = 0, "", "", "", "", ""
     answer = Answer.objects.filter(quiz__order=quiz_order, name=UserName)
@@ -149,7 +167,10 @@ def show(request, quiz_order):
     else:
         user_answer = quiz.answer_header
 
+    new_badge = add_badge()
+
     context = {
+        'new_badge': new_badge,
         'quiz': quiz,
         'user_answer': user_answer,
         'right': right,  # accepted(1) or wrong(-1)
@@ -163,6 +184,7 @@ def show(request, quiz_order):
     return render(request, 'list/show.html', context)
 
 
+# TODO:: dynamic function name depending on quiz.
 def answer(request, quiz_order):
     quiz = get_object_or_404(Quiz, order=quiz_order)
     testcases = Testcase.objects.filter(quiz__order=quiz_order)
@@ -171,8 +193,9 @@ def answer(request, quiz_order):
     answer.answer = request.POST['answer']
     if answer.right != 1:
         answer.date = datetime.now()
+
     if quiz.quiz_type.name == "Code":
-        checkAnswer(testcases, answer)
+        check_answer(testcases, answer)
     elif quiz.quiz_type.name == "Answer" or quiz.quiz_type.name == "MultipleChoice":
         # answer
         if answer.answer.replace(" ", "").strip() == testcases[0].expected_answer:
@@ -192,8 +215,8 @@ def answer(request, quiz_order):
     return HttpResponseRedirect('/' + str(quiz.order) + "?right_modal=" + str(answer.right))
 
 
-def checkAnswer(testcases, answer):
-    header = "import sys, ast, os"
+def check_answer(testcases, answer):
+    header = "import sys, ast, os\n"
 
     footer = """
 def main(argv):

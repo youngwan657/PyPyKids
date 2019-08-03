@@ -8,12 +8,12 @@ from django.db.models import Q
 
 from .models import Quiz, Answer, Testcase, Category, Difficulty, User, Badge
 
-UserName = "Dayeon"
-
+USERNAME = "Dayeon"
+MONTH = 31
 
 def all_category(request):
     difficulties = Difficulty.objects.order_by('id')
-    answers = Answer.objects.filter(name=UserName)
+    answers = Answer.objects.filter(name=USERNAME)
     right_quizs = answers.filter(right=1).count()
     wrong_quizs = answers.filter(right=-1).count()
     quizs = Quiz.objects.order_by('order').filter(visible=True)
@@ -25,7 +25,7 @@ def all_category(request):
     # Chart
     now = date.today() + timedelta(days=+1)
     labels, counts = [], []
-    for i in range(0, 31):
+    for i in range(0, MONTH):
         now += timedelta(days=-1)
         if now.strftime("%d") == "01" or i == 30:
             labels.insert(0, now.strftime("%b %d"))
@@ -43,7 +43,7 @@ def all_category(request):
     context['total_counts'] = [right_quizs, wrong_quizs, quizs.count() - right_quizs - wrong_quizs]
 
     # Badge
-    context['badges'] = Badge.objects.filter(user__name=UserName)
+    context['badges'] = Badge.objects.filter(user__name=USERNAME)
 
     # Today's Question
     context['today_quiz'] = unsolved_quizs.order_by('?').first()
@@ -51,7 +51,7 @@ def all_category(request):
     for difficulty in difficulties:
         categories = Category.objects.order_by('order').filter(difficulty=difficulty.id, visible=True)
         all_quizs = Quiz.objects;
-        answers = Answer.objects.filter(name=UserName, right=1)
+        answers = Answer.objects.filter(name=USERNAME, right=1)
         for category in categories:
             quizs = all_quizs.filter(category__name=category.name, visible=True)
             category.total_quiz = quizs.count()
@@ -73,23 +73,44 @@ def badge(request):
     return render(request, 'list/badge.html', context)
 
 
+#TODO:: move to check when solving quiz.
 def add_badge():
-    user = User.objects.get(name=UserName)
-    untaken_badges = Badge.objects.filter(~Q(user__name=UserName))
+    user = User.objects.get(name=USERNAME)
+    answers = Answer.objects.filter(name=USERNAME, right=1)
+    untaken_badges = Badge.objects.filter(~Q(user__name=USERNAME))
 
-    # total quiz
-    right_answer_count = Answer.objects.filter(name=UserName, right=1).count()
+    # day streak
+    now = date.today() + timedelta(days=+1)
+    labels, counts = [], []
+    day_streak = 0
+    for i in range(0, MONTH):
+        now += timedelta(days=-1)
+        if answers.filter(date__date=now, right=1).count() == 0:
+            day_streak = i
+            break
 
     for badge in untaken_badges:
-        print(badge.type.name, badge.value, right_answer_count)
-        if badge.type.name == "TotalQuiz" and badge.value <= right_answer_count:
+        if badge.type.name == "DayStreak" and badge.value <= day_streak:
             user.badges.add(badge)
             user.save()
             return badge
 
-    # day steak
-
     # quiz per day
+    quiz_per_day = answers.filter(date__date=datetime.now()).count()
+    for badge in untaken_badges:
+        if badge.type.name == "QuizPerDay" and badge.value <= quiz_per_day:
+            user.badges.add(badge)
+            user.save()
+            return badge
+
+    # total quiz
+    total_quiz = answers.count()
+
+    for badge in untaken_badges:
+        if badge.type.name == "TotalQuiz" and badge.value <= total_quiz:
+            user.badges.add(badge)
+            user.save()
+            return badge
 
     return None
 
@@ -97,7 +118,7 @@ def add_badge():
 # TODO:: delete
 def list(request):
     quizs = Quiz.objects.order_by('id').filter(visible=1)
-    answers = Answer.objects.filter(name=UserName)
+    answers = Answer.objects.filter(name=USERNAME)
     right_quizs = answers.filter(right=1).count()
     wrong_quizs = answers.filter(right=-1).count()
 
@@ -122,7 +143,7 @@ def list(request):
 
 def category(request, category):
     quizs = Quiz.objects.filter(category__name=category, visible=True).order_by('order')
-    answers = Answer.objects.filter(name=UserName)
+    answers = Answer.objects.filter(name=USERNAME)
     right_quizs = 0
     for quiz in quizs:
         answer = answers.filter(quiz__order=quiz.order)
@@ -156,7 +177,7 @@ def show(request, quiz_order):
     # TODO: use get instead of filter
     right_modal = request.GET.get('right_modal')
     right, user_answer, testcase, output, stdout, expected_answer = 0, "", "", "", "", ""
-    answer = Answer.objects.filter(quiz__order=quiz_order, name=UserName)
+    answer = Answer.objects.filter(quiz__order=quiz_order, name=USERNAME)
     if len(answer) == 1:
         right = answer[0].right
         user_answer = answer[0].answer
@@ -188,7 +209,7 @@ def show(request, quiz_order):
 def answer(request, quiz_order):
     quiz = get_object_or_404(Quiz, order=quiz_order)
     testcases = Testcase.objects.filter(quiz__order=quiz_order)
-    answer, created = Answer.objects.get_or_create(quiz__order=quiz_order, name=UserName)
+    answer, created = Answer.objects.get_or_create(quiz__order=quiz_order, name=USERNAME)
     answer.quiz = quiz
     answer.answer = request.POST['answer']
     if answer.right != 1:
@@ -208,7 +229,7 @@ def answer(request, quiz_order):
     answer.save()
 
     quizs = Quiz.objects.order_by('id').filter(visible=1).count()
-    answers = Answer.objects.filter(name=UserName, right=1).count()
+    answers = Answer.objects.filter(name=USERNAME, right=1).count()
     if quizs == answers:
         return render(request, 'list/congrats.html')
 

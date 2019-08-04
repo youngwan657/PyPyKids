@@ -65,11 +65,6 @@
                             }]
                         }
                     });
-
-
-
-
-
                 </script>
             </div>
 
@@ -153,9 +148,9 @@
                                 <span class="badge badge-pill badge-secondary ml-2">{{ category.unsolved_quiz }}</span>
                                 {% endif %}
                             </p>
+                            <a href="/category/{{ category.name }}" class="pink-text">
                             {{ category.desc }}
                             {% if category.total_quiz > 0 %}
-                            <a href="/category/{{ category.name }}">
                                 <i class="fas fa-angle-right float-right"></i>
                             </a>
                             {% endif %}
@@ -211,9 +206,9 @@
                                 <span class="badge badge-pill badge-secondary ml-2">{{ category.unsolved_quiz }}</span>
                                 {% endif %}
                             </p>
+                            <a href="/category/{{ category.name }}" class="brown-text">
                             {{ category.desc }}
                             {% if category.total_quiz > 0 %}
-                            <a href="/category/{{ category.name }}">
                                 <i class="fas fa-angle-right float-right"></i>
                             </a>
                             {% endif %}
@@ -277,9 +272,9 @@
                                 <span class="badge badge-pill badge-secondary ml-2">{{ category.unsolved_quiz }}</span>
                                 {% endif %}
                             </p>
+                            <a href="/category/{{ category.name }}" class="orange-text">
                             {{ category.desc }}
                             {% if category.total_quiz > 0 %}
-                            <a href="/category/{{ category.name }}">
                                 <i class="fas fa-angle-right float-right"></i>
                             </a>
                             {% endif %}
@@ -336,9 +331,9 @@
                                 <span class="badge badge-pill badge-secondary ml-2">{{ category.unsolved_quiz }}</span>
                                 {% endif %}
                             </p>
+                            <a href="/category/{{ category.name }}" class="light-blue-text">
                             {{ category.desc }}
                             {% if category.total_quiz > 0 %}
-                            <a href="/category/{{ category.name }}">
                                 <i class="fas fa-angle-right float-right"></i>
                             </a>
                             {% endif %}
@@ -349,6 +344,7 @@
                     {% endfor %}
                 </div>
 
+                <hr/>
 
                 <!-- Level 5 -->
                 <div class="col-lg-6 col-md-12">
@@ -395,9 +391,9 @@
                                 <span class="badge badge-pill badge-secondary ml-2">{{ category.unsolved_quiz }}</span>
                                 {% endif %}
                             </p>
+                            <a href="/category/{{ category.name }}" class="purple-text">
                             {{ category.desc }}
                             {% if category.total_quiz > 0 %}
-                            <a href="/category/{{ category.name }}">
                                 <i class="fas fa-angle-right float-right"></i>
                             </a>
                             {% endif %}

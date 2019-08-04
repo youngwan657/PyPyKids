@@ -25,12 +25,17 @@ class BadgeType(models.Model):
     def __str__(self):
         return str(self.name)
 
-class Badge(models.Model):
+class Badge(SortableMixin):
+    order = models.PositiveIntegerField(default=0, editable=False, db_index=True)
     name = models.CharField(max_length=20)
     type = models.ForeignKey(BadgeType, on_delete=models.CASCADE, default=None, blank=True, null=True)
     value = models.IntegerField(default=0)
     html = models.TextField(default=None, blank=True, null=True)
     desc = models.TextField(default=None, blank=True, null=True)
+
+    class Meta:
+        ordering = ['order']
+        verbose_name_plural = 'Badges'
 
     def __str__(self):
         return str(self.name)
@@ -120,4 +125,7 @@ class Answer(models.Model):
     date = models.DateTimeField(default=now)
 
     def __str__(self):
+        if self.quiz == None:
+            return self.name + " " + str(self.date)
+
         return str(self.quiz.order) + ". " + self.name + " " + str(self.date)

@@ -65,7 +65,7 @@ def all_category(request):
     return render(request, 'list/all_category.html', context)
 
 
-# TODO:: category master, how many quiz are solved
+# TODO:: category master
 def badge(request):
     context = {
         'badges': Badge.objects.all(),

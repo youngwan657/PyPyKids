@@ -13,44 +13,14 @@
     </div>
 
     <div class="container">
-        <canvas id="myChart" width="400" height="100"></canvas>
-        <script>
-            var ctx = document.getElementById('myChart').getContext('2d');
-            var myChart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: {{ labels|safe }},
-                    datasets: [{
-                        label: '# of Solved Quiz',
-                        data: {{ counts|safe }},
-                        borderColor: [
-                            'rgba(255, 99, 132, 1)',
-                        ],
-                        fill: false,
-                    }]
-                },
-                options: {
-                    scales: {
-                        yAxes: [{
-                            ticks: {
-                                beginAtZero: true,
-                                precision: 0
-                            }
-                        }]
-                    }
-                }
-            });
-
-
-        </script>
-
         <div class="row">
-            <div class="col-lg-4 col-md-12">
-                <canvas id="myChart2" width="400" height="400"></canvas>
+            <div class="col-lg-4 col-md-4">
+                <!-- Circle Chart -->
+                <canvas id="myChart2" height="280"></canvas>
                 <script>
                     var ctx = document.getElementById('myChart2').getContext('2d');
                     var myChart = new Chart(ctx, {
-                        type: 'doughnut',
+                        type: 'pie',
                         data: {
                             labels: {{ total_labels|safe }},
                             datasets: [{
@@ -63,38 +33,83 @@
                                 ],
                                 fill: false,
                             }]
+                        },
+                        options: {
+                            responsive: true
                         }
                     });
+
+
+
                 </script>
             </div>
 
-            <!-- Today's question -->
-            <div class="col-lg-8 col-md-12">
-                <div class="row mt-1">
-                    <div class="col-md-12">
-                        <ul class="stepper stepper-vertical">
-                            <li class="completed">
-                                <a href="/{{ today_quiz.order }}" class="blue-text">
-                                    <h3>
-                                        <i class="fas fa-chess"></i>
-                                        <strong>Today's Question</strong>
-                                    </h3>
-                                </a>
-                                <a href="/{{ today_quiz.order }}">
-                                    <span class="circle">{{ today_quiz.order }}</span>
-                                    <span class="label step-title waves-effect waves-dark">{{ today_quiz.question|linebreaksbr }}</span>
-                                </a>
+            <div class="col-lg-8 col-md-8">
+                <!-- Line Chart -->
+                <canvas id="myChart"></canvas>
+                <script>
+                    var ctx = document.getElementById('myChart').getContext('2d');
+                    var myChart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: {{ labels|safe }},
+                            datasets: [{
+                                label: 'Solved Quiz',
+                                data: {{ counts|safe }},
+                            backgroundColor: [
+                              'rgba(105, 0, 132, .2)',
+                            ],
+                            borderColor: [
+                              'rgba(200, 99, 132, .7)',
+                            ],
+                            borderWidth: 2
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero: true,
+                                        precision: 0
+                                    }
+                                }]
+                            }
+                        },
+                        options: {
+                            responsive: true
+                        }
+                    });
 
-                                <div class="step-content lighten-3">
-                                    {% if today_quiz.example %}
-                                    <pre><code>{{ today_quiz.example }}</code></pre>
-                                    {% endif %}
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+
+
+                </script>
             </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <!-- Today's question -->
+            <ul class="stepper stepper-vertical">
+                <li class="completed">
+                    <a href="/{{ today_quiz.order }}" class="blue-text">
+                        <h5>
+                            <i class="fas fa-chess"></i>
+                            <strong>Today's Question</strong>
+                        </h5>
+                    </a>
+                    <a href="/{{ today_quiz.order }}">
+                        <span class="circle">{{ today_quiz.order }}</span>
+                        <span class="label step-title waves-effect waves-dark">{{ today_quiz.question|linebreaksbr }}</span>
+                    </a>
+
+                    <div class="step-content lighten-3">
+                        {% if today_quiz.example %}
+                        <pre><code>{{ today_quiz.example }}</code></pre>
+                        {% endif %}
+                    </div>
+                </li>
+            </ul>
         </div>
     </div>
 
@@ -149,8 +164,8 @@
                                 {% endif %}
                             </p>
                             <a href="/category/{{ category.name }}" class="pink-text">
-                            {{ category.desc }}
-                            {% if category.total_quiz > 0 %}
+                                {{ category.desc }}
+                                {% if category.total_quiz > 0 %}
                                 <i class="fas fa-angle-right float-right"></i>
                             </a>
                             {% endif %}
@@ -207,8 +222,8 @@
                                 {% endif %}
                             </p>
                             <a href="/category/{{ category.name }}" class="brown-text">
-                            {{ category.desc }}
-                            {% if category.total_quiz > 0 %}
+                                {{ category.desc }}
+                                {% if category.total_quiz > 0 %}
                                 <i class="fas fa-angle-right float-right"></i>
                             </a>
                             {% endif %}
@@ -273,8 +288,8 @@
                                 {% endif %}
                             </p>
                             <a href="/category/{{ category.name }}" class="orange-text">
-                            {{ category.desc }}
-                            {% if category.total_quiz > 0 %}
+                                {{ category.desc }}
+                                {% if category.total_quiz > 0 %}
                                 <i class="fas fa-angle-right float-right"></i>
                             </a>
                             {% endif %}
@@ -332,8 +347,8 @@
                                 {% endif %}
                             </p>
                             <a href="/category/{{ category.name }}" class="light-blue-text">
-                            {{ category.desc }}
-                            {% if category.total_quiz > 0 %}
+                                {{ category.desc }}
+                                {% if category.total_quiz > 0 %}
                                 <i class="fas fa-angle-right float-right"></i>
                             </a>
                             {% endif %}
@@ -392,8 +407,8 @@
                                 {% endif %}
                             </p>
                             <a href="/category/{{ category.name }}" class="purple-text">
-                            {{ category.desc }}
-                            {% if category.total_quiz > 0 %}
+                                {{ category.desc }}
+                                {% if category.total_quiz > 0 %}
                                 <i class="fas fa-angle-right float-right"></i>
                             </a>
                             {% endif %}

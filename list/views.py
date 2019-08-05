@@ -39,7 +39,7 @@ def all_category(request):
     context['counts'] = counts
 
     # Circle chart
-    context['total_labels'] = ["Right", "Wrong", "Not Try"]
+    context['total_labels'] = ["Accepted", "Wrong", "Not Try"]
     context['total_counts'] = [right_quizs, wrong_quizs, quizs.count() - right_quizs - wrong_quizs]
 
     # Badge
@@ -81,7 +81,6 @@ def add_badge():
 
     # day streak
     now = date.today() + timedelta(days=+1)
-    labels, counts = [], []
     day_streak = 0
     for i in range(0, MONTH):
         now += timedelta(days=-1)

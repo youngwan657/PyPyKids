@@ -72,6 +72,7 @@ class Category(SortableMixin):
         return visible + self.difficulty.name + "-" + str(self.order) + ". " + str(self.name)
 
 
+# TODO:: explanation after answering
 # TODO:: admin filter by category
 class Quiz(SortableMixin):
     order = models.PositiveIntegerField(default=0, editable=False, db_index=True)

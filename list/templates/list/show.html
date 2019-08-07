@@ -131,15 +131,16 @@
         </table>
         <hr/>
         {% endif %}
+        {% else %}
+        <p class="h4 mb-4">Your answer</p>
         {% endif %}
 
         {% if answer.date %}
         <p class="text-muted">Submitted at {{ answer.date|date:'Y/m/d h:m:s'}}</p>
         {% endif %}
 
-        <p class="h4 mb-4">Your answer</p>
         <div class="form-group">
-            <textarea class="form-control rounded-0" id="answer" name="answer" rows="10">{{ user_answer }}</textarea>
+            <textarea class="form-control rounded-0" id="answer" name="answer" rows="10" autofocus>{{ user_answer }}</textarea>
         </div>
 
         <!-- Copy -->

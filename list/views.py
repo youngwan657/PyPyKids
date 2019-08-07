@@ -281,6 +281,7 @@ if __name__ == "__main__":
         except subprocess.CalledProcessError as suberror:
             output = "\n".join(suberror.stdout.decode('utf-8').split("\n")[1:])
 
+        #TODO:: check answer correctly.
         testcase.expected_answer = testcase.expected_answer.replace("\r\n", "\n")
         if str(output) != testcase.expected_answer.strip():
             answer.right = -1

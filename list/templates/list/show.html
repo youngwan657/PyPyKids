@@ -78,10 +78,12 @@
 
             <hr>
 
-            <h3><b>{{ quiz.order }}. {{ quiz.question|linebreaksbr }}</b></h3>
+            <h6 class="font-weight-bold light-blue-text"><i class="fas fa-chess"></i> {{ quiz.order }}. {{ quiz.title|linebreaksbr }}</h6>
+            <h4 class="black-text"><a>{{ quiz.question|linebreaksbr}}</a></h4>
 
             {% if quiz.example %}
-            <p class="card-text">
+            <p class="dark-grey-text mb-lg-0 mb-md-5 mb-4">
+            <hr/>
             <pre><code>{{ quiz.example }}</code></pre>
             </p>
             {% endif %}

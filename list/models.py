@@ -78,6 +78,7 @@ class Quiz(SortableMixin):
     order = models.PositiveIntegerField(default=0, editable=False, db_index=True)
     explanation = RichTextField(default=None, blank=True, null=True)
     video = models.TextField(default=None, blank=True, null=True)
+    title = models.CharField(max_length=100, default=None, blank=True, null=True)
     question = models.TextField(default=None, blank=True, null=True)
     example = models.TextField(default=None, blank=True, null=True)
     date = models.DateTimeField(auto_now_add=True)
@@ -101,7 +102,11 @@ class Quiz(SortableMixin):
         visible = "  "
         if self.visible == False:
             visible = "x "
-        return visible + str(self.category.difficulty.id) + "[" + self.category.name + "] " + str(self.order) + ". " + self.question
+
+        title = ""
+        if self.title != None:
+            title = self.title
+        return visible + str(self.category.difficulty.id) + "[" + self.category.name + "] " + str(self.order) + ". " + title + " - " + self.question
 
 
 class Testcase(models.Model):

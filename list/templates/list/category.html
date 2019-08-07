@@ -48,12 +48,12 @@
                     <li class="completed">{% endif %}
                         <a href="/{{ quiz.order }}">
                             <span class="circle">{{ quiz.order }}</span>
-                            <span class="label step-title waves-effect waves-dark">{{ quiz.question|linebreaksbr }}</span>
+                            <span class="label step-title waves-effect waves-dark">{{ quiz.title|linebreaksbr }}</span>
                         </a>
 
                         <div class="step-content lighten-3">
-                            {% if quiz.example %}
-                            <pre><code>{{ quiz.example }}</code></pre>
+                            {% if quiz.question %}
+                            <pre><code>{{ quiz.question }}</code></pre>
                             {% endif %}
                         </div>
                     </li>

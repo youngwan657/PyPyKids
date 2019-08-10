@@ -115,32 +115,6 @@ def add_badge():
     return None
 
 
-# TODO:: delete
-def list(request):
-    quizs = Quiz.objects.order_by('id').filter(visible=1)
-    answers = Answer.objects.filter(name=USERNAME)
-    right_quizs = answers.filter(right=1).count()
-    wrong_quizs = answers.filter(right=-1).count()
-
-    unsolved_quizs = quizs
-    for answer in answers:
-        if answer.right == 1:
-            unsolved_quizs = unsolved_quizs.filter(~Q(order=answer.quiz.order))
-
-    if len(unsolved_quizs) == 0:
-        return render(request, 'list/congrats.html')
-
-    context = {
-        'quizs': unsolved_quizs,
-        'total_quiz': quizs.count(),
-        'right': right_quizs,
-        'wrong': wrong_quizs,
-        'right_percent': right_quizs / quizs.count() * 100,
-        'wrong_percent': wrong_quizs / quizs.count() * 100,
-    }
-    return render(request, 'list/list.html', context)
-
-
 def category(request, category):
     quizs = Quiz.objects.filter(category__name=category, visible=True).order_by('order')
     answers = Answer.objects.filter(name=USERNAME)

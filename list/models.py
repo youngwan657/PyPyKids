@@ -95,7 +95,7 @@ class Quiz(SortableMixin):
     right = 0
 
     class Meta:
-        ordering = ['order']
+        ordering = ['-order']
         verbose_name_plural = 'Quizs'
 
     def __str__(self):
@@ -134,5 +134,5 @@ class Answer(models.Model):
         if self.quiz == None:
             return self.name + " " + str(self.date)
 
-        return str(self.quiz.order) + ". " + self.name + " " + str(self.date)
+        return str(self.quiz.order) + ". " + self.name + " " + str(self.date.strftime("%m-%d-%Y %H:%M"))
 

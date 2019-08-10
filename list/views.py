@@ -11,6 +11,7 @@ from .models import Quiz, Answer, Testcase, Category, Difficulty, User, Badge
 USERNAME = "Dayeon"
 MONTH = 31
 
+
 def all_category(request):
     difficulties = Difficulty.objects.order_by('id')
     answers = Answer.objects.filter(name=USERNAME)
@@ -73,7 +74,7 @@ def badge(request):
     return render(request, 'list/badge.html', context)
 
 
-#TODO:: move to check when solving quiz.
+# TODO:: move to check when solving quiz.
 def add_badge():
     user = User.objects.get(name=USERNAME)
     answers = Answer.objects.filter(name=USERNAME, right=1)
@@ -281,7 +282,7 @@ if __name__ == "__main__":
         except subprocess.CalledProcessError as suberror:
             output = "\n".join(suberror.stdout.decode('utf-8').split("\n")[1:])
 
-        #TODO:: check answer correctly.
+        # TODO:: check answer correctly.
         testcase.expected_answer = testcase.expected_answer.replace("\r\n", "\n")
         if str(output) != testcase.expected_answer.strip():
             answer.right = -1
@@ -296,3 +297,31 @@ if __name__ == "__main__":
     answer.expected_answer = ""
     answer.output = ""
     answer.stdout = ""
+
+
+def playground(request):
+    context = {
+        'testcode': 'print("hello world")'
+    }
+
+    return render(request, 'list/playground.html', context)
+
+
+def submit_playground(request):
+    f = open("checking.py", "w+")
+    code = request.POST['code']
+    f.write(code)
+    f.close()
+    try:
+        process = subprocess.run(['python', 'checking.py'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                                 shell=False, check=True)
+        output = process.stdout.decode("utf-8")
+    except subprocess.CalledProcessError as suberror:
+        output = "\n".join(suberror.stdout.decode('utf-8').split("\n")[1:])
+
+    context = {
+        'code': code,
+        'output': output,
+    }
+
+    return render(request, 'list/playground.html', context)

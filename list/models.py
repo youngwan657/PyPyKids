@@ -72,7 +72,7 @@ class Category(SortableMixin):
         return visible + self.difficulty.name + "-" + str(self.order) + ". " + str(self.name)
 
 
-# TODO:: explanation after answering
+# TODO:: solution after answering
 # TODO:: admin filter by category
 class Quiz(SortableMixin):
     order = models.PositiveIntegerField(default=0, editable=False, db_index=True)
@@ -115,7 +115,7 @@ class Testcase(models.Model):
     expected_answer = models.TextField(default=None, blank=True, null=True)
 
     def __str__(self):
-        return str(self.quiz.order) + ". " + self.test
+        return str(self.quiz.order) + ". " + self.test + " " + self.expected_answer
 
 
 class Answer(models.Model):
@@ -135,3 +135,4 @@ class Answer(models.Model):
             return self.name + " " + str(self.date)
 
         return str(self.quiz.order) + ". " + self.name + " " + str(self.date)
+

@@ -2,27 +2,118 @@
 {% load static %}
 
 {% block content %}
+<div id="app">
+    <div class="container">
 
-<div class="container animsition">
-    <form class="text-center border border-light p-5" action="/playground/run/" method="POST">
-        {%csrf_token %}
-        <p class="h4 mb-4">Playground</p>
-        {% if code != "" %}
-        <table class="table">
-            <tbody>
-            <tr>
-                <th scope="row" style="width: 20%">Output:</th>
-                <td>{{ output|linebreaksbr }}</span></td>
-            </tr>
-            </tbody>
-        </table>
-        {% endif %}
-        <div class="form-group">
-            <textarea class="form-control rounded-0" id="answer" name="code" rows="10" autofocus>{{ code }}</textarea>
-        </div>
+        <form id="form" class="text-center border border-light p-5" @submit.prevent="submit">
+            {% csrf_token %}
+            <p class="h4 mb-4">Playground</p>
+            {% if code != "" %}
+            <table class="table">
+                <tbody>
+                <tr>
+                    <th scope="row" style="width: 20%">Output:</th>
+                    <td>[[ output ]]</td>
+                </tr>
+                </tbody>
+            </table>
+            {% endif %}
+            <div class="form-group">
+            <textarea v-on:keydown.tab.prevent="key()" v-on:keyup="keydown($event)" v-model="answer" class="form-control rounded-0" id="answer" name="answer"
+                      rows="10" autofocus></textarea>
+            </div>
 
-        <!-- Send button -->
-        <button class="btn btn-info btn-block" type="submit">Test</button>
-    </form>
+            <!-- Send button -->
+            <button class="btn btn-info btn-block" type="submit">Test</button>
+        </form>
+    </div>
 </div>
+
+
+<script>
+    axios.defaults.xsrfCookieName = 'csrftoken'
+    axios.defaults.xsrfHeaderName = 'X-CSRFToken'
+    new Vue({
+        delimiters: ['[[', ']]'],
+        el: '#form',
+        data: {
+            output: "",
+            answer: "1"
+        },
+        methods: {
+            key: function() {
+                console.log("!" + e.target.selectionStart;)
+                this.answer = "hello"
+            },
+            keydown: function(event) {
+                console.log(event.keyCode)
+                //support tab on textarea
+                if (event.keyCode == 8 || event.keyCode == 9 && event.unshift) {    // shift+tab or backspace
+                    console.log("back")
+                    console.log(textarea.value)
+                    var v = textarea.value, s = textarea.selectionStart, e = textarea.selectionEnd;
+                    if (textarea.value.substring(s-4, s) == ' '.repeat(4)) {
+                        textarea.value = v.substring(0, s-4) + v.substring(e);
+                        textarea.selectionStart = textarea.selectionEnd = s - 4;
+                        return false
+                    }
+
+                    if (event.keyCode == 9 && evevnt.shiftKey) {
+                        return false;
+                    }
+                    return true;
+                } else if (event.keyCode == 9) { // tab
+                    var v = textarea.value, s = textarea.selectionStart, e = textarea.selectionEnd;
+                    textarea.value = v.substring(0, s) + ' '.repeat(4) + v.substring(e);
+                    textarea.selectionStart = textarea.selectionEnd = s + 4;
+                    return false;
+                }
+
+
+                if (event.keyCode == 13) {  // enter
+                    var v = textarea.value, s = textarea.selectionStart,e = textarea.selectionEnd;
+                    var lines = textarea.value.split("\n");
+                    var startPos = 0;
+                    var previousLine = lines[lines.length-1];
+                    var i = 0
+                    for(i = 0; i < lines.length; i++) {
+                        if(textarea.selectionStart < startPos) {
+                            previousLine = lines[i-1];
+                            break;
+                        }
+                        startPos += (lines[i].length+1);
+                    }
+                    for(i = 0; i < previousLine.length; i++) {
+                        if(previousLine.charAt(i) != ' ') {
+                            break;
+                        }
+                    }
+                    var space = "\n";
+                    if (previousLine.charAt(previousLine.length - 1) == ':') {
+                        space += ' '.repeat(i + 4);
+                    } else {
+                        space += ' '.repeat(i);
+                    }
+
+                    textarea.value = v.substring(0, s) + space + v.substring(e);
+                    textarea.selectionStart = textarea.selectionEnd = s + space.length;
+                    return false;
+                }
+            },
+            submit: function() {
+                axios.post(`/playground/`, {
+                  answer: this.answer
+                })
+                .then(response => {
+                    this.output = response.data.output
+                })
+            }
+        }
+    });
+</script>
+
+
+
 {% endblock %}
+
+

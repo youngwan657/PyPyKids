@@ -3,8 +3,12 @@ from django.http import HttpResponseRedirect
 from datetime import datetime, date, timedelta
 import subprocess
 import os
+import json
 
 from django.db.models import Q
+
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_protect
 
 from .models import Quiz, Answer, Testcase, Category, Difficulty, User, Badge
 
@@ -274,12 +278,23 @@ if __name__ == "__main__":
 
 
 def playground(request):
-    context = {
-        'testcode': 'print("hello world")'
-    }
+    if request.method == "POST":
+        f = open("checking.py", "w+")
+        code = json.loads(request.body.decode('utf-8'))
+        f.write(code['answer'])
+        f.close()
+        try:
+            process = subprocess.run(['python', 'checking.py'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                                     shell=False, check=True)
+            output = process.stdout.decode("utf-8")
+        except subprocess.CalledProcessError as suberror:
+            output = "\n".join(suberror.stdout.decode('utf-8').split("\n")[1:])
 
-    return render(request, 'list/playground.html', context)
-
+        return JsonResponse({
+            'output': output,
+        })
+    else:
+        return render(request, 'list/playground.html')
 
 def submit_playground(request):
     f = open("checking.py", "w+")
@@ -299,3 +314,13 @@ def submit_playground(request):
     }
 
     return render(request, 'list/playground.html', context)
+
+def test(request):
+    response = JsonResponse(
+        {"name": "hi", "url": "/1"}
+    )
+    print(json.loads(request.body.decode('utf-8')))
+    return response
+
+
+# TODO:: undo when writing code.

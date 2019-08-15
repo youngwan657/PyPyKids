@@ -9,5 +9,6 @@ urlpatterns = [
     path('answer/<int:quiz_order>/', views.answer, name='answer'),
     path('badge/', views.badge, name='badge'),
     path('playground/', views.playground, name='playground'),
-    path('playground/run/', views.submit_playground, name='playground')
+    path('playground/run/', views.submit_playground, name='playground'),
+    path('test/', views.test, name='test')
 ]

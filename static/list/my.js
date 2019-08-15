@@ -1,4 +1,4 @@
-(function() {
+<script>
 // textarea tab
 textarea = document.getElementById('answer');
 textarea.onkeydown = function(event) {
@@ -53,4 +53,4 @@ textarea.onkeydown = function(event) {
         return false;
     }
 }
-})();
+</script>

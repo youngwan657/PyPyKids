@@ -69,15 +69,12 @@
             <!-- Grid row -->
             {% endif %}
 
-
-            <hr>
-
             <h6 class="font-weight-bold light-blue-text"><i class="fas fa-chess"></i>
                 <a href="/{{ quiz.order }}">
                 {{ quiz.order }}. {{ quiz.title|linebreaksbr }}
                 </a>
             </h6>
-            {{ quiz.question|safe}}
+            {{ quiz.question|safe }}
 
             {% if quiz.example %}
             <p class="dark-grey-text mb-lg-0 mb-md-5 mb-4">

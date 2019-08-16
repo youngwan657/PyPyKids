@@ -51,7 +51,7 @@
 
                         <div class="step-content lighten-3">
                             {% if quiz.question %}
-                            <pre><code>{{ quiz.question }}</code></pre>
+                            <pre><code>{{ quiz.question|safe }}</code></pre>
                             {% endif %}
                         </div>
                     </li>

@@ -47,7 +47,7 @@ def all_category(request):
     context['badges'] = Badge.objects.filter(user__name=USERNAME)
 
     # Today's Question
-    context['today_quiz'] = unsolved_quizs.order_by('?').first()
+    context['quiz'] = unsolved_quizs.order_by('?').first()
 
     for difficulty in difficulties:
         categories = Category.objects.order_by('order').filter(difficulty=difficulty.id, visible=True)

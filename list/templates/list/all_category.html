@@ -118,27 +118,10 @@
                 </h5>
             </a>
         </div>
-        <hr/>
-
-        <div class="row mt-1">
-            <div class="col-md-12">
-                <ul class="stepper stepper-vertical">
-                    <li class="completed">
-                        <a href="/{{ today_quiz.order }}">
-                            <span class="circle">{{ today_quiz.order }}</span>
-                            <span class="label step-title waves-effect waves-dark">{{ today_quiz.title|linebreaksbr }}</span>
-                        </a>
-
-                        <div class="step-content lighten-3">
-                            {% if today_quiz.example %}
-                            <pre><code>{{ today_quiz.question }}</code></pre>
-                            {% endif %}
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </div>
+        <br/>
     </div>
+
+    {% include "list/quiz.html" %}
 
 
     <div class="container">

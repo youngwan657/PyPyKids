@@ -38,9 +38,6 @@
                             responsive: true
                         }
                     });
-
-
-
                 </script>
             </div>
 
@@ -77,37 +74,69 @@
                             responsive: true
                         }
                     });
-
-
-
                 </script>
             </div>
         </div>
     </div>
 
-    <div class="container">
-        <div class="row">
-            <!-- Today's question -->
+    <div class="row mt-1">
+        <div class="col-md-12">
             <ul class="stepper stepper-vertical">
-                <li class="completed">
-                    <a href="/{{ today_quiz.order }}" class="blue-text">
-                        <h5>
-                            <i class="fas fa-chess"></i>
-                            <strong>Today's Question</strong>
-                        </h5>
-                    </a>
-                    <a href="/{{ today_quiz.order }}">
-                        <span class="circle">{{ today_quiz.order }}</span>
-                        <span class="label step-title waves-effect waves-dark">{{ today_quiz.question|linebreaksbr }}</span>
+                {% for quiz in quizs %}
+                {% if quiz.visible %}
+                {% if quiz.right == 1 %}
+                <li>{% endif %}
+                    {% if quiz.right == -1 %}
+                <li class="warning">{% endif %}
+                    {% if quiz.right == 0 %}
+                <li class="completed">{% endif %}
+                    <a href="/{{ quiz.order }}">
+                        <span class="circle">{{ quiz.order }}</span>
+                        <span class="label step-title waves-effect waves-dark">{{ quiz.title|linebreaksbr }}</span>
                     </a>
 
                     <div class="step-content lighten-3">
-                        {% if today_quiz.example %}
-                        <pre><code>{{ today_quiz.example }}</code></pre>
+                        {% if quiz.question %}
+                        <pre><code>{{ quiz.question }}</code></pre>
                         {% endif %}
                     </div>
                 </li>
+                {% endif %}
+                {% endfor %}
             </ul>
+        </div>
+    </div>
+
+
+    <!-- Today's question -->
+    <div class="container">
+        <div class="row text-left">
+            <a href="/{{ today_quiz.order }}" class="blue-text">
+                <h5>
+                    <i class="fas fa-chess"></i>
+                    <strong>Today's Question</strong>
+                </h5>
+            </a>
+        </div>
+        <hr/>
+
+        <div class="row mt-1">
+            <div class="col-md-12">
+                <ul class="stepper stepper-vertical">
+                    <li class="completed">
+                        <a href="/{{ today_quiz.order }}">
+                            <span class="circle">{{ today_quiz.order }}</span>
+                            <span class="label step-title waves-effect waves-dark">{{ today_quiz.title|linebreaksbr }}</span>
+                        </a>
+
+                        <div class="step-content lighten-3">
+                            {% if today_quiz.example %}
+                            <pre><code>{{ today_quiz.question }}</code></pre>
+                            {% endif %}
+                        </div>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
 
@@ -165,8 +194,8 @@
                                 {{ category.desc }}
                                 {% if category.total_quiz > 0 %}
                                 <i class="fas fa-angle-right float-right"></i>
+                                {% endif %}
                             </a>
-                            {% endif %}
                         </div>
                     </div>
 
@@ -223,8 +252,8 @@
                                 {{ category.desc }}
                                 {% if category.total_quiz > 0 %}
                                 <i class="fas fa-angle-right float-right"></i>
+                                {% endif %}
                             </a>
-                            {% endif %}
                         </div>
                     </div>
 
@@ -289,8 +318,8 @@
                                 {{ category.desc }}
                                 {% if category.total_quiz > 0 %}
                                 <i class="fas fa-angle-right float-right"></i>
+                                {% endif %}
                             </a>
-                            {% endif %}
                         </div>
                     </div>
 
@@ -348,8 +377,8 @@
                                 {{ category.desc }}
                                 {% if category.total_quiz > 0 %}
                                 <i class="fas fa-angle-right float-right"></i>
+                                {% endif %}
                             </a>
-                            {% endif %}
                         </div>
                     </div>
 
@@ -408,8 +437,8 @@
                                 {{ category.desc }}
                                 {% if category.total_quiz > 0 %}
                                 <i class="fas fa-angle-right float-right"></i>
+                                {% endif %}
                             </a>
-                            {% endif %}
                         </div>
                     </div>
 

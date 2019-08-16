@@ -179,6 +179,7 @@ def show(request, quiz_order):
     return render(request, 'list/show.html', context)
 
 
+# TODO: check the object input
 # TODO:: dynamic function name depending on quiz.
 def answer(request, quiz_order):
     quiz = get_object_or_404(Quiz, order=quiz_order)

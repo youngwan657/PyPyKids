@@ -1,0 +1,14 @@
+{% extends 'list/base.html' %}
+{% load static %}
+
+{% block content %}
+
+{% for quiz in quizs %}
+{% include "list/quiz.html" %}
+<div class="container">
+<a href="/admin/list/quiz/{{ quiz.id }}/change/" class="btn btn-primary btn-sm active" role="button" aria-pressed="true" target="_blank">Modify</a>
+</div>
+{% endfor %}
+
+{% endblock %}
+

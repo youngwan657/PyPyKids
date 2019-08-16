@@ -75,12 +75,37 @@ class Category(SortableMixin):
 # TODO:: solution after answering
 # TODO:: admin filter by category
 class Quiz(SortableMixin):
+    default_example = """<p>Example 1:</p>
+<table border="1" cellpadding="1" cellspacing="1" class="table table-bordered">
+	<tbody>
+		<tr>
+			<td>
+			<p><strong>Input</strong>:&nbsp;</p>
+			<p><strong>Output</strong>:&nbsp;</p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+<p>&nbsp;</p>
+<p>Example 2:</p>
+<table border="1" cellpadding="1" cellspacing="1" class="table table-bordered">
+	<tbody>
+		<tr>
+			<td>
+			<p><strong>Input</strong>:&nbsp;</p>
+			<p><strong>Output</strong>:&nbsp;</p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+"""
+
     order = models.PositiveIntegerField(default=0, editable=False, db_index=True)
     explanation = RichTextField(default=None, blank=True, null=True)
-    video = models.TextField(default=None, blank=True, null=True)
+    video = models.CharField(max_length=100, default=None, blank=True, null=True)
     title = models.CharField(max_length=100, default=None, blank=True, null=True)
-    question = models.TextField(default=None, blank=True, null=True)
-    example = models.TextField(default=None, blank=True, null=True)
+    question = RichTextField(default=None, blank=True, null=True)
+    example = RichTextField(default=default_example, blank=True, null=True)
     date = models.DateTimeField(auto_now_add=True)
     hint = models.TextField(default=None, blank=True, null=True)
     quiz_type = models.ForeignKey(QuizType, on_delete=models.CASCADE)
@@ -93,6 +118,7 @@ class Quiz(SortableMixin):
     option4 = models.TextField(default=None, blank=True, null=True)
     date = models.DateTimeField(default=now)
     right = 0
+
 
     class Meta:
         ordering = ['-order']
@@ -107,6 +133,7 @@ class Quiz(SortableMixin):
         if self.title != None:
             title = self.title
         return visible + str(self.category.difficulty.id) + "[" + self.category.name + "] " + str(self.order) + ". " + title + " - " + self.question
+
 
 
 class Testcase(models.Model):
@@ -136,3 +163,5 @@ class Answer(models.Model):
 
         return str(self.quiz.order) + ". " + self.name + " " + str(self.date.strftime("%m-%d-%Y %H:%M"))
 
+
+#TODO:: rename github

@@ -300,3 +300,11 @@ def submit_playground(request):
     }
 
     return render(request, 'list/playground.html', context)
+
+def show_all_quiz(request):
+    quizs = Quiz.objects.all()
+
+    context = {
+        'quizs': quizs,
+    }
+    return render(request, 'list/all_quiz.html', context)

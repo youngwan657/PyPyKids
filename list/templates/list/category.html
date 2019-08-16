@@ -45,7 +45,7 @@
                         {% if quiz.right == 0 %}
                     <li class="completed">{% endif %}
                         <a href="/{{ quiz.order }}">
-                            <span class="circle">{{ quiz.order }}</span>
+                            <span class="circle">{{ forloop.counter }}</span>
                             <span class="label step-title waves-effect waves-dark">{{ quiz.title|linebreaksbr }}</span>
                         </a>
 

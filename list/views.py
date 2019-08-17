@@ -15,13 +15,13 @@ MONTH = 31
 def all_category(request):
     difficulties = Difficulty.objects.order_by('id')
     answers = Answer.objects.filter(name=USERNAME)
-    right_quizs = answers.filter(right=1).count()
-    wrong_quizs = answers.filter(right=-1).count()
-    quizs = Quiz.objects.order_by('order').filter(visible=True)
-    unsolved_quizs = quizs
+    right_quizzes = answers.filter(right=1).count()
+    wrong_quizzes = answers.filter(right=-1).count()
+    quizzes = Quiz.objects.order_by('order').filter(visible=True)
+    unsolved_quizzes = quizzes
     for answer in answers:
         if answer.right == 1:
-            unsolved_quizs = unsolved_quizs.filter(~Q(order=answer.quiz.order))
+            unsolved_quizzes = unsolved_quizzes.filter(~Q(order=answer.quiz.order))
 
     # Chart
     now = date.today() + timedelta(days=+1)
@@ -41,23 +41,23 @@ def all_category(request):
 
     # Circle chart
     context['total_labels'] = ["Accepted", "Wrong", "Not Try"]
-    context['total_counts'] = [right_quizs, wrong_quizs, quizs.count() - right_quizs - wrong_quizs]
+    context['total_counts'] = [right_quizzes, wrong_quizzes, quizzes.count() - right_quizzes - wrong_quizzes]
 
     # Badge
     context['badges'] = Badge.objects.filter(user__name=USERNAME)
 
     # Today's Question
-    context['quiz'] = unsolved_quizs.order_by('?').first()
+    context['quiz'] = unsolved_quizzes.order_by('?').first()
 
     for difficulty in difficulties:
         categories = Category.objects.order_by('order').filter(difficulty=difficulty.id, visible=True)
-        all_quizs = Quiz.objects;
+        all_quizzes = Quiz.objects;
         answers = Answer.objects.filter(name=USERNAME, right=1)
         for category in categories:
-            quizs = all_quizs.filter(category__name=category.name, visible=True)
-            category.total_quiz = quizs.count()
-            category.unsolved_quiz = quizs.count()
-            for quiz in quizs:
+            quizzes = all_quizzes.filter(category__name=category.name, visible=True)
+            category.total_quiz = quizzes.count()
+            category.unsolved_quiz = quizzes.count()
+            for quiz in quizzes:
                 if len(answers.filter(quiz__order=quiz.order)) == 1:
                     category.unsolved_quiz -= 1
 
@@ -116,28 +116,28 @@ def add_badge():
 
 
 def category(request, category):
-    quizs = Quiz.objects.filter(category__name=category, visible=True).order_by('order')
+    quizzes = Quiz.objects.filter(category__name=category, visible=True).order_by('order')
     answers = Answer.objects.filter(name=USERNAME)
-    right_quizs = 0
-    for quiz in quizs:
+    right_quizzes = 0
+    for quiz in quizzes:
         answer = answers.filter(quiz__order=quiz.order)
         quiz.right = 0
         if len(answer) > 0:
             quiz.right = answer[0].right
         if quiz.right == 1:
-            right_quizs += 1
+            right_quizzes += 1
 
-    if quizs.count() == 0:
+    if quizzes.count() == 0:
         right_percent = 100
     else:
-        right_percent = right_quizs / quizs.count() * 100
+        right_percent = right_quizzes / quizzes.count() * 100
 
     context = {
         "category": category,
-        "quizs": quizs,
+        "quizzes": quizzes,
 
-        "total_quiz": quizs.count(),
-        "right": right_quizs,
+        "total_quiz": quizzes.count(),
+        "right": right_quizzes,
         "right_percent": right_percent,
     }
 
@@ -203,9 +203,9 @@ def answer(request, quiz_order):
 
     answer.save()
 
-    quizs = Quiz.objects.order_by('id').filter(visible=1).count()
+    quizzes = Quiz.objects.order_by('id').filter(visible=1).count()
     answers = Answer.objects.filter(name=USERNAME, right=1).count()
-    if quizs == answers:
+    if quizzes == answers:
         return render(request, 'list/congrats.html')
 
     return HttpResponseRedirect('/' + str(quiz.order) + "?right_modal=" + str(answer.right))
@@ -302,9 +302,11 @@ def submit_playground(request):
     return render(request, 'list/playground.html', context)
 
 def show_all_quiz(request):
-    quizs = Quiz.objects.all()
+    quizzes = Quiz.objects.all()
+    testcases = Testcase.objects.all()
 
     context = {
-        'quizs': quizs,
+        'quizzes': quizzes,
+        'testcases': testcases,
     }
     return render(request, 'list/all_quiz.html', context)

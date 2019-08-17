@@ -10,5 +10,5 @@ urlpatterns = [
     path('badge/', views.badge, name='badge'),
     path('playground/', views.playground, name='playground'),
     path('playground/run/', views.submit_playground, name='playground'),
-    path('quizs/', views.show_all_quiz, name='all_quiz')
+    path('all/', views.show_all_quiz, name='all_quiz')
 ]

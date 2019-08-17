@@ -122,7 +122,7 @@ class Quiz(SortableMixin):
 
     class Meta:
         ordering = ['-order']
-        verbose_name_plural = 'Quizs'
+        verbose_name_plural = 'Quizzes'
 
     def __str__(self):
         visible = "  "
@@ -132,7 +132,7 @@ class Quiz(SortableMixin):
         title = ""
         if self.title != None:
             title = self.title
-        return visible + str(self.category.difficulty.id) + "[" + self.category.name + "] " + str(self.order) + ". " + title + " - " + self.question
+        return visible + str(self.category.difficulty.id) + "[" + self.category.name + "] " + str(self.order) + ". " + title
 
 
 
@@ -162,6 +162,3 @@ class Answer(models.Model):
             return self.name + " " + str(self.date)
 
         return str(self.quiz.order) + ". " + self.name + " " + str(self.date.strftime("%m-%d-%Y %H:%M"))
-
-
-#TODO:: rename github

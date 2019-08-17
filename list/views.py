@@ -247,15 +247,16 @@ if __name__ == "__main__":
         output = "None"
         stdout = ""
         try:
-            process = subprocess.run(['python', 'checking.py'] + testcase.test.split("\n"), stdout=subprocess.PIPE,
-                                     stderr=subprocess.STDOUT, shell=False, check=True)
-            stdout = process.stdout.decode("utf-8")
+            process = subprocess.Popen(['python', 'checking.py'] + testcase.test.split("\n"), stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+            outs, errs = process.communicate(timeout=1)
+            stdout = outs.decode("utf-8")
             if os.path.exists("checking_answer"):
                 f = open("checking_answer", "r")
                 output = f.read().strip()
                 f.close()
-        except subprocess.CalledProcessError as suberror:
-            output = "\n".join(suberror.stdout.decode('utf-8').split("\n")[1:])
+        except subprocess.TimeoutExpired:
+            process.kill()
+            stdout = "TIMEOUT ERROR"
 
         # TODO:: check answer correctly.
         testcase.expected_answer = testcase.expected_answer.replace("\r\n", "\n")
@@ -288,15 +289,16 @@ def submit_playground(request):
     f.write(code)
     f.close()
     try:
-        process = subprocess.run(['python', 'checking.py'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
-                                 shell=False, check=True)
-        output = process.stdout.decode("utf-8")
-    except subprocess.CalledProcessError as suberror:
-        output = "\n".join(suberror.stdout.decode('utf-8').split("\n")[1:])
+        process = subprocess.Popen(['python', 'checking.py'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        outs, errs = process.communicate(timeout=1)
+        stdout = outs.decode("utf-8")
+    except subprocess.TimeoutExpired:
+        process.kill()
+        stdout = "TIMEOUT ERROR"
 
     context = {
         'code': code,
-        'output': output,
+        'stdout': stdout,
     }
 
     return render(request, 'list/playground.html', context)

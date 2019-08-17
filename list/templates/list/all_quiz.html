@@ -5,9 +5,54 @@
 
 {% for quiz in quizzes %}
 {% include "list/quiz.html" %}
+{% if quiz.quiz_type.name == "MultipleChoice" %}
 <div class="container">
-<a href="/admin/list/quiz/{{ quiz.id }}/change/" class="btn btn-primary btn-sm active" role="button" aria-pressed="true" target="_blank">Modify</a>
+    <p></p>
+    <p>1. {{ quiz.option1 }}</p>
+    <p>2. {{ quiz.option2 }}</p>
+    <p>3. {{ quiz.option3 }}</p>
+    <p>4. {{ quiz.option4 }}</p>
 </div>
+{% endif %}
+<div class="container">
+    <a href="/admin/list/quiz/{{ quiz.id }}/change/" class="btn btn-primary btn-sm active" role="button"
+       aria-pressed="true" target="_blank">Quiz</a>
+</div>
+
+<div class="container">
+    <hr/>
+    <div class="row">
+        <div class="col-md-4">
+            Modify
+        </div>
+        <div class="col-md-4">
+            Test Input
+        </div>
+        <div class="col-md-4">
+            Expected Answer
+        </div>
+    </div>
+    {% for testcase in testcases %}
+    {% if quiz == testcase.quiz %}
+    <hr/>
+    <div class="row">
+        <div class="col-md-4">
+            <a href="/admin/list/testcase/{{ testcase.id }}/change/" class="btn btn-primary btn-sm active" role="button"
+               aria-pressed="true" target="_blank">Testcase</a>
+        </div>
+        <div class="col-md-4">
+            {{ testcase.test }}
+        </div>
+        <div class="col-md-4">
+            {{ testcase.expected_answer }}
+        </div>
+    </div>
+    {% endif %}
+    {% endfor %}
+    <hr/>
+</div>
+
+
 {% endfor %}
 
 {% endblock %}

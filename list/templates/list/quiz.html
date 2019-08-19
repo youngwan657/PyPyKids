@@ -59,6 +59,8 @@
                     </div>
                     <!--Modal: Name-->
 
+                    <br/>
+                    <h6 class="font-weight-bold light-blue-text"><i class="fab fa-youtube"></i> Detail explanation</h6>
                     <a><img class="img-fluid z-depth-1" src="https://img.youtube.com/vi/{{ quiz.video }}/0.jpg"
                             alt="video"
                             data-toggle="modal" data-target="#modal1"></a>
@@ -68,8 +70,9 @@
             </div>
             <!-- Grid row -->
             {% endif %}
+            Answer_header: {{ quiz.answer_header|linebreaksbr }}
 
-            <h6 class="font-weight-bold light-blue-text"><i class="fas fa-chess"></i>
+            <h6 class="font-weight-bold light-blue-text"><i class="fas fa-question-circle"></i>
                 <a href="/{{ quiz.order }}">
                 {{ quiz.title|linebreaksbr }}
                 </a>
@@ -79,7 +82,7 @@
             {% if quiz.example %}
             <p class="dark-grey-text mb-lg-0 mb-md-5 mb-4">
             <hr/>
-            {{ quiz.example | safe }}
+            {{ quiz.example|safe }}
             </p>
             {% endif %}
 

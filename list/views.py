@@ -211,36 +211,11 @@ def answer(request, quiz_order):
     return HttpResponseRedirect('/' + str(quiz.order) + "?right_modal=" + str(answer.right))
 
 
+# TODO:: check Node clas
+# TODO:: dynamic file name
 def check_answer(testcases, answer):
-    header = "import sys, ast, os\n"
-
-    footer = """
-def main(argv):
-    s = Solution()
-
-    if len(argv) == 1:
-        return s.solve(ast.literal_eval(argv[0]))
-    elif len(argv) == 2:
-        return s.solve(ast.literal_eval(argv[0]), ast.literal_eval(argv[1]))
-    elif len(argv) == 3:
-        return s.solve(ast.literal_eval(argv[0]), ast.literal_eval(argv[1]), ast.literal_eval(argv[2]))
-
-if __name__ == "__main__":
-    answer = main(sys.argv[1:])
-    if os.path.exists("checking_answer"):
-        os.remove("checking_answer")
-    f = open("checking_answer", "w+")
-    if type(answer) == tuple:
-        for line in answer:
-            f.write("%s\\n" % line)
-    else:
-        f.write("%s" % answer)
-    f.close()
-"""
-
-    code = header + answer.answer + footer
-    f = open("checking.py", "w+")
-    f.write(code)
+    f = open("solution.py", "w+")
+    f.write(answer.answer)
     f.close()
 
     for testcase in testcases:
@@ -277,7 +252,7 @@ if __name__ == "__main__":
 
 def playground(request):
     context = {
-        'testcode': 'print("hello world")'
+
     }
 
     return render(request, 'list/playground.html', context)
@@ -306,9 +281,14 @@ def submit_playground(request):
 def show_all_quiz(request):
     quizzes = Quiz.objects.all()
     testcases = Testcase.objects.all()
+    answers = Answer.objects.all()
 
     context = {
         'quizzes': quizzes,
         'testcases': testcases,
+        'answers': answers,
     }
     return render(request, 'list/all_quiz.html', context)
+
+
+# TODO:: block risky command such as running shell command

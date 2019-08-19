@@ -24,7 +24,7 @@ textarea.onkeydown = function(event) {
 
 
     if (event.keyCode == 13) {  // enter
-        var v = textarea.value, s = textarea.selectionStart,e = textarea.selectionEnd;
+        var v = textarea.value, s = textarea.selectionStart, e = textarea.selectionEnd;
         var lines = textarea.value.split("\n");
         var startPos = 0;
         var previousLine = lines[lines.length-1];

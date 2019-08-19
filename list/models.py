@@ -19,11 +19,13 @@ class Difficulty(models.Model):
     def __str__(self):
         return str(self.name)
 
+
 class BadgeType(models.Model):
     name = models.CharField(max_length=30)
 
     def __str__(self):
         return str(self.name)
+
 
 class Badge(SortableMixin):
     order = models.PositiveIntegerField(default=0, editable=False, db_index=True)
@@ -39,6 +41,7 @@ class Badge(SortableMixin):
 
     def __str__(self):
         return str(self.name)
+
 
 class User(models.Model):
     name = models.CharField(max_length=30)
@@ -111,14 +114,13 @@ class Quiz(SortableMixin):
     quiz_type = models.ForeignKey(QuizType, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     visible = models.BooleanField(default=True)
-    answer_header = models.TextField(default="class Solution:\n    def solve(self, num):", blank=True, null=True)
+    answer_header = models.TextField(default="def solve(num):", blank=True, null=True)
     option1 = models.TextField(default=None, blank=True, null=True)
     option2 = models.TextField(default=None, blank=True, null=True)
     option3 = models.TextField(default=None, blank=True, null=True)
     option4 = models.TextField(default=None, blank=True, null=True)
     date = models.DateTimeField(default=now)
     right = 0
-
 
     class Meta:
         ordering = ['-order']
@@ -132,8 +134,8 @@ class Quiz(SortableMixin):
         title = ""
         if self.title != None:
             title = self.title
-        return visible + str(self.category.difficulty.id) + "[" + self.category.name + "] " + str(self.order) + ". " + title
-
+        return visible + str(self.category.difficulty.id) + "[" + self.category.name + "] " \
+               + str(self.order) + ". " + title
 
 
 class Testcase(models.Model):
@@ -142,7 +144,7 @@ class Testcase(models.Model):
     expected_answer = models.TextField(default=None, blank=True, null=True)
 
     def __str__(self):
-        return str(self.quiz.order) + ". " + self.test + " " + self.expected_answer
+        return str(self.quiz.order) + ". " + self.quiz.title + " - " + self.test + " " + self.expected_answer
 
 
 class Answer(models.Model):

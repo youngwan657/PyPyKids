@@ -1,6 +1,6 @@
 .idea
 *.pyc
-checking.py
 checking_answer
 resource
+solution.py
 .DS_Store

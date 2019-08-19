@@ -50,6 +50,21 @@
     {% endif %}
     {% endfor %}
     <hr/>
+    {% for answer in answers %}
+    {% if quiz == answer.quiz %}
+    <hr/>
+    <div class="row">
+        <div class="col-md-4">
+            <a href="/admin/list/answer/{{ answer.id }}/change/" class="btn btn-primary btn-sm active" role="button"
+               aria-pressed="true" target="_blank">Anwer</a>
+        </div>
+        <div class="col-md-4">
+            <pre>{{ answer.answer | linebreaksbr }}</pre>
+        </div>
+    </div>
+    {% endif %}
+    {% endfor %}
+    <hr/>
 </div>
 
 

@@ -211,7 +211,6 @@ def answer(request, quiz_order):
     return HttpResponseRedirect('/' + str(quiz.order) + "?right_modal=" + str(answer.right))
 
 
-# TODO:: check Node clas
 # TODO:: dynamic file name
 def check_answer(testcases, answer):
     f = open("solution.py", "w+")
@@ -233,7 +232,6 @@ def check_answer(testcases, answer):
             process.kill()
             stdout = "TIMEOUT ERROR"
 
-        # TODO:: check answer correctly.
         testcase.expected_answer = testcase.expected_answer.replace("\r\n", "\n")
         if str(output) != testcase.expected_answer.strip():
             answer.right = -1
@@ -291,4 +289,7 @@ def show_all_quiz(request):
     return render(request, 'list/all_quiz.html', context)
 
 
-# TODO:: block risky command such as running shell command
+# TODO:: add one more right enum which is already right and wrong(-2) again.  The reason is not to afffect drawing graph.
+# TODO:: Run before submit
+# TODO:: Answer history
+

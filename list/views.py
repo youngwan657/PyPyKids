@@ -7,6 +7,7 @@ import os
 from django.db.models import Q
 
 from .models import Quiz, Answer, Testcase, Category, Difficulty, User, Badge
+from .right import Right
 
 USERNAME = "Dayeon"
 MONTH = 31
@@ -15,12 +16,12 @@ MONTH = 31
 def all_category(request):
     difficulties = Difficulty.objects.order_by('id')
     answers = Answer.objects.filter(name=USERNAME)
-    right_quizzes = answers.filter(right=1).count()
-    wrong_quizzes = answers.filter(right=-1).count()
+    right_quizzes = answers.filter(right=Right.RIGHT.value).count()
+    wrong_quizzes = answers.filter(Q(right=Right.NOT_TRY.value) | Q(right=Right.WRONG_BUT_RIGHT_BEFORE.value)).count()
     quizzes = Quiz.objects.order_by('order').filter(visible=True)
     unsolved_quizzes = quizzes
     for answer in answers:
-        if answer.right == 1:
+        if answer.right == Right.RIGHT.value:
             unsolved_quizzes = unsolved_quizzes.filter(~Q(order=answer.quiz.order))
 
     # Chart
@@ -32,7 +33,11 @@ def all_category(request):
             labels.insert(0, now.strftime("%b %d"))
         else:
             labels.insert(0, now.strftime("%d"))
-        counts.insert(0, answers.filter(date__date=now, right=1).count())
+        count = answers\
+            .filter(date__date=now)\
+            .filter(Q(right=Right.RIGHT.value) | Q(right=Right.RIGHT.WRONG_BUT_RIGHT_BEFORE.value))\
+            .count()
+        counts.insert(0, count)
 
     context = {}
     context['difficulties'] = difficulties
@@ -52,7 +57,7 @@ def all_category(request):
     for difficulty in difficulties:
         categories = Category.objects.order_by('order').filter(difficulty=difficulty.id, visible=True)
         all_quizzes = Quiz.objects;
-        answers = Answer.objects.filter(name=USERNAME, right=1)
+        answers = Answer.objects.filter(name=USERNAME, right=Right.RIGHT.value)
         for category in categories:
             quizzes = all_quizzes.filter(category__name=category.name, visible=True)
             category.total_quiz = quizzes.count()
@@ -77,7 +82,7 @@ def badge(request):
 # TODO:: move to check when solving quiz.
 def add_badge():
     user = User.objects.get(name=USERNAME)
-    answers = Answer.objects.filter(name=USERNAME, right=1)
+    answers = Answer.objects.filter(name=USERNAME, right=Right.RIGHT.value)
     untaken_badges = Badge.objects.filter(~Q(user__name=USERNAME))
 
     # day streak
@@ -85,7 +90,7 @@ def add_badge():
     day_streak = 0
     for i in range(0, MONTH):
         now += timedelta(days=-1)
-        if answers.filter(date__date=now, right=1).count() == 0:
+        if answers.filter(date__date=now, right=Right.RIGHT.value).count() == 0:
             day_streak = i
             break
 
@@ -168,7 +173,7 @@ def show(request, quiz_order):
         'new_badge': new_badge,
         'quiz': quiz,
         'user_answer': user_answer,
-        'right': right,  # accepted(1) or wrong(-1)
+        'right': right,
         'right_modal': right_modal,  # accepted(1) or wrong(-1)
         'testcase': testcase,
         'output': output,
@@ -187,7 +192,7 @@ def answer(request, quiz_order):
     answer, created = Answer.objects.get_or_create(quiz__order=quiz_order, name=USERNAME)
     answer.quiz = quiz
     answer.answer = request.POST['answer']
-    if answer.right != 1:
+    if answer.right != Right.RIGHT.value and answer.right != Right.WRONG_BUT_RIGHT_BEFORE.value:
         answer.date = datetime.now()
 
     if quiz.quiz_type.name == "Code":
@@ -195,16 +200,19 @@ def answer(request, quiz_order):
     elif quiz.quiz_type.name == "Answer" or quiz.quiz_type.name == "MultipleChoice":
         # answer
         if answer.answer.replace(" ", "").strip() == testcases[0].expected_answer:
-            answer.right = 1
+            answer.right = Right.RIGHT.value
             answer.output = ""
         else:
-            answer.right = -1
+            if answer.right == Right.RIGHT.value or answer.right == Right.WRONG_BUT_RIGHT_BEFORE.value:
+                answer.right = Right.WRONG_BUT_RIGHT_BEFORE.value
+            else:
+                answer.right = Right.WRONG.value
             answer.output = answer.answer
 
     answer.save()
 
     quizzes = Quiz.objects.order_by('id').filter(visible=1).count()
-    answers = Answer.objects.filter(name=USERNAME, right=1).count()
+    answers = Answer.objects.filter(name=USERNAME, right=Right.RIGHT.value).count()
     if quizzes == answers:
         return render(request, 'list/congrats.html')
 
@@ -234,14 +242,14 @@ def check_answer(testcases, answer):
 
         testcase.expected_answer = testcase.expected_answer.replace("\r\n", "\n")
         if str(output) != testcase.expected_answer.strip():
-            answer.right = -1
+            answer.right = Right.WRONG.value
             answer.testcase = testcase.test
             answer.expected_answer = testcase.expected_answer
             answer.output = output
             answer.stdout = stdout
             return
 
-    answer.right = 1
+    answer.right = Right.RIGHT.value
     answer.testcase = ""
     answer.expected_answer = ""
     answer.output = ""
@@ -289,7 +297,6 @@ def show_all_quiz(request):
     return render(request, 'list/all_quiz.html', context)
 
 
-# TODO:: add one more right enum which is already right and wrong(-2) again.  The reason is not to afffect drawing graph.
 # TODO:: Run before submit
 # TODO:: Answer history
 

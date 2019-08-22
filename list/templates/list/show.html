@@ -192,7 +192,7 @@
         $('#animated-accepted').addClass('animated zoomIn');
         $('#successModal').modal('show');
         setTimeout(function() { $('#successModal').modal('hide');}, 2000);
-    {% elif right_modal == "-1" %}
+    {% elif right_modal == "-1" or right_modal == "-2" %}
         $('#animated-wrong').addClass('animated zoomIn');
         $('#wrongModal').modal('show');
         setTimeout(function() { $('#wrongModal').modal('hide');}, 2000);

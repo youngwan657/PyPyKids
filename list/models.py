@@ -4,6 +4,7 @@ from django.utils.timezone import now
 from ckeditor.fields import RichTextField
 from adminsortable.models import SortableMixin
 
+from .right import Right
 
 class QuizType(models.Model):
     name = models.CharField(max_length=20)
@@ -120,7 +121,7 @@ class Quiz(SortableMixin):
     option3 = models.TextField(default=None, blank=True, null=True)
     option4 = models.TextField(default=None, blank=True, null=True)
     date = models.DateTimeField(default=now)
-    right = 0
+    right = Right.NOT_TRY.value
 
     class Meta:
         ordering = ['-order']
@@ -152,7 +153,7 @@ class Answer(models.Model):
     answer = models.TextField(default=None, blank=True, null=True)
     date = models.DateTimeField(auto_now_add=True)
     name = models.CharField(max_length=20)
-    right = models.IntegerField(default=0)
+    right = models.IntegerField(default=Right.NOT_TRY.value)
     testcase = models.TextField(default=None, blank=True, null=True)
     stdout = models.TextField(default=None, blank=True, null=True)
     output = models.TextField(default=None, blank=True, null=True)

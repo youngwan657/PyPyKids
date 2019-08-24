@@ -1,4 +1,4 @@
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, render, redirect
 from django.http import HttpResponseRedirect
 from datetime import datetime, date, timedelta
 import subprocess
@@ -9,11 +9,18 @@ from django.db.models import Q
 from .models import Quiz, Answer, Testcase, Category, Difficulty, User, Badge
 from .right import Right
 
+# login, register
+from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django import forms
+from django.core.exceptions import ValidationError
+
 USERNAME = "Dayeon"
 MONTH = 31
 
 
 def all_category(request):
+    print(request.user.is_authenticated)
     difficulties = Difficulty.objects.order_by('id')
     answers = Answer.objects.filter(name=USERNAME)
     right_quizzes = answers.filter(right=Right.RIGHT.value).count()
@@ -33,9 +40,9 @@ def all_category(request):
             labels.insert(0, now.strftime("%b %d"))
         else:
             labels.insert(0, now.strftime("%d"))
-        count = answers\
-            .filter(date__date=now)\
-            .filter(Q(right=Right.RIGHT.value) | Q(right=Right.RIGHT.WRONG_BUT_RIGHT_BEFORE.value))\
+        count = answers \
+            .filter(date__date=now) \
+            .filter(Q(right=Right.RIGHT.value) | Q(right=Right.RIGHT.WRONG_BUT_RIGHT_BEFORE.value)) \
             .count()
         counts.insert(0, count)
 
@@ -229,7 +236,8 @@ def check_answer(testcases, answer):
         output = "None"
         stdout = ""
         try:
-            process = subprocess.Popen(['python', 'checking.py'] + testcase.test.split("\n"), stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+            process = subprocess.Popen(['python', 'checking.py'] + testcase.test.split("\n"), stdout=subprocess.PIPE,
+                                       stderr=subprocess.STDOUT)
             outs, errs = process.communicate(timeout=1)
             stdout = outs.decode("utf-8")
             if os.path.exists("checking_answer"):
@@ -284,6 +292,7 @@ def submit_playground(request):
 
     return render(request, 'list/playground.html', context)
 
+
 def show_all_quiz(request):
     quizzes = Quiz.objects.all()
     testcases = Testcase.objects.all()
@@ -297,6 +306,84 @@ def show_all_quiz(request):
     return render(request, 'list/all_quiz.html', context)
 
 
+class CustomUserCreationForm(UserCreationForm):
+    username = forms.CharField(label='Enter Username', min_length=4, max_length=40)
+    password1 = forms.CharField(label='Enter password', widget=forms.PasswordInput)
+    password2 = forms.CharField(label='Confirm password', widget=forms.PasswordInput)
+
+    def __init__(self, *args, **kwargs):
+        super(CustomUserCreationForm, self).__init__(*args, **kwargs)
+
+        for fieldname in ['username', 'password1', 'password2']:
+            self.fields[fieldname].help_text = None
+
+    # def clean_username(self):
+    #     username = self.cleaned_data['username'].lower()
+    #     print(username)
+    #     r = User.objects.filter(username=username)
+    #     print(r)
+    #     if r.count():
+    #         raise ValidationError("Username already exists")
+    #     return username
+
+    def clean_password2(self):
+        password1 = self.cleaned_data.get('password1')
+        password2 = self.cleaned_data.get('password2')
+
+        if password1 and password2 and password1 != password2:
+            raise ValidationError("Password don't match")
+
+        return password2
+
+    def save(self, commit=True):
+        user = User.objects.create_user(
+            self.cleaned_data['username'],
+            self.cleaned_data['password1']
+        )
+        return user
+
+def register(request):
+    if request.method == "POST":
+        form = CustomUserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return redirect("/")
+        else:
+            print(form.error_messages)
+
+    form = CustomUserCreationForm
+    context = {
+        'form': form,
+    }
+    return render(request, 'list/register.html', context)
+
+
+def logout_request(request):
+    logout(request)
+    return redirect("/")
+
+
+def login_request(request):
+    if request.method == 'POST':
+        form = AuthenticationForm(request=request, data=request.POST)
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            user = authenticate(username=username, password=password)
+            if user is not None:
+                login(request, user)
+                print("login")
+                return redirect('/')
+            else:
+                print("invalid")
+        else:
+            print("invalid")
+    form = AuthenticationForm()
+    context = {
+        'form': form,
+    }
+    return render(request, "list/login.html", context)
+
 # TODO:: Run before submit
 # TODO:: Answer history
-

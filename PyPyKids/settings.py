@@ -34,14 +34,14 @@ ALLOWED_HOSTS = ['dayeon.com', 'PyPyKids.com']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
-    'django.contrib.auth',
+    'django.contrib.auth',  # sign in
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'list.apps.ListConfig',
-    'ckeditor',
-    'adminsortable',
+    'ckeditor',         # rich edit
+    'adminsortable',    # sortable admin
 ]
 
 MIDDLEWARE = [
@@ -126,4 +126,3 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-

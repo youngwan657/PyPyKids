@@ -163,4 +163,4 @@ class Answer(models.Model):
         if self.quiz == None:
             return self.name + " " + str(self.date)
 
-        return str(self.quiz.order) + ". " + self.name + " " + str(self.date.strftime("%m-%d %H:%M"))
+        return str(self.quiz.order) + ". " + self.name + " " + str(self.date.strftime("%m-%d %H:%M")) + " right:" + str(self.right)

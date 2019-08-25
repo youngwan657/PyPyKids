@@ -24,7 +24,7 @@ def all_category(request):
     difficulties = Difficulty.objects.order_by('id')
     answers = Answer.objects.filter(name=USERNAME)
     right_quizzes = answers.filter(right=Right.RIGHT.value).count()
-    wrong_quizzes = answers.filter(Q(right=Right.NOT_TRY.value) | Q(right=Right.WRONG_BUT_RIGHT_BEFORE.value)).count()
+    wrong_quizzes = answers.filter(Q(right=Right.WRONG.value) | Q(right=Right.WRONG_BUT_RIGHT_BEFORE.value)).count()
     quizzes = Quiz.objects.order_by('order').filter(visible=True)
     unsolved_quizzes = quizzes
     for answer in answers:
@@ -42,7 +42,7 @@ def all_category(request):
             labels.insert(0, now.strftime("%d"))
         count = answers \
             .filter(date__date=now) \
-            .filter(Q(right=Right.RIGHT.value) | Q(right=Right.RIGHT.WRONG_BUT_RIGHT_BEFORE.value)) \
+            .filter(Q(right=Right.RIGHT.value) | Q(right=Right.WRONG_BUT_RIGHT_BEFORE.value)) \
             .count()
         counts.insert(0, count)
 

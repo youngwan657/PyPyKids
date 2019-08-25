@@ -4,7 +4,7 @@
 {% block content %}
 
 <div class="container animsition">
-    <form class="text-center border border-light p-5" action="/playground/run/" method="POST">
+    <form class="text-center border border-light p-5" action="/playground/" method="POST">
         {%csrf_token %}
         <p class="h4 mb-4">Playground</p>
         {% if code != "" %}

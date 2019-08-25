@@ -17,50 +17,49 @@ from django.core.exceptions import ValidationError
 
 from django.contrib.auth.models import User
 
-# TODO:: remove
-USERNAME = "Dayeon"
 MONTH = 31
 
-
 def all_category(request):
-    difficulties = Difficulty.objects.order_by('id')
-    answers = Answer.objects.filter(name=USERNAME)
-    right_quizzes = answers.filter(right=Right.RIGHT.value).count()
-    wrong_quizzes = answers.filter(Q(right=Right.WRONG.value) | Q(right=Right.WRONG_BUT_RIGHT_BEFORE.value)).count()
+    context = {}
     quizzes = Quiz.objects.order_by('order').filter(visible=True)
     unsolved_quizzes = quizzes
-    for answer in answers:
-        if answer.right == Right.RIGHT.value:
-            unsolved_quizzes = unsolved_quizzes.filter(~Q(order=answer.quiz.order))
-
-    # Chart
-    now = date.today() + timedelta(days=+1)
-    labels, counts = [], []
-    for i in range(0, MONTH):
-        now += timedelta(days=-1)
-        if now.strftime("%d") == "01" or i == 30:
-            labels.insert(0, now.strftime("%b %d"))
-        else:
-            labels.insert(0, now.strftime("%d"))
-        count = answers \
-            .filter(date=now) \
-            .filter(Q(right=Right.RIGHT.value) | Q(right=Right.WRONG_BUT_RIGHT_BEFORE.value)) \
-            .count()
-        counts.insert(0, count)
-
-        print(answers.filter(date=now).filter(Q(right=Right.RIGHT.value) | Q(right=Right.WRONG_BUT_RIGHT_BEFORE.value)))
-
-    context = {}
+    difficulties = Difficulty.objects.order_by('id')
     context['difficulties'] = difficulties
-    context['labels'] = labels
-    context['counts'] = counts
+    username = ""
 
-    # Circle chart
-    context['total_labels'] = ["Accepted", "Wrong", "Not Try"]
-    context['total_counts'] = [right_quizzes, wrong_quizzes, quizzes.count() - right_quizzes - wrong_quizzes]
+    if request.user.is_authenticated:
+        username = request.user.username
+        answers = Answer.objects.filter(name=username)
+        right_quizzes = answers.filter(right=Right.RIGHT.value).count()
+        wrong_quizzes = answers.filter(Q(right=Right.WRONG.value) | Q(right=Right.WRONG_BUT_RIGHT_BEFORE.value)).count()
+        for answer in answers:
+            if answer.right == Right.RIGHT.value:
+                unsolved_quizzes = unsolved_quizzes.filter(~Q(order=answer.quiz.order))
 
-    # Badge
-    context['badges'] = Badge.objects.filter(customuser__name=USERNAME)
+        # Chart
+        now = date.today() + timedelta(days=+1)
+        labels, counts = [], []
+        for i in range(0, MONTH):
+            now += timedelta(days=-1)
+            if now.strftime("%d") == "01" or i == 30:
+                labels.insert(0, now.strftime("%b %d"))
+            else:
+                labels.insert(0, now.strftime("%d"))
+            count = answers \
+                .filter(date=now) \
+                .filter(Q(right=Right.RIGHT.value) | Q(right=Right.WRONG_BUT_RIGHT_BEFORE.value)) \
+                .count()
+            counts.insert(0, count)
+
+        context['labels'] = labels
+        context['counts'] = counts
+
+        # Circle chart
+        context['total_labels'] = ["Accepted", "Wrong", "Not Try"]
+        context['total_counts'] = [right_quizzes, wrong_quizzes, quizzes.count() - right_quizzes - wrong_quizzes]
+
+        # Badge
+        context['badges'] = Badge.objects.filter(customuser__name=username)
 
     # Today's Question
     context['quiz'] = unsolved_quizzes.order_by('?').first()
@@ -68,7 +67,7 @@ def all_category(request):
     for difficulty in difficulties:
         categories = Category.objects.order_by('order').filter(difficulty=difficulty.id, visible=True)
         all_quizzes = Quiz.objects;
-        answers = Answer.objects.filter(name=USERNAME, right=Right.RIGHT.value)
+        answers = Answer.objects.filter(name=username, right=Right.RIGHT.value)
         for category in categories:
             quizzes = all_quizzes.filter(category__name=category.name, visible=True)
             category.total_quiz = quizzes.count()
@@ -79,6 +78,7 @@ def all_category(request):
 
         context["level" + str(difficulty.id)] = categories
 
+    context['username'] = username
     return render(request, 'list/all_category.html', context)
 
 
@@ -91,10 +91,10 @@ def badge(request):
 
 
 # TODO:: move to check when solving quiz.
-def add_badge():
-    custom_user = CustomUser.objects.get(name=USERNAME)
-    answers = Answer.objects.filter(name=USERNAME, right=Right.RIGHT.value)
-    untaken_badges = Badge.objects.filter(~Q(customuser__name=USERNAME))
+def add_badge(username):
+    custom_user = CustomUser.objects.get(name=username)
+    answers = Answer.objects.filter(name=username, right=Right.RIGHT.value)
+    untaken_badges = Badge.objects.filter(~Q(customuser__name=username))
 
     # day streak
     now = date.today() + timedelta(days=+1)
@@ -133,25 +133,28 @@ def add_badge():
 
 def category(request, category):
     quizzes = Quiz.objects.filter(category__name=category, visible=True).order_by('order')
-    answers = Answer.objects.filter(name=USERNAME)
     right_quizzes = 0
-    for quiz in quizzes:
-        answer = answers.filter(quiz__order=quiz.order)
-        quiz.right = 0
-        if len(answer) > 0:
-            quiz.right = answer[0].right
-        if quiz.right == 1:
-            right_quizzes += 1
+    right_percent = 0
+    if request.user.is_authenticated:
+        answers = Answer.objects.filter(name=request.user.username)
+        right_quizzes = 0
+        for quiz in quizzes:
+            answer = answers.filter(quiz__order=quiz.order)
+            quiz.right = 0
+            if len(answer) > 0:
+                quiz.right = answer[0].right
+            if quiz.right == 1:
+                right_quizzes += 1
 
-    if quizzes.count() == 0:
-        right_percent = 100
-    else:
-        right_percent = right_quizzes / quizzes.count() * 100
+        if quizzes.count() == 0:
+            right_percent = 100
+        else:
+            right_percent = right_quizzes / quizzes.count() * 100
 
     context = {
+        "username": request.user.username,
         "category": category,
         "quizzes": quizzes,
-
         "total_quiz": quizzes.count(),
         "right": right_quizzes,
         "right_percent": right_percent,
@@ -160,6 +163,7 @@ def category(request, category):
     return render(request, 'list/category.html', context)
 
 
+# TODO:: redirect to login page if not login
 def show(request, quiz_order):
     quiz = get_object_or_404(Quiz, order=quiz_order)
     next = Quiz.objects.filter(visible=True).filter(order__gt=quiz_order).first()
@@ -167,7 +171,7 @@ def show(request, quiz_order):
     # TODO: use get instead of filter
     right_modal = request.GET.get('right_modal')
     right, user_answer, testcase, output, stdout, expected_answer = 0, "", "", "", "", ""
-    answer = Answer.objects.filter(quiz__order=quiz_order, name=USERNAME)
+    answer = Answer.objects.filter(quiz__order=quiz_order, name=request.user.username)
     if len(answer) == 1:
         right = answer[0].right
         user_answer = answer[0].answer
@@ -178,14 +182,16 @@ def show(request, quiz_order):
     else:
         user_answer = quiz.answer_header
 
-    new_badge = add_badge()
+    new_badge = None
+    if request.user.is_authenticated:
+        new_badge = add_badge(request.user.username)
 
     context = {
         'new_badge': new_badge,
         'quiz': quiz,
         'user_answer': user_answer,
         'right': right,
-        'right_modal': right_modal,  # accepted(1) or wrong(-1)
+        'right_modal': right_modal,
         'testcase': testcase,
         'output': output,
         'stdout': stdout,
@@ -200,7 +206,7 @@ def show(request, quiz_order):
 def answer(request, quiz_order):
     quiz = get_object_or_404(Quiz, order=quiz_order)
     testcases = Testcase.objects.filter(quiz__order=quiz_order)
-    answer, created = Answer.objects.get_or_create(quiz__order=quiz_order, name=USERNAME)
+    answer, created = Answer.objects.get_or_create(quiz__order=quiz_order, name=request.user.username)
     answer.quiz = quiz
     answer.answer = request.POST['answer']
     if answer.right != Right.RIGHT.value and answer.right != Right.WRONG_BUT_RIGHT_BEFORE.value:
@@ -221,11 +227,6 @@ def answer(request, quiz_order):
             answer.output = answer.answer
 
     answer.save()
-
-    quizzes = Quiz.objects.order_by('id').filter(visible=1).count()
-    answers = Answer.objects.filter(name=USERNAME, right=Right.RIGHT.value).count()
-    if quizzes == answers:
-        return render(request, 'list/congrats.html')
 
     return HttpResponseRedirect('/' + str(quiz.order) + "?right_modal=" + str(answer.right))
 
@@ -269,30 +270,24 @@ def check_answer(testcases, answer):
 
 
 def playground(request):
-    context = {
+    context = {}
+    if request.method == "POST":
+        f = open("playground.py", "w+")
+        code = request.POST['code']
+        f.write(code)
+        f.close()
+        try:
+            process = subprocess.Popen(['python', 'playground.py'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+            outs, errs = process.communicate(timeout=1)
+            stdout = outs.decode("utf-8")
+        except subprocess.TimeoutExpired:
+            process.kill()
+            stdout = "TIMEOUT ERROR"
 
-    }
-
-    return render(request, 'list/playground.html', context)
-
-
-def submit_playground(request):
-    f = open("checking.py", "w+")
-    code = request.POST['code']
-    f.write(code)
-    f.close()
-    try:
-        process = subprocess.Popen(['python', 'checking.py'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-        outs, errs = process.communicate(timeout=1)
-        stdout = outs.decode("utf-8")
-    except subprocess.TimeoutExpired:
-        process.kill()
-        stdout = "TIMEOUT ERROR"
-
-    context = {
-        'code': code,
-        'stdout': stdout,
-    }
+        context = {
+            'code': code,
+            'stdout': stdout,
+        }
 
     return render(request, 'list/playground.html', context)
 
@@ -324,9 +319,7 @@ class CustomUserCreationForm(UserCreationForm):
 
     def clean_username(self):
         username = self.cleaned_data['username'].lower()
-        print(username)
         r = User.objects.filter(username=username)
-        print(r.count())
         if r.count():
             raise ValidationError("Username already exists")
         return username

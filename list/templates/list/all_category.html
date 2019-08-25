@@ -3,8 +3,11 @@
 
 
 <main>
+    {% if username != "" %}
     <!-- Badge -->
     <div class="container">
+        <br/>
+        Hi, {{ username }}
         <hr/>
         {% for badge in badges %}
         {{ badge.html|safe }}
@@ -38,6 +41,7 @@
                             responsive: true
                         }
                     });
+
                 </script>
             </div>
 
@@ -74,6 +78,7 @@
                             responsive: true
                         }
                     });
+
                 </script>
             </div>
         </div>
@@ -106,9 +111,11 @@
             </ul>
         </div>
     </div>
+    {% endif %}
 
 
     <!-- Today's question -->
+    <br/>
     <div class="container">
         <div class="row text-left">
             <a href="/{{ today_quiz.order }}" class="blue-text">

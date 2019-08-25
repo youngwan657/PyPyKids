@@ -1,8 +1,8 @@
 from django.db import models
 
-from django.utils.timezone import now
 from ckeditor.fields import RichTextField
 from adminsortable.models import SortableMixin
+from django.utils import timezone
 
 from .right import Right
 
@@ -44,7 +44,7 @@ class Badge(SortableMixin):
         return str(self.name)
 
 
-class User(models.Model):
+class CustomUser(models.Model):
     name = models.CharField(max_length=30)
     badges = models.ManyToManyField(Badge)
 
@@ -110,7 +110,6 @@ class Quiz(SortableMixin):
     title = models.CharField(max_length=100, default=None, blank=True, null=True)
     question = RichTextField(default=None, blank=True, null=True)
     example = RichTextField(default=default_example, blank=True, null=True)
-    date = models.DateTimeField(auto_now_add=True)
     hint = models.TextField(default=None, blank=True, null=True)
     quiz_type = models.ForeignKey(QuizType, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
@@ -120,7 +119,7 @@ class Quiz(SortableMixin):
     option2 = models.TextField(default=None, blank=True, null=True)
     option3 = models.TextField(default=None, blank=True, null=True)
     option4 = models.TextField(default=None, blank=True, null=True)
-    date = models.DateTimeField(default=now)
+    date = models.DateTimeField(default=timezone.now)
     right = Right.NOT_TRY.value
 
     class Meta:
@@ -150,17 +149,16 @@ class Testcase(models.Model):
 class Answer(models.Model):
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE, blank=True, null=True)
     answer = models.TextField(default=None, blank=True, null=True)
-    date = models.DateTimeField(auto_now_add=True)
     name = models.CharField(max_length=20)
     right = models.IntegerField(default=Right.NOT_TRY.value)
     testcase = models.TextField(default=None, blank=True, null=True)
     stdout = models.TextField(default=None, blank=True, null=True)
     output = models.TextField(default=None, blank=True, null=True)
     expected_answer = models.TextField(default=None, blank=True, null=True)
-    date = models.DateTimeField(default=now)
+    date = models.DateField(default=timezone.now)
 
     def __str__(self):
         if self.quiz == None:
             return self.name + " " + str(self.date)
 
-        return str(self.quiz.order) + ". " + self.name + " " + str(self.date.strftime("%m-%d %H:%M")) + " right:" + str(self.right)
+        return str(self.quiz.order) + ". " + self.name + " " + str(self.date.strftime("%Y-%m-%d")) + " right:" + str(self.right)

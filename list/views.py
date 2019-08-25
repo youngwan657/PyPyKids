@@ -6,7 +6,7 @@ import os
 
 from django.db.models import Q
 
-from .models import Quiz, Answer, Testcase, Category, Difficulty, User, Badge
+from .models import Quiz, Answer, Testcase, Category, Difficulty, CustomUser, Badge
 from .right import Right
 
 # login, register
@@ -15,12 +15,14 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django import forms
 from django.core.exceptions import ValidationError
 
+from django.contrib.auth.models import User
+
+# TODO:: remove
 USERNAME = "Dayeon"
 MONTH = 31
 
 
 def all_category(request):
-    print(request.user.is_authenticated)
     difficulties = Difficulty.objects.order_by('id')
     answers = Answer.objects.filter(name=USERNAME)
     right_quizzes = answers.filter(right=Right.RIGHT.value).count()
@@ -41,10 +43,12 @@ def all_category(request):
         else:
             labels.insert(0, now.strftime("%d"))
         count = answers \
-            .filter(date__date=now) \
+            .filter(date=now) \
             .filter(Q(right=Right.RIGHT.value) | Q(right=Right.WRONG_BUT_RIGHT_BEFORE.value)) \
             .count()
         counts.insert(0, count)
+
+        print(answers.filter(date=now).filter(Q(right=Right.RIGHT.value) | Q(right=Right.WRONG_BUT_RIGHT_BEFORE.value)))
 
     context = {}
     context['difficulties'] = difficulties
@@ -56,7 +60,7 @@ def all_category(request):
     context['total_counts'] = [right_quizzes, wrong_quizzes, quizzes.count() - right_quizzes - wrong_quizzes]
 
     # Badge
-    context['badges'] = Badge.objects.filter(user__name=USERNAME)
+    context['badges'] = Badge.objects.filter(customuser__name=USERNAME)
 
     # Today's Question
     context['quiz'] = unsolved_quizzes.order_by('?').first()
@@ -88,31 +92,31 @@ def badge(request):
 
 # TODO:: move to check when solving quiz.
 def add_badge():
-    user = User.objects.get(name=USERNAME)
+    custom_user = CustomUser.objects.get(name=USERNAME)
     answers = Answer.objects.filter(name=USERNAME, right=Right.RIGHT.value)
-    untaken_badges = Badge.objects.filter(~Q(user__name=USERNAME))
+    untaken_badges = Badge.objects.filter(~Q(customuser__name=USERNAME))
 
     # day streak
     now = date.today() + timedelta(days=+1)
     day_streak = 0
     for i in range(0, MONTH):
         now += timedelta(days=-1)
-        if answers.filter(date__date=now, right=Right.RIGHT.value).count() == 0:
+        if answers.filter(date=now, right=Right.RIGHT.value).count() == 0:
             day_streak = i
             break
 
     for badge in untaken_badges:
         if badge.type.name == "DayStreak" and badge.value <= day_streak:
-            user.badges.add(badge)
-            user.save()
+            custom_user.badges.add(badge)
+            custom_user.save()
             return badge
 
     # quiz per day
-    quiz_per_day = answers.filter(date__date=datetime.now()).count()
+    quiz_per_day = answers.filter(date=date.today()).count()
     for badge in untaken_badges:
         if badge.type.name == "QuizPerDay" and badge.value <= quiz_per_day:
-            user.badges.add(badge)
-            user.save()
+            custom_user.badges.add(badge)
+            custom_user.save()
             return badge
 
     # total quiz
@@ -120,8 +124,8 @@ def add_badge():
 
     for badge in untaken_badges:
         if badge.type.name == "TotalQuiz" and badge.value <= total_quiz:
-            user.badges.add(badge)
-            user.save()
+            custom_user.badges.add(badge)
+            custom_user.save()
             return badge
 
     return None
@@ -306,6 +310,7 @@ def show_all_quiz(request):
     return render(request, 'list/all_quiz.html', context)
 
 
+# TODO:: always show password mismatch error
 class CustomUserCreationForm(UserCreationForm):
     username = forms.CharField(label='Enter Username', min_length=4, max_length=40)
     password1 = forms.CharField(label='Enter password', widget=forms.PasswordInput)
@@ -317,14 +322,14 @@ class CustomUserCreationForm(UserCreationForm):
         for fieldname in ['username', 'password1', 'password2']:
             self.fields[fieldname].help_text = None
 
-    # def clean_username(self):
-    #     username = self.cleaned_data['username'].lower()
-    #     print(username)
-    #     r = User.objects.filter(username=username)
-    #     print(r)
-    #     if r.count():
-    #         raise ValidationError("Username already exists")
-    #     return username
+    def clean_username(self):
+        username = self.cleaned_data['username'].lower()
+        print(username)
+        r = User.objects.filter(username=username)
+        print(r.count())
+        if r.count():
+            raise ValidationError("Username already exists")
+        return username
 
     def clean_password2(self):
         password1 = self.cleaned_data.get('password1')

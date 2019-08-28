@@ -1,18 +1,51 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<h2>Login</h2>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Login</button>
-</form>
-<p><a href="{% url 'logout' %}">logout</a></p>
+{% extends 'list/base.html' %}
+{% load static %}
 
-</body>
-</html>
+{% block content %}
+<div class="loader">
+    <div class="loading-animation"></div>
+</div>
 
+<section class="min-vh-100 py-5">
+    <div class="container">
+        <div class="row justify-content-center mb-md-6">
+            <div class="col-auto">
+                <a href="index.html">
+                    <img src="{% static 'assets/img/logo.svg' %}" alt="Leap">
+                </a>
+            </div>
+        </div>
+        <div class="row justify-content-center pt-6">
+            <div class="col-xl-4 col-lg-5 col-md-6">
+                <div class="text-center mb-4">
+                    <h1 class="mb-1">Welcome back</h1>
+                    <span>Enter your account details below</span>
+                </div>
+
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <input type="id" name="username" placeholder="Username" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <input type="password" name="password" placeholder="Password" class="form-control">
+                        <small><a href="#">Forgot your password?</a>
+                        </small>
+                    </div>
+                    <div class="form-group">
+                        <button class="btn-block btn btn-primary" type="submit">Sign in</button>
+                    </div>
+                    <div class="custom-control custom-checkbox">
+                        <input type="checkbox" class="custom-control-input" id="login-remember">
+                    </div>
+                    <hr>
+                    <div class="text-center text-small text-muted">
+                <span>Don't have an account yet? <a href="#">Create one</a>
+                </span>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

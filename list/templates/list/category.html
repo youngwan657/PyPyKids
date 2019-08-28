@@ -1,68 +1,62 @@
 {% extends 'list/base.html' %}
+{% load static %}
 
 {% block content %}
-
-
-<main>
-    {% if username != "" %}
-    <div class="container">
-        <section class="mt-5 wow fadeIn">
-            <table class="table">
-                <thead>
-                <tr class="table-primary">
-                    <th scope="col" colspan="2"><b>DAYEON</b></th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <th scope="row" style="width: 20%">Solved Question</th>
-                    <td><span class="badge badge-pill badge-success">{{ right }} / {{ total_quiz }}</span></td>
-                </tr>
-                <tr>
-                    <th scope="row">Progress</th>
-                    <td>
-                        <div class="progress" style="height: 30px;">
-                            <div class="progress-bar bg-success" role="progressbar" style="width: {{ right_percent }}%"
-                                 aria-valuenow="{{ right_percent }}" aria-valuemin="0" aria-valuemax="100">{{ right }}
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </section>
-    </div>
-    {% endif %}
-
-    <div class="container">
-        <div class="row mt-1">
-            <div class="col-md-12">
-                <ul class="stepper stepper-vertical">
-                    {% for quiz in quizzes %}
-                    {% if quiz.visible %}
-                    {% if quiz.right == 1 %}
-                    <li>{% endif %}
-                        {% if quiz.right == -1 %}
-                    <li class="warning">{% endif %}
-                        {% if quiz.right == 0 %}
-                    <li class="completed">{% endif %}
-                        <a href="/{{ quiz.order }}">
-                            <span class="circle">{{ forloop.counter }}</span>
-                            <span class="label step-title waves-effect waves-dark">{{ quiz.title|linebreaksbr }}</span>
-                        </a>
-
-                        <div class="step-content lighten-3">
-                            {% if quiz.question %}
-                            <pre><code>{{ quiz.question|safe }}</code></pre>
-                            {% endif %}
-                        </div>
-                    </li>
-                    {% endif %}
-                    {% endfor %}
-                </ul>
+<section class="bg-dark text-light header-inner p-0 jarallax position-relative" data-jarallax data-speed="0.2"
+         data-overlay>
+    <img src="{% static 'assets/img/inner-4.jpg' %}" alt="Image" class="jarallax-img opacity-40">
+    <div class="container py-0">
+        <div class="row my-4 my-md-6" data-aos="fade-up">
+            <div class="col-lg-9 col-xl-8">
+                <h1><span data-typed-text data-loop="true" data-type-speed="65"
+                          data-strings='["Hi, {{ username }}", "You are in {{ category }}"]'></span></h1>
             </div>
         </div>
     </div>
-</main>
+    <div class="divider">
+        <img src="{% static 'assets/img/dividers/divider-2.svg' %}" alt="graphical divider" data-inject-svg/>
+    </div>
+</section>
+
+<section>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10 col-xl-8">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/">Home</a></li>
+                        <li class="breadcrumb-item"><a href="/#{{ difficulty }}">{{ difficulty }}</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">{{ category }}</li>
+                    </ol>
+                </nav>
+
+                <h2 class="h1 mt-3 mb-4">{{ category }}</h2>
+
+                {% for quiz in quizzes %}
+                <a href="/{{ quiz.order }}" class="card card-body hover-shadow-sm">
+                    {% if quiz.right == 1 %}
+                    <img class="icon icon-lg bg-success" src="{% static 'assets/img/icons/theme/code/done-circle.svg' %}" alt="done-circle icon" data-inject-svg />
+                    {% elif quiz.right < 0 %}
+                    <img class="icon icon-lg bg-danger" src="{% static 'assets/img/icons/theme/code/error-circle.svg' %}" alt="error-circle icon" data-inject-svg />
+                    {% endif %}
+
+                    <h4 class="mb-2">{{ quiz.title | linebreaksbr }}</h4>
+                    <pre><code>{{ quiz.question|safe }}</code></pre>
+                    <div class="d-flex justify-content-between align-items-center mt-3">
+                        <div class="d-flex align-items-center">
+                            <img src="{% static 'assets/img/avatars/male-5.jpg' %}" alt="Avatar" class="avatar">
+                        </div>
+                        <span class="badge bg-primary-alt text-primary">
+                            <img class="icon bg-primary" src="{% static 'assets/img/icons/interface/heart.svg' %}"
+                               alt="heart interface icon"
+                               data-inject-svg/>0
+                        </span>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
 {% endblock %}
 

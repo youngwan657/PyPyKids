@@ -1,255 +1,253 @@
 {% load static %}
-{% load staticfiles %}
 
 <html lang="en">
 <head>
+    <meta charset="utf-8">
     <title>PyPyKids</title>
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A corporate Bootstrap theme by Medium Rare">
     <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
-
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
-    <!-- CSS -->
-    <!-- Font -->
-    <link href="https://fonts.googleapis.com/css?family=Notable&display=swap" rel="stylesheet">
-
-    <!-- MD bootstrap-->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.5/css/mdb.min.css" rel="stylesheet">
-
-    <!-- Accecpted, Wrong Icon -->
-    <link href="{% static 'list/open-iconic-bootstrap.css' %}" rel="stylesheet">
-
-    <!-- Main Stylesheet File -->
-    <link rel="stylesheet" type="text/css" href="{% static 'list/style.css' %}">
-
-    <!-- Page transition -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/animsition/4.0.2/css/animsition.min.css" rel="stylesheet">
-
-
-    <!-- Javascript -->
-    <!-- JQuery -->
-    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
-
-    <!-- Bootstrap tooltips -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
-            crossorigin="anonymous"></script>
-
-    <!-- Bootstrap core JavaScript -->
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-            crossorigin="anonymous"></script>
-
-    <!-- MDB core JavaScript -->
-    <script type="text/javascript"
-            src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.8.5/js/mdb.min.js"></script>
-
-    <!-- Page transition -->
-    <script type="text/javascript"
-            src="https://cdnjs.cloudflare.com/ajax/libs/animsition/4.0.2/js/animsition.min.js"></script>
-
-
-    <!-- Custom -->
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
-    <style type="text/css">
-    html,
-    body,
-    header,
-    .carousel {
-      height: 60vh;
-    }
-
-    @media (max-width: 740px) {
-
-      html,
-      body,
-      header,
-      .carousel {
-        height: 100vh;
-      }
-    }
-
-    @media (min-width: 800px) and (max-width: 850px) {
-
-      html,
-      body,
-      header,
-      .carousel {
-        height: 100vh;
-      }
-    }
-
-    @media (min-width: 800px) and (max-width: 850px) {
-      .navbar:not(.top-nav-collapse) {
-        background: #929FBA !important;
-      }
-    }
-
-
-
-    </style>
+    <link href="{% static 'assets/css/loaders/loader-typing.css' %}" rel="stylesheet" type="text/css" media="all"/>
+    <link href="{% static 'assets/css/theme.css' %}" rel="stylesheet" type="text/css" media="all"/>
+    <link rel="preload" as="font" href="{% static 'assets/fonts/Inter-UI-upright.var.woff2' %}" type="font/woff2"
+          crossorigin="anonymous">
+    <link rel="preload" as="font" href="{% static 'assets/fonts/Inter-UI.var.woff2' %}" type="font/woff2"
+          crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 </head>
 
+
 <body>
-<!--Main Navigation-->
-<header class="animsition">
-    <!-- Navbar -->
-    <nav class="navbar fixed-top navbar-expand-lg navbar-dark scrolling-navbar">
+<div class="loader">
+    <div class="loading-animation"></div>
+</div>
+<div class="navbar-container ">
+    <nav class="navbar navbar-expand-lg bg-white navbar-light" data-sticky="top">
         <div class="container">
-
-            <!-- Brand -->
-            <a class="navbar-brand" href="/" target="">
-                <strong>PyPyKids</strong>
+            <a class="navbar-brand fade-page" href="/">
+                <!--<img src="{% static 'assets/img/logo.svg' %}" alt="Leap">-->
+                PyPyKids
             </a>
-
-            <!-- Collapse -->
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <img class="icon navbar-toggler-open" src="{% static 'assets/img/icons/interface/menu.svg' %}"
+                     alt="menu interface icon" data-inject-svg/>
+                <img class="icon navbar-toggler-close" src="{% static 'assets/img/icons/interface/cross.svg' %}"
+                     alt="cross interface icon" data-inject-svg/>
             </button>
-
-            <!-- Links -->
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-
-                <!-- Left -->
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="/badge">Badge
-                            <span class="sr-only">(current)</span>
-                        </a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link" href="/playground">Playground</span>
-                    </li>
-                </ul>
-
-                <!-- Right -->
-                <ul class="navbar-nav nav-flex-icons">
-                    <li class="nav-item">
-                        <a href="https://www.facebook.com/Pypykids-107933803901347"
-                           class="nav-link border border-light rounded"
-                           target="_blank">
-                            <i class="fab fa-facebook-square"></i> Facebook
-                        </a>
-                    </li>
-                </ul>
-
+            <div class="collapse navbar-collapse justify-content-start">
+                <div class="py-2 py-lg-0">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a href="/about" class="nav-link" aria-expanded="false" aria-haspopup="true">About Us</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/badge" class="nav-link" aria-expanded="false" aria-haspopup="true">Badges</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/playground" class="nav-link" aria-expanded="false" aria-haspopup="true">Playground</a>
+                        </li>
+                    </ul>
+                </div>
             </div>
+
+            {% if username == "" %}
+            <div class="collapse navbar-collapse justify-content-end">
+                <a href="/login" class="btn ml-lg-3">Sign in</a>
+                <a href="/register" class="btn btn-primary ml-lg-3">Sign up</a>
+            </div>
+            {% endif %}
         </div>
     </nav>
-    <!-- Navbar -->
-
-    <!--Carousel Wrapper-->
-    <div id="video-carousel-example" class="carousel slide carousel-fade" data-ride="carousel">
-        <!--Indicators-->
-        <ol class="carousel-indicators">
-            <li data-target="#video-carousel-example" data-slide-to="0" class="active"></li>
-            <li data-target="#video-carousel-example" data-slide-to="1"></li>
-            <li data-target="#video-carousel-example" data-slide-to="2"></li>
-        </ol>
-        <!--/.Indicators-->
-        <!--Slides-->
-        <div class="carousel-inner" role="listbox">
-            <div class="carousel-item active">
-                <video class="video-fluid" autoplay loop muted>
-                    <source src="https://mdbootstrap.com/img/video/Tropical.mp4" type="video/mp4"/>
-                </video>
-            </div>
-            <div class="carousel-item">
-                <video class="video-fluid" autoplay loop muted>
-                    <source src="https://mdbootstrap.com/img/video/forest.mp4" type="video/mp4"/>
-                </video>
-            </div>
-            <div class="carousel-item">
-                <video class="video-fluid" autoplay loop muted>
-                    <source src="https://mdbootstrap.com/img/video/Agua-natural.mp4" type="video/mp4"/>
-                </video>
-            </div>
-        </div>
-        <!--/.Slides-->
-        <!--Controls-->
-        <a class="carousel-control-prev" href="#video-carousel-example" role="button" data-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="sr-only">Previous</span>
-        </a>
-        <a class="carousel-control-next" href="#video-carousel-example" role="button" data-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="sr-only">Next</span>
-        </a>
-        <!--/.Controls-->
-    </div>
-    <!--Carousel Wrapper-->
-
-</header>
-<!--Main Navigation-->
-
+</div>
 {% block content %}
 {% endblock %}
 
 
 <!--Footer-->
-<footer class="page-footer text-center font-small mt-4 wow fadeIn">
+<footer class="pb-4 bg-primary-3 text-light" id="footer">
+    <div class="container">
+        <div class="row mb-5">
+            <div class="col-6 col-lg-3 col-xl-2">
+                <h5>Navigate</h5>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">Demos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">Pages</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">Blog</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">Portfolio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">Elements</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-6 col-lg">
+                <h5>Contact</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-3 d-flex">
+                        <img class="icon" src="{% static 'assets/img/icons/theme/map/marker-1.svg' %}"
+                             alt="marker-1 icon"
+                             data-inject-svg/>
+                        <div class="ml-3">
+                  <span>Gabilian Street
+                    <br/>Los Altos, CA</span>
+                        </div>
+                    </li>
+                    <li class="mb-3 d-flex">
+                        <img class="icon" src="{% static 'assets/img/icons/theme/communication/mail.svg' %}"
+                             alt="mail icon"
+                             data-inject-svg/>
+                        <div class="ml-3">
+                            <a href="#">PyPyKids@gmail.com</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-lg-5 col-xl-4 mt-3 mt-lg-0">
+                <h5>Subscribe</h5>
+                <p>The latest Leap news, articles, and resources, sent straight to your inbox every month.</p>
+                <form action="/forms/mailchimp.php" data-form-email novalidate>
+                    <div class="form-row">
+                        <div class="col-12">
+                            <input type="email" class="form-control mb-2" placeholder="Email Address" name="email"
+                                   required>
+                        </div>
+                        <div class="col-12">
+                            <div class="d-none alert alert-success" role="alert" data-success-message>
+                                Thanks, a member of our team will be in touch shortly.
+                            </div>
+                            <div class="d-none alert alert-danger" role="alert" data-error-message>
+                                Please fill all fields correctly.
+                            </div>
+                            <div data-recaptcha data-sitekey="INSERT_YOUR_RECAPTCHA_V2_SITEKEY_HERE"
+                                 data-size="invisible" data-badge="bottomleft">
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-loading btn-block"
+                                    data-loading-text="Sending">
+                                <img class="icon" src="{% static 'assets/img/icons/theme/code/loading.svg' %}"
+                                     alt="loading icon"
+                                     data-inject-svg/>
+                                <span>Subscribe</span>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                <small class="text-muted form-text">We’ll never share your details. See our <a href="#">Privacy
+                    Policy</a>
+                </small>
 
-    <hr class="my-4">
-
-    <!-- Social icons -->
-    <div class="pb-4">
-        <a href="https://www.facebook.com/mdbootstrap" target="_blank">
-            <i class="fab fa-facebook-f mr-3"></i>
-        </a>
-
-        <a href="https://twitter.com/MDBootstrap" target="_blank">
-            <i class="fab fa-twitter mr-3"></i>
-        </a>
-
-        <a href="https://www.youtube.com/watch?v=7MUISDJ5ZZ4" target="_blank">
-            <i class="fab fa-youtube mr-3"></i>
-        </a>
-
-        <a href="https://plus.google.com/u/0/b/107863090883699620484" target="_blank">
-            <i class="fab fa-google-plus-g mr-3"></i>
-        </a>
-
-        <a href="https://dribbble.com/mdbootstrap" target="_blank">
-            <i class="fab fa-dribbble mr-3"></i>
-        </a>
-
-        <a href="https://pinterest.com/mdbootstrap" target="_blank">
-            <i class="fab fa-pinterest mr-3"></i>
-        </a>
-
-        <a href="https://github.com/mdbootstrap/bootstrap-material-design" target="_blank">
-            <i class="fab fa-github mr-3"></i>
-        </a>
-
-        <a href="http://codepen.io/mdbootstrap/" target="_blank">
-            <i class="fab fa-codepen mr-3"></i>
-        </a>
+            </div>
+        </div>
+        <div class="row justify-content-center mb-2">
+            <div class="col-auto">
+                <ul class="nav">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <img class="icon undefined" src="{% static 'assets/img/icons/social/instagram.svg' %}"
+                                 alt="instagram social icon" data-inject-svg/>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <img class="icon undefined" src="{% static 'assets/img/icons/social/twitter.svg' %}"
+                                 alt="twitter social icon" data-inject-svg/>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <img class="icon undefined" src="{% static 'assets/img/icons/social/youtube.svg' %}"
+                                 alt="youtube social icon" data-inject-svg/>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <img class="icon undefined" src="{% static 'assets/img/icons/social/medium.svg' %}"
+                                 alt="medium social icon" data-inject-svg/>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <img class="icon undefined" src="{% static 'assets/img/icons/social/facebook.svg' %}"
+                                 alt="facebook social icon" data-inject-svg/>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col col-md-auto text-center">
+                <small class="text-muted">&copy;2019 This page is protected by reCAPTCHA and is subject to the Google <a
+                        href="https://www.google.com/policies/privacy/">Privacy Policy</a> and <a
+                        href="https://policies.google.com/terms">Terms of Service.</a>
+                </small>
+            </div>
+        </div>
     </div>
-    <!-- Social icons -->
-
-    <!--Copyright-->
-    <div class="footer-copyright py-3">
-        © 2019 Copyright:
-        <a href="https://dayeon.com/" target="_blank"> PyPyKids.com </a>
-    </div>
-    <!--/.Copyright-->
-
 </footer>
-<!--/.Footer-->
+<a href="#" class="btn back-to-top btn-primary btn-round" data-smooth-scroll data-aos="fade-up"
+   data-aos-anchor="section:last-of-type" data-aos-mirror="true" data-aos-once="false">
+    <img class="icon" src="{% static 'assets/img/icons/theme/navigation/arrow-up.svg' %}" alt="arrow-up icon"
+         data-inject-svg/>
+</a>
+<!-- Required vendor scripts (Do not remove) -->
+<script type="text/javascript" src="{% static 'assets/js/jquery.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'assets/js/popper.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'assets/js/bootstrap.js' %}"></script>
 
+<!-- Optional Vendor Scripts (Remove the plugin script here and comment initializer script out of index.js if site does not use that feature) -->
 
-<!-- Initializations -->
+<!-- AOS (Animate On Scroll - animates elements into view while scrolling down) -->
+<script type="text/javascript" src="{% static 'assets/js/aos.js' %}"></script>
+<!-- Clipboard (copies content from browser into OS clipboard) -->
+<script type="text/javascript" src="{% static 'assets/js/clipboard.js' %}"></script>
+<!-- Fancybox (handles image and video lightbox and galleries) -->
+<script type="text/javascript" src="{% static 'assets/js/jquery.fancybox.min.js' %}"></script>
+<!-- Flatpickr (calendar/date/time picker UI) -->
+<script type="text/javascript" src="{% static 'assets/js/flatpickr.min.js' %}"></script>
+<!-- Flickity (handles touch enabled carousels and sliders) -->
+<script type="text/javascript" src="{% static 'assets/js/flickity.pkgd.min.js' %}"></script>
+<!-- Ion rangeSlider (flexible and pretty range slider elements) -->
+<script type="text/javascript" src="{% static 'assets/js/ion.rangeSlider.min.js' %}"></script>
+<!-- Isotope (masonry layouts and filtering) -->
+<script type="text/javascript" src="{% static 'assets/js/isotope.pkgd.min.js' %}"></script>
+<!-- jarallax (parallax effect and video backgrounds) -->
+<script type="text/javascript" src="{% static 'assets/js/jarallax.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'assets/js/jarallax-video.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'assets/js/jarallax-element.min.js' %}"></script>
+<!-- jQuery Countdown (displays countdown text to a specified date) -->
+<script type="text/javascript" src="{% static 'assets/js/jquery.countdown.min.js' %}"></script>
+<!-- jQuery smartWizard facilitates steppable wizard content -->
+<script type="text/javascript" src="{% static 'assets/js/jquery.smartWizard.min.js' %}"></script>
+<!-- Plyr (unified player for Video, Audio, Vimeo and Youtube) -->
+<script type="text/javascript" src="{% static 'assets/js/plyr.polyfilled.min.js' %}"></script>
+<!-- Prism (displays formatted code boxes) -->
+<script type="text/javascript" src="{% static 'assets/js/prism.js' %}"></script>
+<!-- ScrollMonitor (manages events for elements scrolling in and out of view) -->
+<script type="text/javascript" src="{% static 'assets/js/scrollMonitor.js' %}"></script>
+<!-- Smooth scroll (animation to links in-page)-->
+<script type="text/javascript" src="{% static 'assets/js/smooth-scroll.polyfills.min.js' %}"></script>
+<!-- SVGInjector (replaces img tags with SVG code to allow easy inclusion of SVGs with the benefit of inheriting colors and styles)-->
+<script type="text/javascript" src="{% static 'assets/js/svg-injector.umd.production.js' %}"></script>
+<!-- TwitterFetcher (displays a feed of tweets from a specified account)-->
+<script type="text/javascript" src="{% static 'assets/js/twitterFetcher_min.js' %}"></script>
+<!-- Typed text (animated typing effect)-->
+<script type="text/javascript" src="{% static 'assets/js/typed.min.js' %}"></script>
+<!-- Required theme scripts (Do not remove) -->
+<script type="text/javascript" src="{% static 'assets/js/theme.js' %}"></script>
+<!-- Removes page load animation when window is finished loading -->
 <script type="text/javascript">
-    new WOW().init();
-
-    // page transition
-    $(document).ready(function() {
-        $('.animsition').animsition();
-    });
+      window.addEventListener("load", function () {
+        document.querySelector('body').classList.add('loaded');
+      });
 </script>
+
 <script type="text/javascript" src="{% static 'list/my.js' %}"></script>
 
 </body>

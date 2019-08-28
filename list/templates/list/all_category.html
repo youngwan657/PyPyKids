@@ -1,54 +1,68 @@
 {% extends 'list/base.html' %}
 {% block content %}
+{% load static %}
 
 
-<main>
-    {% if username != "" %}
-    <!-- Badge -->
-    <div class="container">
-        <br/>
-        Hi, {{ username }}
-        <hr/>
-        {% for badge in badges %}
-        {{ badge.html|safe }}
-        {% endfor %}
-        <hr/>
-    </div>
-
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-4 col-md-4">
-                <!-- Circle Chart -->
-                <canvas id="myChart2" height="280"></canvas>
-                <script>
-                    var ctx = document.getElementById('myChart2').getContext('2d');
-                    var myChart = new Chart(ctx, {
-                        type: 'pie',
-                        data: {
-                            labels: {{ total_labels|safe }},
-                            datasets: [{
-                                label: 'Total',
-                                data: {{ total_counts|safe }},
-                                backgroundColor: [
-                                    'rgba(0, 200, 81, 1)',
-                                    'rgba(255, 70, 70, 1)',
-                                    'rgba(200, 200, 200, 1)',
-                                ],
-                                fill: false,
-                            }]
-                        },
-                        options: {
-                            responsive: true
-                        }
-                    });
-
-                </script>
+<section class="bg-dark text-light header-inner p-0 jarallax position-relative" data-jarallax data-speed="0.2"
+         data-overlay>
+    <img src="{% static 'assets/img/inner-1.jpg' %}" alt="Image" class="jarallax-img opacity-40">
+    <div class="container py-0">
+        <div class="row my-4 my-md-6" data-aos="fade-up">
+            <div class="col-lg-9 col-xl-8">
+                <h1><span data-typed-text data-loop="true" data-type-speed="65"
+                          data-strings='["Hi, {{ username }}", "Welcome to python world"]'></span></h1>
             </div>
+        </div>
+    </div>
+    <div class="divider">
+        <img src="{% static 'assets/img/dividers/divider-3.svg' %}" alt="graphical divider" data-inject-svg/>
+    </div>
+</section>
 
-            <div class="col-lg-8 col-md-8">
-                <!-- Line Chart -->
-                <canvas id="myChart"></canvas>
-                <script>
+
+{% if username != "" %}
+<!-- Badge -->
+<div class="container">
+    {% for badge in badges %}
+    {{ badge.html|safe }}
+    {% endfor %}
+    <hr/>
+</div>
+
+<!-- Counter -->
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-6 mb-3 col-lg-3 mb-lg-0">
+                                <span class="display-4 text-primary d-block" data-countup data-start="0"
+                                      data-end="{{ total_quiz }}" data-duration="3" data-grouping="true"></span>
+            <span class="h6">Total Quiz</span>
+        </div>
+        <div class="col-6 mb-3 col-lg-3 mb-lg-0">
+                                <span class="display-4 text-success d-block" data-countup data-start="0"
+                                      data-end="{{ accepted_quiz }}" data-duration="3" data-grouping="true"></span>
+            <span class="h6">Accepted</span>
+        </div>
+        <div class="col-6 mb-3 col-lg-3 mb-lg-0">
+                                <span class="display-4 text-primary-2 d-block" data-countup data-start="0"
+                                      data-end="{{ wrong_quiz }}"
+                                      data-duration="3" data-grouping="true"></span>
+            <span class="h6">Wrong</span>
+        </div>
+        <div class="col-6 mb-3 col-lg-3 mb-lg-0">
+                                <span class="display-4 text-secondary d-block" data-countup data-start="0"
+                                      data-end="{{ not_try_quiz }}"
+                                      data-duration="3" data-grouping="true"></span>
+            <span class="h6">Not Try</span>
+        </div>
+    </div>
+</div>
+<br/>
+
+
+<!-- Line Chart -->
+<div class="container">
+    <canvas id="myChart"></canvas>
+    <script>
                     var ctx = document.getElementById('myChart').getContext('2d');
                     var myChart = new Chart(ctx, {
                         type: 'line',
@@ -79,369 +93,275 @@
                         }
                     });
 
-                </script>
+    </script>
+</div>
+
+{% endif %}
+
+<!-- Today's Quiz -->
+{% include "list/quiz.html" %}
+
+<!-- Level 0 -->
+<section>
+    <div class="container" id="{{ difficulties.0.name }}">
+        <div class="row mb-4">
+            <div class="col">
+                <h3 class="h3">{{ difficulties.0.name }}</h3>
+                <h5 class="h5">{{ difficulties.0.desc }}</h5>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-10 col-xl-8">
+                {% for category in level1 %}
+                <a href="/category/{{ category.name }}"
+                   class="card card-body flex-row align-items-center hover-shadow-sm">
+                    {% if category.unsolved_quiz == 0 %}
+                    <div class="icon-round icon-round-lg bg-primary-2 mx-md-4">
+                        <img class="icon icon-lg bg-primary-2 icon-round-lg"
+                             src="{% static 'assets/img/icons/theme/code/done-circle.svg' %}" alt="done-circle icon"
+                             data-inject-svg/>
+                    </div>
+                    {% elif category.solved_quiz == 0 %}
+                    <div class="icon-round icon-round-lg bg-primary mx-md-4">
+                        <img class="icon icon-lg bg-primary"
+                             src="{% static 'assets/img/icons/theme/code/lock-overturning.svg' %}"
+                             alt="lock-circle icon" data-inject-svg/>
+                    </div>
+                    {% else %}
+                    <div class="icon-round icon-round-lg bg-primary mx-md-4">
+                        <img class="icon icon-lg bg-primary"
+                             src="{% static 'assets/img/icons/theme/general/unlock.svg' %}" alt="unlock icon"
+                             data-inject-svg/>
+                    </div>
+                    {% endif %}
+                    <div class="pl-4">
+                        <h3 class="mb-1">{{ category.name }}</h3>
+                        <span>{{ category.desc }} </span>
+                        <div class="d-flex align-items-center mt-3">
+                            {% if category.unsolved_quiz > 0 %}
+                            <div class="text-small">
+                                <span class="d-block">{{ category.unsolved_quiz }} Quizzes</span>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </a>
+                {% endfor %}
             </div>
         </div>
     </div>
+</section>
 
-    <div class="row mt-1">
-        <div class="col-md-12">
-            <ul class="stepper stepper-vertical">
-                {% for quiz in quizzes %}
-                {% if quiz.visible %}
-                {% if quiz.right == 1 %}
-                <li>{% endif %}
-                    {% if quiz.right == -1 %}
-                <li class="warning">{% endif %}
-                    {% if quiz.right == 0 %}
-                <li class="completed">{% endif %}
-                    <a href="/{{ quiz.order }}">
-                        <span class="circle">{{ quiz.order }}</span>
-                        <span class="label step-title waves-effect waves-dark">{{ quiz.title|linebreaksbr }}</span>
-                    </a>
 
-                    <div class="step-content lighten-3">
-                        {% if quiz.question %}
-                        <pre><code>{{ quiz.question }}</code></pre>
+<!-- Level 1 -->
+<section>
+    <div class="container">
+        <div class="row mb-4">
+            <div class="col">
+                <h3 class="h3">{{ difficulties.1.name }}</h3>
+                <h5 class="h5">{{ difficulties.1.desc }}</h5>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-10 col-xl-8">
+                {% for category in level2 %}
+                <a href="/category/{{ category.name }}"
+                   class="card card-body flex-row align-items-center hover-shadow-sm">
+                    {% if category.unsolved_quiz == 0 %}
+                    <div class="icon-round icon-round-lg bg-primary-2 mx-md-4">
+                        <img class="icon icon-lg bg-primary-2 icon-round-lg"
+                             src="{% static 'assets/img/icons/theme/code/done-circle.svg' %}" alt="done-circle icon"
+                             data-inject-svg/>
+                    </div>
+                    {% elif category.solved_quiz == 0 %}
+                    <div class="icon-round icon-round-lg bg-primary mx-md-4">
+                        <img class="icon icon-lg bg-primary"
+                             src="{% static 'assets/img/icons/theme/code/lock-overturning.svg' %}"
+                             alt="lock-circle icon" data-inject-svg/>
+                    </div>
+                    {% else %}
+                    <div class="icon-round icon-round-lg bg-primary mx-md-4">
+                        <img class="icon icon-lg bg-primary"
+                             src="{% static 'assets/img/icons/theme/general/unlock.svg' %}" alt="unlock icon"
+                             data-inject-svg/>
+                    </div>
+                    {% endif %}
+                    <div class="pl-4">
+                        <h3 class="mb-1">{{ category.name }}</h3>
+                        <span>{{ category.desc }} </span>
+                        <div class="d-flex align-items-center mt-3">
+                            {% if category.unsolved_quiz > 0 %}
+                            <div class="text-small">
+                                <span class="d-block">{{ category.unsolved_quiz }} Quizzes</span>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- Level 2 -->
+<section>
+    <div class="container">
+        <div class="row mb-4">
+            <div class="col">
+                <h3 class="h3">{{ difficulties.2.name }}</h3>
+                <h5 class="h5">{{ difficulties.2.desc }}</h5>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-10 col-xl-8">
+                {% for category in level3 %}
+                <a href="/category/{{ category.name }}"
+                   class="card card-body flex-row align-items-center hover-shadow-sm">
+                    {% if category.unsolved_quiz == 0 %}
+                    <div class="icon-round icon-round-lg bg-primary-2 mx-md-4">
+                        <img class="icon icon-lg bg-primary-2 icon-round-lg"
+                             src="{% static 'assets/img/icons/theme/code/done-circle.svg' %}" alt="done-circle icon"
+                             data-inject-svg/>
+                    </div>
+                    {% elif category.solved_quiz == 0 %}
+                    <div class="icon-round icon-round-lg bg-primary mx-md-4">
+                        <img class="icon icon-lg bg-primary"
+                             src="{% static 'assets/img/icons/theme/code/lock-overturning.svg' %}"
+                             alt="lock-circle icon" data-inject-svg/>
+                    </div>
+                    {% else %}
+                    <div class="icon-round icon-round-lg bg-primary mx-md-4">
+                        <img class="icon icon-lg bg-primary"
+                             src="{% static 'assets/img/icons/theme/general/unlock.svg' %}" alt="unlock icon"
+                             data-inject-svg/>
+                    </div>
+                    {% endif %}
+                    <div class="pl-4">
+                        <h3 class="mb-1">{{ category.name }}</h3>
+                        <span>{{ category.desc }} </span>
+                        <div class="d-flex align-items-center mt-3">
+                            {% if category.unsolved_quiz > 0 %}
+                            <div class="text-small">
+                                <span class="d-block">{{ category.unsolved_quiz }} Quizzes</span>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- Level 3 -->
+<section>
+    <div class="container">
+        <div class="row mb-4">
+            <div class="col">
+                <h3 class="h3">{{ difficulties.3.name }}</h3>
+                <h5 class="h5">{{ difficulties.3.desc }}</h5>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-10 col-xl-8">
+                {% for category in level4 %}
+                <a href="/category/{{ category.name }}"
+                   class="card card-body flex-row align-items-center hover-shadow-sm">
+                    <div class="icon-round icon-round-lg bg-primary mx-md-4">
+                        {% if category.unsolved_quiz == 0 %}
+                        <div class="icon-round icon-round-lg bg-primary-2 mx-md-4">
+                            <img class="icon icon-lg bg-primary-2 icon-round-lg"
+                                 src="{% static 'assets/img/icons/theme/code/done-circle.svg' %}" alt="done-circle icon"
+                                 data-inject-svg/>
+                        </div>
+                        {% elif category.solved_quiz == 0 %}
+                        <div class="icon-round icon-round-lg bg-primary mx-md-4">
+                            <img class="icon icon-lg bg-primary"
+                                 src="{% static 'assets/img/icons/theme/code/lock-overturning.svg' %}"
+                                 alt="lock-circle icon" data-inject-svg/>
+                        </div>
+                        {% else %}
+                        <div class="icon-round icon-round-lg bg-primary mx-md-4">
+                            <img class="icon icon-lg bg-primary"
+                                 src="{% static 'assets/img/icons/theme/general/unlock.svg' %}" alt="unlock icon"
+                                 data-inject-svg/>
+                        </div>
                         {% endif %}
                     </div>
-                </li>
-                {% endif %}
+                    <div class="pl-4">
+                        <h3 class="mb-1">{{ category.name }}</h3>
+                        <span>{{ category.desc }} </span>
+                        <div class="d-flex align-items-center mt-3">
+                            {% if category.unsolved_quiz > 0 %}
+                            <div class="text-small">
+                                <span class="d-block">{{ category.unsolved_quiz }} Quizzes</span>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </a>
                 {% endfor %}
-            </ul>
+            </div>
         </div>
     </div>
-    {% endif %}
+</section>
 
 
-    <!-- Today's question -->
-    <br/>
+<!-- Level 4 -->
+<section>
     <div class="container">
-        <div class="row text-left">
-            <a href="/{{ today_quiz.order }}" class="blue-text">
-                <h5>
-                    <i class="fas fa-chess"></i>
-                    <strong>Today's Question</strong>
-                </h5>
-            </a>
+        <div class="row mb-4">
+            <div class="col">
+                <h3 class="h3">{{ difficulties.4.name }}</h3>
+                <h5 class="h5">{{ difficulties.4.desc }}</h5>
+            </div>
         </div>
-        <br/>
-    </div>
-
-    {% include "list/quiz.html" %}
-
-
-    <div class="container">
-        <hr/>
-        <section>
-
-            <div class="row text-left">
-                <!-- Level 1 -->
-                <div class="col-lg-6 col-md-12">
-
-                    <div class="news-data">
-                        <a href="" class="pink-text">
-                            <h5>
-                                <i class="fab fa-pagelines"></i>
-                                <strong>{{ difficulties.0.name }}</strong>
-                            </h5>
-                        </a>
+        <div class="row justify-content-center">
+            <div class="col-lg-10 col-xl-8">
+                {% for category in level5 %}
+                <a href="/category/{{ category.name }}"
+                   class="card card-body flex-row align-items-center hover-shadow-sm">
+                    <div class="icon-round icon-round-lg bg-primary mx-md-4">
+                        {% if category.unsolved_quiz == 0 %}
+                        <div class="icon-round icon-round-lg bg-primary-2 mx-md-4">
+                            <img class="icon icon-lg bg-primary-2 icon-round-lg"
+                                 src="{% static 'assets/img/icons/theme/code/done-circle.svg' %}" alt="done-circle icon"
+                                 data-inject-svg/>
+                        </div>
+                        {% elif category.solved_quiz == 0 %}
+                        <div class="icon-round icon-round-lg bg-primary mx-md-4">
+                            <img class="icon icon-lg bg-primary"
+                                 src="{% static 'assets/img/icons/theme/code/lock-overturning.svg' %}"
+                                 alt="lock-circle icon" data-inject-svg/>
+                        </div>
+                        {% else %}
+                        <div class="icon-round icon-round-lg bg-primary mx-md-4">
+                            <img class="icon icon-lg bg-primary"
+                                 src="{% static 'assets/img/icons/theme/general/unlock.svg' %}" alt="unlock icon"
+                                 data-inject-svg/>
+                        </div>
+                        {% endif %}
                     </div>
-                    <p> {{ difficulties.0.desc }}
-                    </p>
-
-                    <hr>
-
-                    {% for category in level1 %}
-                    <div class="row">
-                        <div class="col-md-3">
-                            <div class="view overlay rounded z-depth-1">
-                                {% if category.image == None %}
-                                <img src="https://mdbootstrap.com/img/Photos/Others/images/{{ forloop.counter }}.jpg"
-                                     class="img-fluid" alt="Minor sample post image">
-                                {% else %}
-                                <img src="{{ category.image }}" class="img-fluid" alt="Minor sample post image">
-                                {% endif %}
-                                <a href="/category/{{ category.name }}">
-                                    <div class="mask rgba-white-slight"></div>
-                                </a>
+                    <div class="pl-4">
+                        <h3 class="mb-1">{{ category.name }}</h3>
+                        <span>{{ category.desc }} </span>
+                        <div class="d-flex align-items-center mt-3">
+                            {% if category.unsolved_quiz > 0 %}
+                            <div class="text-small">
+                                <span class="d-block">{{ category.unsolved_quiz }} Quizzes</span>
                             </div>
-                        </div>
-
-                        <div class="col-md-9">
-                            <p class="dark-grey-text">
-                                <strong>{{ category.name }}</strong>
-                                {% if category.total_quiz == 0 %}
-                                <span class="badge badge-pill badge-danger ml-2">Coming</span>
-                                {% elif category.unsolved_quiz == 0 %}
-                                <span class="badge badge-pill badge-success ml-2"><span
-                                        class="oi oi-check"></span></span>
-                                {% else %}
-                                <span class="badge badge-pill badge-secondary ml-2">{{ category.unsolved_quiz }}</span>
-                                {% endif %}
-                            </p>
-                            <a href="/category/{{ category.name }}" class="pink-text">
-                                {{ category.desc }}
-                                {% if category.total_quiz > 0 %}
-                                <i class="fas fa-angle-right float-right"></i>
-                                {% endif %}
-                            </a>
+                            {% endif %}
                         </div>
                     </div>
-
-                    <hr>
-                    {% endfor %}
-                </div>
-
-
-                <!-- Level 2 -->
-                <div class="col-lg-6 col-md-12">
-
-                    <div class="news-data">
-                        <a href="" class="yellow-text">
-                            <h5>
-                                <i class="fas fa-sun"></i>
-                                <strong>{{ difficulties.1.name }}</strong>
-                            </h5>
-                        </a>
-                    </div>
-                    <p> {{ difficulties.1.desc }}
-                    </p>
-
-                    <hr>
-
-                    {% for category in level2 %}
-                    <div class="row">
-                        <div class="col-md-3">
-                            <div class="view overlay rounded z-depth-1">
-                                {% if category.image == None %}
-                                <img src="https://mdbootstrap.com/img/Photos/Others/images/{{ forloop.counter|add:10 }}.jpg"
-                                     class="img-fluid" alt="Minor sample post image">
-                                {% else %}
-                                <img src="{{ category.image }}" class="img-fluid" alt="Minor sample post image">
-                                {% endif %}
-                                <a href="/category/{{ category.name }}">
-                                    <div class="mask rgba-white-slight"></div>
-                                </a>
-                            </div>
-                        </div>
-
-                        <div class="col-md-9">
-                            <p class="dark-grey-text">
-                                <strong>{{ category.name }}</strong>
-                                {% if category.total_quiz == 0 %}
-                                <span class="badge badge-pill badge-danger ml-2">Coming</span>
-                                {% elif category.unsolved_quiz == 0 %}
-                                <span class="badge badge-pill badge-success ml-2"><span
-                                        class="oi oi-check"></span></span>
-                                {% else %}
-                                <span class="badge badge-pill badge-secondary ml-2">{{ category.unsolved_quiz }}</span>
-                                {% endif %}
-                            </p>
-                            <a href="/category/{{ category.name }}" class="brown-text">
-                                {{ category.desc }}
-                                {% if category.total_quiz > 0 %}
-                                <i class="fas fa-angle-right float-right"></i>
-                                {% endif %}
-                            </a>
-                        </div>
-                    </div>
-
-                    <hr>
-                    {% endfor %}
-                </div>
-
+                </a>
+                {% endfor %}
             </div>
-
-
-        </section>
-
-        <hr/>
-
-        <section>
-            <div class="row text-left">
-                <!-- Level 3 -->
-                <div class="col-lg-6 col-md-12">
-
-                    <div class="news-data">
-                        <a href="" class="orange-text">
-                            <h5>
-                                <i class="fas fa-cannabis"></i>
-                                <strong>{{ difficulties.2.name }}</strong>
-                            </h5>
-                        </a>
-                    </div>
-                    <p> {{ difficulties.2.desc }}
-                    </p>
-
-                    <hr>
-
-                    {% for category in level3 %}
-                    <div class="row">
-                        <div class="col-md-3">
-                            <div class="view overlay rounded z-depth-1">
-                                {% if category.image == None %}
-                                <img src="https://mdbootstrap.com/img/Photos/Others/images/{{ forloop.counter|add:20 }}.jpg"
-                                     class="img-fluid" alt="Minor sample post image">
-                                {% else %}
-                                <img src="{{ category.image }}" class="img-fluid" alt="Minor sample post image">
-                                {% endif %}
-                                <a href="/category/{{ category.name }}">
-                                    <div class="mask rgba-white-slight"></div>
-                                </a>
-                            </div>
-                        </div>
-
-                        <div class="col-md-9">
-                            <p class="dark-grey-text">
-                                <strong>{{ category.name }}</strong>
-                                {% if category.total_quiz == 0 %}
-                                <span class="badge badge-pill badge-danger ml-2">Coming</span>
-                                {% elif category.unsolved_quiz == 0 %}
-                                <span class="badge badge-pill badge-success ml-2"><span
-                                        class="oi oi-check"></span></span>
-                                {% else %}
-                                <span class="badge badge-pill badge-secondary ml-2">{{ category.unsolved_quiz }}</span>
-                                {% endif %}
-                            </p>
-                            <a href="/category/{{ category.name }}" class="orange-text">
-                                {{ category.desc }}
-                                {% if category.total_quiz > 0 %}
-                                <i class="fas fa-angle-right float-right"></i>
-                                {% endif %}
-                            </a>
-                        </div>
-                    </div>
-
-                    <hr>
-                    {% endfor %}
-                </div>
-
-
-                <!-- Level 4 -->
-                <div class="col-lg-6 col-md-12">
-
-                    <div class="news-data">
-                        <a href="" class="light-blue-text">
-                            <h5>
-                                <i class="far fa-snowflake"></i>
-                                <strong>{{ difficulties.3.name }}</strong>
-                            </h5>
-                        </a>
-                    </div>
-                    <p> {{ difficulties.3.desc }}
-                    </p>
-
-                    <hr>
-
-                    {% for category in level4 %}
-                    <div class="row">
-                        <div class="col-md-3">
-                            <div class="view overlay rounded z-depth-1">
-                                {% if category.image == None %}
-                                <img src="https://mdbootstrap.com/img/Photos/Others/images/{{ forloop.counter|add:30 }}.jpg"
-                                     class="img-fluid" alt="Minor sample post image">
-                                {% else %}
-                                <img src="{{ category.image }}" class="img-fluid" alt="Minor sample post image">
-                                {% endif %}
-                                <a href="/category/{{ category.name }}">
-                                    <div class="mask rgba-white-slight"></div>
-                                </a>
-                            </div>
-                        </div>
-
-
-                        <div class="col-md-9">
-                            <p class="dark-grey-text">
-                                <strong>{{ category.name }}</strong>
-                                {% if category.total_quiz == 0 %}
-                                <span class="badge badge-pill badge-danger ml-2">Coming</span>
-                                {% elif category.unsolved_quiz == 0 %}
-                                <span class="badge badge-pill badge-success ml-2"><span
-                                        class="oi oi-check"></span></span>
-                                {% else %}
-                                <span class="badge badge-pill badge-secondary ml-2">{{ category.unsolved_quiz }}</span>
-                                {% endif %}
-                            </p>
-                            <a href="/category/{{ category.name }}" class="light-blue-text">
-                                {{ category.desc }}
-                                {% if category.total_quiz > 0 %}
-                                <i class="fas fa-angle-right float-right"></i>
-                                {% endif %}
-                            </a>
-                        </div>
-                    </div>
-
-                    <hr>
-                    {% endfor %}
-                </div>
-
-                <hr/>
-
-                <!-- Level 5 -->
-                <div class="col-lg-6 col-md-12">
-
-                    <div class="news-data">
-                        <a href="" class="purple-text">
-                            <h5>
-                                <i class="far fa-thumbs-up"></i>
-                                <strong>{{ difficulties.4.name }}</strong>
-                            </h5>
-                        </a>
-                    </div>
-                    <p> {{ difficulties.4.desc }}
-                    </p>
-
-                    <hr>
-
-                    {% for category in level5 %}
-                    <div class="row">
-                        <div class="col-md-3">
-                            <div class="view overlay rounded z-depth-1">
-                                {% if category.image == None %}
-                                <img src="https://mdbootstrap.com/img/Photos/Others/images/{{ forloop.counter|add:30 }}.jpg"
-                                     class="img-fluid" alt="Minor sample post image">
-                                {% else %}
-                                <img src="{{ category.image }}" class="img-fluid" alt="Minor sample post image">
-                                {% endif %}
-                                <a href="/category/{{ category.name }}">
-                                    <div class="mask rgba-white-slight"></div>
-                                </a>
-                            </div>
-                        </div>
-
-
-                        <div class="col-md-9">
-                            <p class="dark-grey-text">
-                                <strong>{{ category.name }}</strong>
-                                {% if category.total_quiz == 0 %}
-                                <span class="badge badge-pill badge-danger ml-2">Coming</span>
-                                {% elif category.unsolved_quiz == 0 %}
-                                <span class="badge badge-pill badge-success ml-2"><span
-                                        class="oi oi-check"></span></span>
-                                {% else %}
-                                <span class="badge badge-pill badge-secondary ml-2">{{ category.unsolved_quiz }}</span>
-                                {% endif %}
-                            </p>
-                            <a href="/category/{{ category.name }}" class="purple-text">
-                                {{ category.desc }}
-                                {% if category.total_quiz > 0 %}
-                                <i class="fas fa-angle-right float-right"></i>
-                                {% endif %}
-                            </a>
-                        </div>
-                    </div>
-
-                    <hr>
-                    {% endfor %}
-                </div>
-
-            </div>
-
-        </section>
-
-
+        </div>
     </div>
-</main>
+</section>
 {% endblock %}
 

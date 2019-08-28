@@ -30,6 +30,7 @@ def all_category(request):
     if request.user.is_authenticated:
         username = request.user.username
         answers = Answer.objects.filter(name=username)
+        total_quizzes = Quiz.objects.count()
         right_quizzes = answers.filter(right=Right.RIGHT.value).count()
         wrong_quizzes = answers.filter(Q(right=Right.WRONG.value) | Q(right=Right.WRONG_BUT_RIGHT_BEFORE.value)).count()
         for answer in answers:
@@ -55,14 +56,19 @@ def all_category(request):
         context['counts'] = counts
 
         # Circle chart
-        context['total_labels'] = ["Accepted", "Wrong", "Not Try"]
-        context['total_counts'] = [right_quizzes, wrong_quizzes, quizzes.count() - right_quizzes - wrong_quizzes]
+        context['total_quiz'] = total_quizzes
+        context['accepted_quiz'] = right_quizzes
+        context['wrong_quiz'] = wrong_quizzes
+        context['not_try_quiz'] = total_quizzes - right_quizzes - wrong_quizzes
 
         # Badge
         context['badges'] = Badge.objects.filter(customuser__name=username)
 
     # Today's Question
-    context['quiz'] = unsolved_quizzes.order_by('?').first()
+    today_quiz = unsolved_quizzes.order_by('?').first()
+    context['quiz'] = today_quiz
+    context['difficulty'] = today_quiz.category.difficulty
+    context['category'] = today_quiz.category.name
 
     for difficulty in difficulties:
         categories = Category.objects.order_by('order').filter(difficulty=difficulty.id, visible=True)
@@ -73,12 +79,15 @@ def all_category(request):
             category.total_quiz = quizzes.count()
             category.unsolved_quiz = quizzes.count()
             for quiz in quizzes:
-                if len(answers.filter(quiz__order=quiz.order)) == 1:
+                if len(answers.filter(quiz__order=quiz.order)) == Right.RIGHT.value:
                     category.unsolved_quiz -= 1
+            category.solved_quiz = category.total_quiz - category.unsolved_quiz
 
         context["level" + str(difficulty.id)] = categories
 
     context['username'] = username
+    context['quiz_name'] = 'TODAY QUIZ'
+    context['quiz_image'] = 'theme/devices/airpods.svg'
     return render(request, 'list/all_category.html', context)
 
 
@@ -153,6 +162,7 @@ def category(request, category):
 
     context = {
         "username": request.user.username,
+        "difficulty": quizzes[0].category.difficulty,
         "category": category,
         "quizzes": quizzes,
         "total_quiz": quizzes.count(),
@@ -167,14 +177,16 @@ def category(request, category):
 def show(request, quiz_order):
     quiz = get_object_or_404(Quiz, order=quiz_order)
     next = Quiz.objects.filter(visible=True).filter(order__gt=quiz_order).first()
+    # TODO:: change related Quiz
 
     # TODO: use get instead of filter
     right_modal = request.GET.get('right_modal')
-    right, user_answer, testcase, output, stdout, expected_answer = 0, "", "", "", "", ""
+    right, user_answer, testcase, output, stdout, expected_answer, submitted_at = 0, "", "", "", "", "", ""
     answer = Answer.objects.filter(quiz__order=quiz_order, name=request.user.username)
     if len(answer) == 1:
         right = answer[0].right
         user_answer = answer[0].answer
+        submitted_at = str(answer[0].date)
         testcase = answer[0].testcase
         output = answer[0].output
         stdout = answer[0].stdout
@@ -187,9 +199,12 @@ def show(request, quiz_order):
         new_badge = add_badge(request.user.username)
 
     context = {
+        'difficulty': quiz.category.difficulty,
+        'category': quiz.category.name,
         'new_badge': new_badge,
         'quiz': quiz,
         'user_answer': user_answer,
+        'submitted_at': submitted_at,
         'right': right,
         'right_modal': right_modal,
         'testcase': testcase,
@@ -197,6 +212,8 @@ def show(request, quiz_order):
         'stdout': stdout,
         'expected_answer': expected_answer,
         'next': next,
+        'quiz_name': quiz_order,
+        'quiz_image': 'theme/devices/airpods.svg'
     }
     return render(request, 'list/show.html', context)
 
@@ -385,3 +402,17 @@ def login_request(request):
 
 # TODO:: Run before submit
 # TODO:: Answer history
+
+def about(request):
+    user = CustomUser.objects.count()
+    quiz = Quiz.objects.count()
+    badge = Badge.objects.count()
+
+    context = {
+        'user': user,
+        'quiz': quiz,
+        'badge': badge,
+    }
+    return render(request, 'list/about.html', context)
+
+# TODO:: right modal is broken.

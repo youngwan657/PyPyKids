@@ -2,6 +2,21 @@
 {% load static %}
 
 {% block content %}
+<section class="bg-dark text-light header-inner p-0 jarallax position-relative" data-jarallax data-speed="0.2"
+         data-overlay>
+    <img src="{% static 'assets/img/inner-2.jpg' %}" alt="Image" class="jarallax-img opacity-40">
+    <div class="container py-0">
+        <div class="row my-4 my-md-6" data-aos="fade-up">
+            <div class="col-lg-9 col-xl-8">
+                <h1><span data-typed-text data-loop="true" data-type-speed="65"
+                          data-strings='["{{ quiz.title }}"]'></span></h1>
+            </div>
+        </div>
+    </div>
+    <div class="divider">
+        <img src="{% static 'assets/img/dividers/divider-2.svg' %}" alt="graphical divider" data-inject-svg/>
+    </div>
+</section>
 
 {% if quiz.visible %}
 {% include "list/quiz.html" %}
@@ -47,12 +62,12 @@
         <p class="h4 mb-4">Your answer</p>
         {% endif %}
 
-        {% if answer.date %}
-        <p class="text-muted">Submitted at {{ answer.date|date:'Y/m/d h:m:s'}}</p>
+        {% if submitted_at %}
+        <p class="text-muted">Submitted at {{ submitted_at }}</p>
         {% endif %}
 
         <div class="form-group">
-            <textarea class="form-control rounded-0" id="answer" name="answer" rows="10" autofocus>{{ user_answer }}</textarea>
+            <textarea class="form-control" id="answer" name="answer" rows="10">{{ user_answer }}</textarea>
         </div>
 
         <!-- Send button -->
@@ -71,56 +86,54 @@
             <b>Wrong Answer</b>
         </div>
         {% endif %}
-        <section class="section-preview">
-            {% if quiz.option1 != None %}
-            <div class="custom-control custom-radio">
-                {% if user_answer == None or user_answer == "1" %}
-                <input class="custom-control-input" name="answer" type="radio" value="1" id="radio1" checked>
-                {% else %}
-                <input class="custom-control-input" name="answer" type="radio" value="1" id="radio1">
-                {% endif %}
-                <label class="custom-control-label" for="radio1">
-                    {{ quiz.option1 }}
-                </label>
-            </div>
+        {% if quiz.option1 != None %}
+        <div class="custom-control custom-radio">
+            {% if user_answer == None or user_answer == "1" %}
+            <input class="custom-control-input" name="answer" type="radio" value="1" id="radio1" checked>
+            {% else %}
+            <input class="custom-control-input" name="answer" type="radio" value="1" id="radio1">
             {% endif %}
-            {% if quiz.option2 != None %}
-            <div class="custom-control custom-radio">
-                {% if user_answer == "2" %}
-                <input class="custom-control-input" name="answer" type="radio" value="2" id="radio2" checked>
-                {% else %}
-                <input class="custom-control-input" name="answer" type="radio" value="2" id="radio2">
-                {% endif %}
-                <label class="custom-control-label" for="radio2">
-                    {{ quiz.option2 }}
-                </label>
-            </div>
+            <label class="custom-control-label" for="radio1">
+                {{ quiz.option1 }}
+            </label>
+        </div>
+        {% endif %}
+        {% if quiz.option2 != None %}
+        <div class="custom-control custom-radio">
+            {% if user_answer == "2" %}
+            <input class="custom-control-input" name="answer" type="radio" value="2" id="radio2" checked>
+            {% else %}
+            <input class="custom-control-input" name="answer" type="radio" value="2" id="radio2">
             {% endif %}
-            {% if quiz.option3 != None %}
-            <div class="custom-control custom-radio">
-                {% if user_answer == "3" %}
-                <input class="custom-control-input" name="answer" type="radio" value="3" id="radio3" checked>
-                {% else %}
-                <input class="custom-control-input" name="answer" type="radio" value="3" id="radio3">
-                {% endif %}
-                <label class="custom-control-label" for="radio3">
-                    {{ quiz.option3 }}
-                </label>
-            </div>
+            <label class="custom-control-label" for="radio2">
+                {{ quiz.option2 }}
+            </label>
+        </div>
+        {% endif %}
+        {% if quiz.option3 != None %}
+        <div class="custom-control custom-radio">
+            {% if user_answer == "3" %}
+            <input class="custom-control-input" name="answer" type="radio" value="3" id="radio3" checked>
+            {% else %}
+            <input class="custom-control-input" name="answer" type="radio" value="3" id="radio3">
             {% endif %}
-            {% if quiz.option4 != None %}
-            <div class="custom-control custom-radio">
-                {% if user_answer == "4" %}
-                <input class="custom-control-input" name="answer" type="radio" value="4" id="radio4" checked>
-                {% else %}
-                <input class="custom-control-input" name="answer" type="radio" value="4" id="radio4">
-                {% endif %}
-                <label class="custom-control-label" for="radio4">
-                    {{ quiz.option4 }}
-                </label>
-            </div>
+            <label class="custom-control-label" for="radio3">
+                {{ quiz.option3 }}
+            </label>
+        </div>
+        {% endif %}
+        {% if quiz.option4 != None %}
+        <div class="custom-control custom-radio">
+            {% if user_answer == "4" %}
+            <input class="custom-control-input" name="answer" type="radio" value="4" id="radio4" checked>
+            {% else %}
+            <input class="custom-control-input" name="answer" type="radio" value="4" id="radio4">
             {% endif %}
-        </section>
+            <label class="custom-control-label" for="radio4">
+                {{ quiz.option4 }}
+            </label>
+        </div>
+        {% endif %}
         <br/>
         <button class="btn btn-info btn-block" type="submit">Submit</button>
     </form>
@@ -185,7 +198,6 @@
 </div>
 <!-- Frame Modal Bottom -->
 
-
 <script>
     // modal animation
     {% if right_modal == "1" %}
@@ -201,6 +213,9 @@
     {% if new_badge != None %}
         $('#badgeModal').modal('show');
     {% endif %}
+
+
+
 </script>
 {% endblock %}
 

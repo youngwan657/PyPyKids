@@ -1,0 +1,146 @@
+{% extends 'list/base.html' %}
+{% load static %}
+
+{% block content %}
+<section class="bg-dark text-light header-inner p-0 jarallax position-relative" data-jarallax data-speed="0.2"
+         data-overlay>
+    <img src="{% static 'assets/img/inner-6.jpg' %}" alt="Image" class="jarallax-img opacity-40">
+    <div class="container py-0">
+        <div class="row my-4 my-md-6" data-aos="fade-up">
+            <div class="col-lg-9 col-xl-8">
+                <h1><span data-typed-text data-loop="true" data-type-speed="65"
+                          data-strings='["About Us"]'></span></h1>
+            </div>
+        </div>
+    </div>
+    <div class="divider">
+        <img src="{% static 'assets/img/dividers/divider-3.svg' %}" alt="graphical divider" data-inject-svg/>
+    </div>
+</section>
+
+<section>
+    <div class="container">
+        <div class="row mb-4">
+            <div class="col">
+                <h2>At a glance</h2>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-6 mb-3 col-lg-3 mb-lg-0" data-aos="fade-up" data-aos-delay="100">
+                <span class="display-4 text-primary d-block" data-countup data-start="0" data-end="{{ user }}"
+                      data-duration="3" data-grouping="true"></span>
+                <span class="h6">Student</span>
+            </div>
+            <div class="col-6 mb-3 col-lg-3 mb-lg-0" data-aos="fade-up" data-aos-delay="300">
+                <span class="display-4 text-primary d-block" data-countup data-start="0" data-end="{{ quiz }}"
+                      data-duration="3" data-grouping="true"></span>
+                <span class="h6">Quiz</span>
+            </div>
+            <div class="col-6 mb-3 col-lg-3 mb-lg-0" data-aos="fade-up" data-aos-delay="300">
+                <span class="display-4 text-primary d-block" data-countup data-start="0" data-end="{{ badge }}"
+                      data-duration="3" data-grouping="true"></span>
+                <span class="h6">Badge</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="container" data-aos="fade-up">
+        <div class="row align-items-center justify-content-around">
+            <div class="col-md-5 col-xl-6 mb-4 mb-md-0">
+                <img src="{% static 'my/img/team.jpg' %}" alt="Image" class="rounded shadow-3d">
+            </div>
+            <div class="col-md-7 col-xl-6">
+                <div class="row justify-content-center">
+                    <div class="col-xl-8 col-lg-10">
+                        <span class="badge badge-primary">Our Mission</span>
+                        <div class="my-3">
+                            <span class="h1">Kids are our future.</span>
+                        </div>
+                        <p class="lead">We are trying to change the world.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="p-0">
+    <div class="container py-6">
+        <div class="row mb-4" data-aos="fade-up">
+            <div class="col">
+                <h2>Leadership Team</h2>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-xl-3 col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="NaN">
+                <div class="card card-lg card-body align-items-center">
+                    <span class="badge badge-primary badge-top">CEO</span>
+                    <img src="{% static 'my/img/dayeon.jpg' %}" alt="Dayeon" class="avatar avatar-xlg mb-3">
+                    <h5 class="mb-0">Dayeon</h5>
+                    <span>Chief Executive Officer</span>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="NaN">
+                <div class="card card-lg card-body align-items-center">
+                    <span class="badge badge-primary badge-top">Engineer</span>
+                    <img src="{% static 'my/img/youngwan.jpg' %}" alt="Youngwan" class="avatar avatar-xlg mb-3">
+                    <h5 class="mb-0">Youngwan</h5>
+                    <span>Software Engineer</span>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="NaN">
+                <div class="card card-lg card-body align-items-center">
+                    <span class="badge badge-primary badge-top">Editor</span>
+                    <img src="{% static 'my/img/eunhae.jpg' %}" alt="Eunhae" class="avatar avatar-xlg mb-3">
+                    <h5 class="mb-0">Eunhae</h5>
+                    <span>Video Editor</span>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="NaN">
+                <div class="card card-lg card-body align-items-center">
+                    <img src="{% static 'my/img/you.jpg' %}" alt="You" class="avatar avatar-xlg mb-3">
+                    <h5 class="mb-0">You</h5>
+                    <span>We are waiting for you</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="divider" style="">
+        <img class="decoration bg-primary-alt" src="assets/img/dividers/divider-3.svg" alt="divider graphic"
+             data-inject-svg/>
+    </div>
+
+    <section class="bg-primary-alt o-hidden">
+        <div class="container">
+            <div class="row mb-4">
+                <div class="col">
+                    <h2>Our History</h2>
+                </div>
+            </div>
+            <div class="row o-hidden o-lg-visible">
+                <div class="col d-flex flex-column align-items-center">
+                    <ol class="process-vertical">
+                        <li data-aos="fade-left">
+                            <div class="process-circle bg-primary"></div>
+                            <div>
+                                <span class="text-small text-muted">August 2019</span>
+                                <h5 class="mb-0">Start PyPyKids.com</h5>
+                            </div>
+                        </li>
+                        <li data-aos="fade-left">
+                            <div class="process-circle bg-primary"></div>
+                            <div>
+                                <span class="text-small text-muted">August 2019</span>
+                                <h5 class="mb-0">70 Quiz</h5>
+                            </div>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+</section>
+
+{% endblock %}

@@ -417,3 +417,4 @@ def about(request):
     return render(request, 'list/about.html', context)
 
 # TODO:: right modal is broken.
+# TODO:: code mirror for editor

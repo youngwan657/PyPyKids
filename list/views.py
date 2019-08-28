@@ -374,6 +374,7 @@ def register(request):
     return render(request, 'list/register.html', context)
 
 
+# TODO:: upload avator image
 def logout_request(request):
     logout(request)
     return redirect("/")

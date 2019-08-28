@@ -45,13 +45,24 @@
                             <a href="/badge" class="nav-link" aria-expanded="false" aria-haspopup="true">Badges</a>
                         </li>
                         <li class="nav-item">
-                            <a href="/playground" class="nav-link" aria-expanded="false" aria-haspopup="true">Playground</a>
+                            <a href="/playground" class="nav-link" aria-expanded="false"
+                               aria-haspopup="true">Playground</a>
                         </li>
                     </ul>
                 </div>
             </div>
 
-            {% if username == "" %}
+            {% if username %}
+            <div class="dropdown">
+                <button class="btn btn-white dropdown-toggle" type="button" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                    <img class="avatar avatar" src="{% static '/my/img/dayeon.jpg' %}" alt="dayeon"/>
+                </button>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="/logout">Logout</a>
+                </div>
+            </div>
+            {% else %}
             <div class="collapse navbar-collapse justify-content-end">
                 <a href="/login" class="btn ml-lg-3">Sign in</a>
                 <a href="/register" class="btn btn-primary ml-lg-3">Sign up</a>
@@ -246,6 +257,8 @@
       window.addEventListener("load", function () {
         document.querySelector('body').classList.add('loaded');
       });
+
+
 </script>
 
 <script type="text/javascript" src="{% static 'list/my.js' %}"></script>

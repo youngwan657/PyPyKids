@@ -22,12 +22,14 @@
 
 {% if username != "" %}
 <!-- Badge -->
-<div class="container">
-    {% for badge in badges %}
-    {{ badge.html|safe }}
-    {% endfor %}
-    <hr/>
-</div>
+<section>
+    <div class="container">
+        {% for badge in badges %}
+        {{ badge.html|safe }}
+        {% endfor %}
+        <hr/>
+    </div>
+</section>
 
 <!-- Counter -->
 <div class="container">
@@ -92,19 +94,24 @@
                             responsive: true
                         }
                     });
-
     </script>
 </div>
 
 {% endif %}
 
 <!-- Today's Quiz -->
-{% include "list/quiz.html" %}
+<section class="has-divider bg-primary-alt">
+    {% include "list/quiz.html" %}
+    <div class="divider">
+        <img class="bg-primary-3" src="{% static 'assets/img/dividers/divider-2.svg' %}" alt="divider graphic"
+             data-inject-svg/>
+    </div>
+</section>
 
 <!-- Level 0 -->
-<section>
+<section class="bg-primary-3">
     <div class="container" id="{{ difficulties.0.name }}">
-        <div class="row mb-4">
+        <div class="row mb-4 text-light">
             <div class="col">
                 <h3 class="h3">{{ difficulties.0.name }}</h3>
                 <h5 class="h5">{{ difficulties.0.desc }}</h5>
@@ -154,7 +161,7 @@
 
 
 <!-- Level 1 -->
-<section>
+<section class="has-divider">
     <div class="container">
         <div class="row mb-4">
             <div class="col">
@@ -202,11 +209,15 @@
             </div>
         </div>
     </div>
+    <div class="divider">
+        <img class="bg-primary-alt" src="{% static 'assets/img/dividers/divider-3.svg' %}" alt="divider graphic"
+             data-inject-svg/>
+    </div>
 </section>
 
 
 <!-- Level 2 -->
-<section>
+<section class="has-divider bg-primary-alt">
     <div class="container">
         <div class="row mb-4">
             <div class="col">
@@ -254,13 +265,17 @@
             </div>
         </div>
     </div>
+    <div class="divider">
+        <img class="bg-primary-3" src="{% static 'assets/img/dividers/divider-1.svg' %}" alt="divider graphic"
+             data-inject-svg/>
+    </div>
 </section>
 
 
 <!-- Level 3 -->
-<section>
+<section class="bg-primary-3">
     <div class="container">
-        <div class="row mb-4">
+        <div class="row mb-4 text-light">
             <div class="col">
                 <h3 class="h3">{{ difficulties.3.name }}</h3>
                 <h5 class="h5">{{ difficulties.3.desc }}</h5>

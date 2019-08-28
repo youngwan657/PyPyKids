@@ -34,13 +34,18 @@
 
                 {% for quiz in quizzes %}
                 <a href="/{{ quiz.order }}" class="card card-body hover-shadow-sm">
-                    {% if quiz.right == 1 %}
-                    <img class="icon icon-lg bg-success" src="{% static 'assets/img/icons/theme/code/done-circle.svg' %}" alt="done-circle icon" data-inject-svg />
-                    {% elif quiz.right < 0 %}
-                    <img class="icon icon-lg bg-danger" src="{% static 'assets/img/icons/theme/code/error-circle.svg' %}" alt="error-circle icon" data-inject-svg />
-                    {% endif %}
 
-                    <h4 class="mb-2">{{ quiz.title | linebreaksbr }}</h4>
+                    <h4 class="mb-2">{{ quiz.title | linebreaksbr }}
+                        {% if quiz.right == 1 %}
+                        <img class="icon bg-success"
+                             src="{% static 'assets/img/icons/theme/code/done-circle.svg' %}" alt="done-circle icon"
+                             data-inject-svg/>
+                        {% elif quiz.right < 0 %}
+                        <img class="icon bg-danger"
+                             src="{% static 'assets/img/icons/theme/code/error-circle.svg' %}" alt="error-circle icon"
+                             data-inject-svg/>
+                        {% endif %}
+                    </h4>
                     <pre><code>{{ quiz.question|safe }}</code></pre>
                     <div class="d-flex justify-content-between align-items-center mt-3">
                         <div class="d-flex align-items-center">
@@ -48,8 +53,8 @@
                         </div>
                         <span class="badge bg-primary-alt text-primary">
                             <img class="icon bg-primary" src="{% static 'assets/img/icons/interface/heart.svg' %}"
-                               alt="heart interface icon"
-                               data-inject-svg/>0
+                                 alt="heart interface icon"
+                                 data-inject-svg/>0
                         </span>
                     </div>
                 </a>

@@ -107,9 +107,9 @@ class Quiz(SortableMixin):
 """
 
     order = models.PositiveIntegerField(default=0, editable=False, db_index=True)
-    explanation = RichTextField(default=None, blank=True, null=True)
-    video = models.CharField(max_length=100, default=None, blank=True, null=True)
     title = models.CharField(max_length=100, default=None, blank=True, null=True)
+    video = models.CharField(max_length=100, default=None, blank=True, null=True)
+    explanation = RichTextField(default=None, blank=True, null=True)
     question = RichTextField(default=None, blank=True, null=True)
     example = RichTextField(default=default_example, blank=True, null=True)
     hint = models.TextField(default=None, blank=True, null=True)

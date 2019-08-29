@@ -434,3 +434,5 @@ def _add_badge(username):
             return badge
 
     return None
+
+# TODO:: change default font

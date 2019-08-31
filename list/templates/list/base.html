@@ -74,26 +74,32 @@
 
 
 <!--Footer-->
-<footer class="pb-4 bg-primary-3 text-light" id="footer">
+<footer class="pb-4 bg-primary-3 text-light">
     <div class="container">
         <div class="row mb-5">
-            <div class="col-6 col-lg-3 col-xl-2">
+            <div class="col">
+                <a href="index.html">
+                    PyPyKids
+                    <!--<img src="assets/img/logo-white.svg" alt="Leap" class="icon icon-md mb-3">-->
+                </a>
+                <p class="pr-xl-3">
+                    You are the future of the world.
+                </p>
+            </div>
+            <div class="col-6 col-lg col-xl-2">
                 <h5>Navigate</h5>
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a href="#" class="nav-link">Demos</a>
+                        <a href="/" class="nav-link">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link">Pages</a>
+                        <a href="/" class="nav-link">Category</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link">Blog</a>
+                        <a href="/badge" class="nav-link">Badge</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link">Portfolio</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" class="nav-link">Elements</a>
+                        <a href="/playground" class="nav-link">Playground</a>
                     </li>
                 </ul>
             </div>
@@ -101,8 +107,7 @@
                 <h5>Contact</h5>
                 <ul class="list-unstyled">
                     <li class="mb-3 d-flex">
-                        <img class="icon" src="{% static 'assets/img/icons/theme/map/marker-1.svg' %}"
-                             alt="marker-1 icon"
+                        <img class="icon" src="{% static 'assets/img/icons/theme/map/marker-1.svg' %}" alt="marker-1 icon"
                              data-inject-svg/>
                         <div class="ml-3">
                   <span>Gabilian Street
@@ -110,8 +115,7 @@
                         </div>
                     </li>
                     <li class="mb-3 d-flex">
-                        <img class="icon" src="{% static 'assets/img/icons/theme/communication/mail.svg' %}"
-                             alt="mail icon"
+                        <img class="icon" src="{% static 'assets/img/icons/theme/communication/mail.svg' %}" alt="mail icon"
                              data-inject-svg/>
                         <div class="ml-3">
                             <a href="#">PyPyKids@gmail.com</a>
@@ -119,39 +123,49 @@
                     </li>
                 </ul>
             </div>
-            <div class="col-lg-5 col-xl-4 mt-3 mt-lg-0">
-                <h5>Subscribe</h5>
-                <p>The latest Leap news, articles, and resources, sent straight to your inbox every month.</p>
-                <form action="/forms/mailchimp.php" data-form-email novalidate>
-                    <div class="form-row">
-                        <div class="col-12">
-                            <input type="email" class="form-control mb-2" placeholder="Email Address" name="email"
-                                   required>
+            <div class="col-6 col-lg-3">
+                <h5>Contact</h5>
+                <ul class="list-unstyled list-articles">
+                    <li class="row row-tight">
+                        <a href="#" class="col-3">
+                            <img src="{% static 'my/img/dayeon.jpg' %}" alt="Image" class="rounded">
+                        </a>
+                        <div class="col">
+                            <a href="#">
+                                <h6 class="mb-1">Youtuber</h6>
+                            </a>
+                            <div class="d-flex text-small">
+                                <a href="#">CEO</a>
+                            </div>
                         </div>
-                        <div class="col-12">
-                            <div class="d-none alert alert-success" role="alert" data-success-message>
-                                Thanks, a member of our team will be in touch shortly.
+                    </li>
+                    <li class="row row-tight">
+                        <a href="#" class="col-3">
+                            <img src="{% static 'my/img/youngwan.jpg' %}" alt="Image" class="rounded">
+                        </a>
+                        <div class="col">
+                            <a href="#">
+                                <h6 class="mb-1">Software</h6>
+                            </a>
+                            <div class="d-flex text-small">
+                                <a href="#">Developer</a>
                             </div>
-                            <div class="d-none alert alert-danger" role="alert" data-error-message>
-                                Please fill all fields correctly.
-                            </div>
-                            <div data-recaptcha data-sitekey="INSERT_YOUR_RECAPTCHA_V2_SITEKEY_HERE"
-                                 data-size="invisible" data-badge="bottomleft">
-                            </div>
-                            <button type="submit" class="btn btn-primary btn-loading btn-block"
-                                    data-loading-text="Sending">
-                                <img class="icon" src="{% static 'assets/img/icons/theme/code/loading.svg' %}"
-                                     alt="loading icon"
-                                     data-inject-svg/>
-                                <span>Subscribe</span>
-                            </button>
                         </div>
-                    </div>
-                </form>
-                <small class="text-muted form-text">We’ll never share your details. See our <a href="#">Privacy
-                    Policy</a>
-                </small>
-
+                    </li>
+                    <li class="row row-tight">
+                        <a href="#" class="col-3">
+                            <img src="{% static 'my/img/eunhae.jpg' %}" alt="Image" class="rounded">
+                        </a>
+                        <div class="col">
+                            <a href="#">
+                                <h6 class="mb-1">Video</h6>
+                            </a>
+                            <div class="d-flex text-small">
+                                <a href="#">Editor</a>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
             </div>
         </div>
         <div class="row justify-content-center mb-2">
@@ -182,7 +196,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
+                        <a href="https://www.facebook.com/Pypykids-107933803901347" target="_blank" class="nav-link">
                             <img class="icon undefined" src="{% static 'assets/img/icons/social/facebook.svg' %}"
                                  alt="facebook social icon" data-inject-svg/>
                         </a>
@@ -192,14 +206,13 @@
         </div>
         <div class="row justify-content-center">
             <div class="col col-md-auto text-center">
-                <small class="text-muted">&copy;2019 This page is protected by reCAPTCHA and is subject to the Google <a
-                        href="https://www.google.com/policies/privacy/">Privacy Policy</a> and <a
-                        href="https://policies.google.com/terms">Terms of Service.</a>
-                </small>
+                <small class="text-muted">&copy;2019 All Rights Reserved.</small>
             </div>
         </div>
     </div>
 </footer>
+
+
 <a href="#" class="btn back-to-top btn-primary btn-round" data-smooth-scroll data-aos="fade-up"
    data-aos-anchor="section:last-of-type" data-aos-mirror="true" data-aos-once="false">
     <img class="icon" src="{% static 'assets/img/icons/theme/navigation/arrow-up.svg' %}" alt="arrow-up icon"
@@ -255,6 +268,7 @@
       window.addEventListener("load", function () {
         document.querySelector('body').classList.add('loaded');
       });
+
 
 
 </script>

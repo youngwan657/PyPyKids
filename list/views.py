@@ -336,6 +336,7 @@ def about(request):
     badge = Badge.objects.count()
 
     context = {
+        'username': _get_username(request),
         'user': user,
         'quiz': quiz,
         'badge': badge,

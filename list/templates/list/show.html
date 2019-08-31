@@ -29,7 +29,7 @@
         <div class="alert alert-success" role="alert">
             <b>Accepted</b>
         </div>
-        {% elif right == -1 %}
+        {% elif right < 0 %}
         <div class="alert alert-danger" role="alert">
             <b>Wrong Answer</b>
         </div>
@@ -81,20 +81,20 @@
         <div class="alert alert-success" role="alert">
             <b>Accepted</b>
         </div>
-        {% elif right == -1 %}
+        {% elif right < 0 %}
         <div class="alert alert-danger" role="alert">
             <b>Wrong Answer</b>
         </div>
         {% endif %}
         {% if quiz.option1 != None %}
         <div class="custom-control custom-radio">
-            {% if user_answer == None or user_answer == "1" %}
+            {% if user_answer == "" or user_answer == "1" %}
             <input class="custom-control-input" name="answer" type="radio" value="1" id="radio1" checked>
             {% else %}
             <input class="custom-control-input" name="answer" type="radio" value="1" id="radio1">
             {% endif %}
             <label class="custom-control-label" for="radio1">
-                {{ quiz.option1 }}
+                <pre><code>{{ quiz.option1|safe }}</code></pre>
             </label>
         </div>
         {% endif %}
@@ -106,7 +106,7 @@
             <input class="custom-control-input" name="answer" type="radio" value="2" id="radio2">
             {% endif %}
             <label class="custom-control-label" for="radio2">
-                {{ quiz.option2 }}
+                <pre><code>{{ quiz.option2|safe }}</code></pre>
             </label>
         </div>
         {% endif %}
@@ -118,7 +118,7 @@
             <input class="custom-control-input" name="answer" type="radio" value="3" id="radio3">
             {% endif %}
             <label class="custom-control-label" for="radio3">
-                {{ quiz.option3 }}
+                <pre><code>{{ quiz.option3|safe }}</code></pre>
             </label>
         </div>
         {% endif %}
@@ -130,7 +130,7 @@
             <input class="custom-control-input" name="answer" type="radio" value="4" id="radio4">
             {% endif %}
             <label class="custom-control-label" for="radio4">
-                {{ quiz.option4 }}
+                <pre><code>{{ quiz.option4|safe }}</code></pre>
             </label>
         </div>
         {% endif %}

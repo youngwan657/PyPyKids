@@ -108,39 +108,40 @@
         </div>
     </div>
     <div class="divider" style="">
-        <img class="decoration bg-primary-alt" src="assets/img/dividers/divider-3.svg" alt="divider graphic"
+        <img class="decoration bg-primary-alt" src="{% static 'assets/img/dividers/divider-3.svg' %}"
+             alt="divider graphic"
              data-inject-svg/>
     </div>
+</section>
 
-    <section class="bg-primary-alt o-hidden">
-        <div class="container">
-            <div class="row mb-4">
-                <div class="col">
-                    <h2>Our History</h2>
-                </div>
-            </div>
-            <div class="row o-hidden o-lg-visible">
-                <div class="col d-flex flex-column align-items-center">
-                    <ol class="process-vertical">
-                        <li data-aos="fade-left">
-                            <div class="process-circle bg-primary"></div>
-                            <div>
-                                <span class="text-small text-muted">August 2019</span>
-                                <h5 class="mb-0">Start PyPyKids.com</h5>
-                            </div>
-                        </li>
-                        <li data-aos="fade-left">
-                            <div class="process-circle bg-primary"></div>
-                            <div>
-                                <span class="text-small text-muted">August 2019</span>
-                                <h5 class="mb-0">70 Quiz</h5>
-                            </div>
-                        </li>
-                    </ol>
-                </div>
+<section class="bg-primary-alt o-hidden">
+    <div class="container">
+        <div class="row mb-4">
+            <div class="col">
+                <h2>Our History</h2>
             </div>
         </div>
-    </section>
+        <div class="row o-hidden o-lg-visible">
+            <div class="col d-flex flex-column align-items-center">
+                <ol class="process-vertical">
+                    <li data-aos="fade-left">
+                        <div class="process-circle bg-primary"></div>
+                        <div>
+                            <span class="text-small text-muted">August 2019</span>
+                            <h5 class="mb-0">Start PyPyKids.com</h5>
+                        </div>
+                    </li>
+                    <li data-aos="fade-left">
+                        <div class="process-circle bg-primary"></div>
+                        <div>
+                            <span class="text-small text-muted">August 2019</span>
+                            <h5 class="mb-0">70 Quiz</h5>
+                        </div>
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </div>
 </section>
 
 {% endblock %}

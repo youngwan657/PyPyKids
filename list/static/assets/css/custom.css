@@ -6,3 +6,11 @@
 /*  in your page by adding a reference to assets/css/custom.css in the head of each page.
 /*
 */
+
+body {
+    font-family: Verdana, Geneva, sans-serif;
+}
+
+.font-title {
+    font-family: Georgia, serif;
+}

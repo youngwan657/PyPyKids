@@ -168,6 +168,7 @@
 {% endif %}
 
 
+<!-- Modal -->
 <div class="modal fade" id="success-modal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog text-light" role="document">
         <div class="modal-content bg-success border-0">
@@ -201,7 +202,6 @@
 </div>
 
 
-<!-- Frame Modal Bottom -->
 <div class="modal fade" id="badge-modal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -216,9 +216,7 @@
                         {{ new_badge.html|safe }}
                     </div>
                     <div class="text-center mb-4">
-                        <h4 class="h3">Congratulations</h4>
-                        <p>{{ new_badge.desc }}</strong>
-                        </p>
+                        <h4 class="h4">{{ new_badge.desc }}</h4>
                     </div>
                 </div>
             </div>
@@ -228,7 +226,6 @@
 
 
 <!-- Frame Modal Bottom -->
-
 <script>
     // modal animation
     {% if right_modal == "1" %}
@@ -244,9 +241,6 @@
     {% if new_badge != None %}
         $('#badge-modal').modal('show');
     {% endif %}
-
-
-
 </script>
 
 

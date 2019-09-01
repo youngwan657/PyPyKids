@@ -32,9 +32,10 @@
         <div class="row">
             {% for badge in badges %}
             <div class="col-sm-6 col-md-4 col-lg-3">
-                <a href="#" class="card card-sm card-body flex-row align-items-center hover-shadow-3d">
+                <button type="button" class="card card-sm card-body flex-row align-items-center hover-shadow-3d"
+                        data-toggle="tooltip" data-placement="top" title="{{ badge.desc }}">
                     {{ badge.html|safe }}
-                </a>
+                </button>
             </div>
             {% endfor %}
         </div>
@@ -45,27 +46,33 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-6 mb-3 col-lg-3 mb-lg-0">
-                                <span class="display-4 text-primary d-block" data-countup data-start="0"
-                                      data-end="{{ total_quiz }}" data-duration="3" data-grouping="true"></span>
+            <span class="display-4 text-primary d-block" data-countup data-start="0" data-end="{{ total_quiz }}"
+                  data-duration="3" data-grouping="true"></span>
             <span class="h6">Total Quiz</span>
         </div>
+        {% if accepted_quiz %}
         <div class="col-6 mb-3 col-lg-3 mb-lg-0">
-                                <span class="display-4 text-success d-block" data-countup data-start="0"
-                                      data-end="{{ accepted_quiz }}" data-duration="3" data-grouping="true"></span>
+            <span class="display-4 text-success d-block" data-countup data-start="0" data-end="{{ accepted_quiz }}"
+                  data-duration="3" data-grouping="true"></span>
             <span class="h6">Accepted</span>
         </div>
+        {% endif %}
+
+        {% if wrong_quiz %}
         <div class="col-6 mb-3 col-lg-3 mb-lg-0">
-                                <span class="display-4 text-primary-2 d-block" data-countup data-start="0"
-                                      data-end="{{ wrong_quiz }}"
-                                      data-duration="3" data-grouping="true"></span>
+            <span class="display-4 text-primary-2 d-block" data-countup data-start="0" data-end="{{ wrong_quiz }}"
+                  data-duration="3" data-grouping="true"></span>
             <span class="h6">Wrong</span>
         </div>
+        {% endif %}
+
+        {% if not_try_quiz %}
         <div class="col-6 mb-3 col-lg-3 mb-lg-0">
-                                <span class="display-4 text-secondary d-block" data-countup data-start="0"
-                                      data-end="{{ not_try_quiz }}"
-                                      data-duration="3" data-grouping="true"></span>
+            <span class="display-4 text-secondary d-block" data-countup data-start="0" data-end="{{ not_try_quiz }}"
+                  data-duration="3" data-grouping="true"></span>
             <span class="h6">Not Try</span>
         </div>
+        {% endif %}
     </div>
 </div>
 <br/>
@@ -104,6 +111,11 @@
                             responsive: true
                         }
                     });
+
+
+
+
+
 
 
 

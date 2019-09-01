@@ -46,7 +46,6 @@ class Badge(SortableMixin):
 
 class CustomUser(models.Model):
     name = models.CharField(max_length=30)
-    # TODO:: why should have more than 0 ?
     badges = models.ManyToManyField(Badge)
 
     def __str__(self):

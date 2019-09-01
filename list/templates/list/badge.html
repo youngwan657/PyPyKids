@@ -25,9 +25,9 @@
         <div class="row">
             {% for badge in badges %}
             <div class="col-sm-6 col-md-4 col-lg-3">
-                <a href="#" class="card card-sm card-body flex-row align-items-center hover-shadow-3d">
+                <button type="button" class="card card-sm card-body flex-row align-items-center hover-shadow-3d" data-toggle="tooltip" data-placement="top" title="{{ badge.desc }}">
                     {{ badge.html|safe }}
-                </a>
+                </button>
             </div>
             {% endfor %}
         </div>

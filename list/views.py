@@ -245,53 +245,17 @@ def show_all_quiz(request):
     return render(request, 'list/all_quiz.html', context)
 
 
-# TODO:: always show password mismatch error
-class CustomUserCreationForm(UserCreationForm):
-    username = forms.CharField(label='Enter Username', min_length=4, max_length=40)
-    password1 = forms.CharField(label='Enter password', widget=forms.PasswordInput)
-    password2 = forms.CharField(label='Confirm password', widget=forms.PasswordInput)
-
-    def __init__(self, *args, **kwargs):
-        super(CustomUserCreationForm, self).__init__(*args, **kwargs)
-
-        for fieldname in ['username', 'password1', 'password2']:
-            self.fields[fieldname].help_text = None
-
-    def clean_username(self):
-        username = self.cleaned_data['username'].lower()
-        r = User.objects.filter(username=username)
-        if r.count():
-            raise ValidationError("Username already exists")
-        return username
-
-    def clean_password2(self):
-        password1 = self.cleaned_data.get('password1')
-        password2 = self.cleaned_data.get('password2')
-
-        if password1 and password2 and password1 != password2:
-            raise ValidationError("Password don't match")
-
-        return password2
-
-    def save(self, commit=True):
-        user = User.objects.create_user(
-            self.cleaned_data['username'],
-            self.cleaned_data['password1']
-        )
-        return user
-
-
 def signup(request):
+    form = UserCreationForm(request.POST or None)
     if request.method == "POST":
-        form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
+            custom_user = CustomUser.objects.create(name=user.username)
+            custom_user.badges.add(Badge.objects.get(order=0))
+            custom_user.save()
             login(request, user)
             return redirect("/")
-        else:
-            print(form.error_messages)
 
-    form = CustomUserCreationForm
     context = {
         'form': form,
     }
@@ -312,7 +276,6 @@ def signin(request):
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
-                print("login")
                 return redirect('/')
             else:
                 print("invalid")
@@ -425,7 +388,6 @@ def _add_badge(username):
 
     # total quiz
     total_quiz = answers.count()
-
     for badge in untaken_badges:
         if badge.type.name == "TotalQuiz" and badge.value <= total_quiz:
             custom_user.badges.add(badge)
@@ -435,3 +397,5 @@ def _add_badge(username):
     return None
 
 # TODO:: split multiple view per function.
+# TODO:: like button only for the kids who solved person.
+# TODO:: chat question

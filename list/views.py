@@ -133,7 +133,6 @@ def category(request, category):
     return render(request, 'list/category.html', context)
 
 
-# TODO:: redirect to login page if not login
 def show(request, quiz_order):
     context = {}
     username = _get_username(request)
@@ -282,7 +281,7 @@ class CustomUserCreationForm(UserCreationForm):
         return user
 
 
-def register(request):
+def signup(request):
     if request.method == "POST":
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
@@ -296,16 +295,15 @@ def register(request):
     context = {
         'form': form,
     }
-    return render(request, 'list/register.html', context)
+    return render(request, 'list/signup.html', context)
 
 
-# TODO:: upload avator image
-def logout_request(request):
+def signout(request):
     logout(request)
     return redirect("/")
 
 
-def login_request(request):
+def signin(request):
     if request.method == 'POST':
         form = AuthenticationForm(request=request, data=request.POST)
         if form.is_valid():
@@ -324,7 +322,7 @@ def login_request(request):
     context = {
         'form': form,
     }
-    return render(request, "list/login.html", context)
+    return render(request, "list/signin.html", context)
 
 
 # TODO:: Run before submit
@@ -436,4 +434,4 @@ def _add_badge(username):
 
     return None
 
-# TODO:: change default font
+# TODO:: split multiple view per function.

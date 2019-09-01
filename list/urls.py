@@ -10,8 +10,8 @@ urlpatterns = [
     path('badge/', views.badge, name='badge'),
     path('playground/', views.playground, name='playground'),
     path('all/', views.show_all_quiz, name='all_quiz'),
-    path('register/', views.register, name='register'),
-    path("login/", views.login_request, name="login"),
-    path("logout/", views.logout_request, name="logout"),
+    path('signup/', views.signup, name='signup'),
+    path("signin/", views.signin, name="signin"),
+    path("signout/", views.signout, name="signout"),
     path("about/", views.about, name="about"),
 ]

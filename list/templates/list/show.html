@@ -71,7 +71,9 @@
         </div>
 
         <!-- Send button -->
+        {% if username %}
         <button class="btn btn-info btn-block" type="submit">Submit</button>
+        {% endif %}
     </form>
 
     {% elif quiz.quiz_type.name == "MultipleChoice" %}
@@ -135,41 +137,79 @@
         </div>
         {% endif %}
         <br/>
+        {% if username %}
         <button class="btn btn-info btn-block" type="submit">Submit</button>
+        {% endif %}
     </form>
+    {% endif %}
+
+    {% if username == "" %}
+    <button id="show-signin-toast" class="btn btn-primary btn-block">Submit</button>
+    <div aria-live="polite" aria-atomic="true"
+         style="position: fixed; top: 80px; right: 20px; min-height: 200px; width: 100%">
+        <div style="position: absolute; top: 0; right: 0;">
+            <div id="signin-toast" class="toast" role="alert" data-delay="5000">
+                <div class="toast-header">
+                    <img src="{% static 'my/img/dayeon.jpg' %}" class="avatar mr-2 avatar-sm"
+                         alt="Avatar image for male 5">
+                    <strong class="mr-auto">PyPyKids</strong>
+                    <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="toast-body">
+                    Please sign in first before sumbitting the code.
+                </div>
+            </div>
+        </div>
+    </div>
     {% endif %}
 </div>
 {% endif %}
 
 
 <!-- Modal: Accepted -->
-<div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel1"
-     aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title text-success" id="modalLabel1"><b>Accepted</b></h5>
-            </div>
+<!--<div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel1"-->
+     <!--aria-hidden="true">-->
+    <!--<div class="modal-dialog" role="document">-->
+        <!--<div class="modal-content">-->
+            <!--<div class="modal-header">-->
+                <!--<h5 class="modal-title text-success" id="modalLabel1"><b>Accepted</b></h5>-->
+            <!--</div>-->
+            <!--<div class="modal-body">-->
+                <!--<img src="{% static 'list/Congratulations.png' %}" id="animated-accepted" width="470">-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->
+
+<div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog text-light" role="document">
+        <div class="modal-content bg-success border-0">
             <div class="modal-body">
-                <img src="{% static 'list/Congratulations.png' %}" id="animated-accepted" width="470">
+                <div class="m-3 d-flex align-items-center">
+                    <img src="{% static 'my/img/dayeon.jpg' %}" alt="Avatar" class="avatar avatar-lg">
+                    <div class="ml-3">
+                        <h5 class="mb-1"><b>Accepted</b></h5>
+                        <span>You are awesome !!!</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Modal: Wrong Answer -->
-<div class="modal fade" id="wrongModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel2"
-     aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title text-wrong text-danger" id="modalLabel2"><b>Wrong Answer</b></h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
+<div class="modal fade" id="wrongModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog text-light" role="document">
+        <div class="modal-content bg-danger border-0">
             <div class="modal-body">
-                <img src="{% static 'list/Wrong.png' %}" id="animated-wrong" width="470">
+                <div class="m-3 d-flex align-items-center">
+                    <img src="{% static 'my/img/dayeon.jpg' %}" alt="Avatar" class="avatar avatar-lg">
+                    <div class="ml-3">
+                        <h5 class="mb-1"><b>Wrong Answer</b></h5>
+                        <span>Could you try again?</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -213,9 +253,8 @@
     {% if new_badge != None %}
         $('#badgeModal').modal('show');
     {% endif %}
-
-
-
 </script>
+
+
 {% endblock %}
 

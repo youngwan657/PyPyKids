@@ -10,6 +10,9 @@
     <link href="{% static 'assets/css/loaders/loader-typing.css' %}" rel="stylesheet" type="text/css" media="all"/>
     <link href="{% static 'assets/css/theme.css' %}" rel="stylesheet" type="text/css" media="all"/>
     <link href="{% static 'assets/css/custom.css' %}" rel="stylesheet" type="text/css" media="all"/>
+    <script type="text/javascript" src="{% static 'assets/js/jquery.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'assets/js/popper.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'assets/js/bootstrap.js' %}"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
 </head>
 
@@ -51,15 +54,18 @@
 
             {% if username %}
             <div class="dropdown">
-                <a data-toggle="dropdown" type="button"><img class="avatar" src="{% static '/my/img/dayeon.jpg' %}" alt="dayeon"/></a>
+                <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <b>{{ username }}</b>
+                    <img class="icon" src="{% static 'assets/img/icons/interface/arrow-caret.svg' %}" alt="arrow-caret interface icon" data-inject-svg />
+                </button>
                 <div class="dropdown-menu">
-                    <a class="dropdown-item" href="/logout">Logout</a>
+                    <a class="dropdown-item text-danger" href="/signout">Sign out</a>
                 </div>
             </div>
             {% else %}
             <div class="collapse navbar-collapse justify-content-end">
-                <a href="/login" class="btn ml-lg-3">Sign in</a>
-                <a href="/register" class="btn btn-primary ml-lg-3">Sign up</a>
+                <a href="/signin" class="btn ml-lg-3 text-light">Sign in</a>
+                <a href="/signup" class="btn btn-primary ml-lg-3">Sign up</a>
             </div>
             {% endif %}
         </div>
@@ -215,9 +221,6 @@
          data-inject-svg/>
 </a>
 <!-- Required vendor scripts (Do not remove) -->
-<script type="text/javascript" src="{% static 'assets/js/jquery.min.js' %}"></script>
-<script type="text/javascript" src="{% static 'assets/js/popper.min.js' %}"></script>
-<script type="text/javascript" src="{% static 'assets/js/bootstrap.js' %}"></script>
 
 <!-- Optional Vendor Scripts (Remove the plugin script here and comment initializer script out of index.js if site does not use that feature) -->
 
@@ -259,17 +262,15 @@
 <script type="text/javascript" src="{% static 'assets/js/typed.min.js' %}"></script>
 <!-- Required theme scripts (Do not remove) -->
 <script type="text/javascript" src="{% static 'assets/js/theme.js' %}"></script>
+<!-- Custom script -->
+<script type="text/javascript" src="{% static 'list/my.js' %}"></script>
 <!-- Removes page load animation when window is finished loading -->
 <script type="text/javascript">
       window.addEventListener("load", function () {
         document.querySelector('body').classList.add('loaded');
       });
-
-
-
 </script>
 
-<script type="text/javascript" src="{% static 'list/my.js' %}"></script>
 
 </body>
 </html>

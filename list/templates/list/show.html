@@ -18,209 +18,217 @@
     </div>
 </section>
 
-{% if quiz.visible %}
 {% include "list/quiz.html" %}
 
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-lg-10 col-xl-8">
-            {% if quiz.quiz_type.name == "Code" or quiz.quiz_type.name == "Answer" %}
-            <form class="text-center border border-light p-5" action="/answer/{{quiz.order}}/" method="POST">
-                {%csrf_token %}
-                {% if right == 1 %}
-                <div class="alert alert-success" role="alert">
-                    <b>Accepted</b>
-                </div>
-                {% elif right < 0 %}
-                <div class="alert alert-danger" role="alert">
-                    <b>Wrong Answer</b>
-                </div>
-                {% if quiz.quiz_type.name == "Code" %}
-                <table class="table">
-                    <tbody>
-                    <tr>
-                        <th scope="row" style="width: 20%">Input:</th>
-                        <td>{{ testcase }}</td>
-                    </tr>
-                    {% if stdout != "" %}
-                    <tr>
-                        <th scope="row">stdout:</th>
-                        <td>{{ stdout }}</span></td>
-                    </tr>
-                    {% endif %}
-                    <tr>
-                        <th scope="row">Output:</th>
-                        <td>{{ output|linebreaksbr }}</span></td>
-                    </tr>
-                    <tr>
-                        <th scope="row">Expected:</th>
-                        <td>{{ expected_answer }}</span></td>
-                    </tr>
-                    </tbody>
-                </table>
-                <hr/>
-                {% endif %}
-                {% else %}
-                <p class="h4 mb-4">Your answer</p>
-                {% endif %}
-
-                {% if submitted_at %}
-                <p class="text-muted">Submitted at {{ submitted_at }}</p>
-                {% endif %}
-
-                <div class="form-group">
-                    <textarea class="form-control" id="answer" name="answer" rows="10">{{ user_answer }}</textarea>
-                </div>
-
-                <!-- Send button -->
-                {% if username %}
-                <button class="btn btn-info btn-block" type="submit">Submit</button>
-                {% endif %}
-            </form>
-
-            {% elif quiz.quiz_type.name == "MultipleChoice" %}
-            <form class="border border-light p-5" action="/answer/{{quiz.order}}/" method="POST">
-                {% csrf_token %}
-                {% if right == 1 %}
-                <div class="alert alert-success" role="alert">
-                    <b>Accepted</b>
-                </div>
-                {% elif right < 0 %}
-                <div class="alert alert-danger" role="alert">
-                    <b>Wrong Answer</b>
-                </div>
-                {% endif %}
-                {% if quiz.option1 != None %}
-                <div class="custom-control custom-radio">
-                    {% if user_answer == "" or user_answer == "1" %}
-                    <input class="custom-control-input" name="answer" type="radio" value="1" id="radio1" checked>
-                    {% else %}
-                    <input class="custom-control-input" name="answer" type="radio" value="1" id="radio1">
-                    {% endif %}
-                    <label class="custom-control-label" for="radio1">
-                        <pre><code>{{ quiz.option1|safe }}</code></pre>
-                    </label>
-                </div>
-                {% endif %}
-                {% if quiz.option2 != None %}
-                <div class="custom-control custom-radio">
-                    {% if user_answer == "2" %}
-                    <input class="custom-control-input" name="answer" type="radio" value="2" id="radio2" checked>
-                    {% else %}
-                    <input class="custom-control-input" name="answer" type="radio" value="2" id="radio2">
-                    {% endif %}
-                    <label class="custom-control-label" for="radio2">
-                        <pre><code>{{ quiz.option2|safe }}</code></pre>
-                    </label>
-                </div>
-                {% endif %}
-                {% if quiz.option3 != None %}
-                <div class="custom-control custom-radio">
-                    {% if user_answer == "3" %}
-                    <input class="custom-control-input" name="answer" type="radio" value="3" id="radio3" checked>
-                    {% else %}
-                    <input class="custom-control-input" name="answer" type="radio" value="3" id="radio3">
-                    {% endif %}
-                    <label class="custom-control-label" for="radio3">
-                        <pre><code>{{ quiz.option3|safe }}</code></pre>
-                    </label>
-                </div>
-                {% endif %}
-                {% if quiz.option4 != None %}
-                <div class="custom-control custom-radio">
-                    {% if user_answer == "4" %}
-                    <input class="custom-control-input" name="answer" type="radio" value="4" id="radio4" checked>
-                    {% else %}
-                    <input class="custom-control-input" name="answer" type="radio" value="4" id="radio4">
-                    {% endif %}
-                    <label class="custom-control-label" for="radio4">
-                        <pre><code>{{ quiz.option4|safe }}</code></pre>
-                    </label>
-                </div>
-                {% endif %}
-                <br/>
-                {% if username %}
-                <button class="btn btn-info btn-block" type="submit">Submit</button>
-                {% endif %}
-            </form>
-            {% endif %}
-
-            {% if username == "" %}
-            <button id="show-signin-toast" class="btn btn-primary btn-block">Submit</button>
-            <div aria-live="polite" aria-atomic="true"
-                 style="position: fixed; top: 80px; right: 20px; min-height: 200px; width: 100%">
-                <div style="position: absolute; top: 0; right: 0;">
-                    <div id="signin-toast" class="toast" role="alert" data-delay="5000">
-                        <div class="toast-header">
-                            <img src="{% static 'list/img/dayeon.jpg' %}" class="avatar mr-2 avatar-sm"
-                                 alt="Avatar image for male 5">
-                            <strong class="mr-auto">PyPyKids</strong>
-                            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                        <div class="toast-body">
-                            Please sign in first before sumbitting the code.
-                        </div>
+<section class="has-divider">
+    <div class="container pt-3">
+        <div class="row justify-content-center">
+            <div class="col-lg-10 col-xl-8">
+                {% if quiz.quiz_type.name == "Code" or quiz.quiz_type.name == "Answer" %}
+                <form class="text-center border border-light p-5" action="/answer/{{quiz.order}}/" method="POST">
+                    {%csrf_token %}
+                    {% if answer.right == 1 %}
+                    <div class="alert alert-success" role="alert">
+                        <b>Accepted</b>
                     </div>
-                </div>
-            </div>
-            {% endif %}
-        </div>
-        {% endif %}
+                    {% elif answer.right < 0 %}
+                    <div class="alert alert-danger" role="alert">
+                        <b>Wrong Answer</b>
+                    </div>
+                    {% if quiz.quiz_type.name == "Code" %}
+                    <table class="table">
+                        <tbody>
+                        <tr>
+                            <th scope="row" style="width: 20%">Input:</th>
+                            <td>{{ answer.testcase }}</td>
+                        </tr>
+                        {% if answer.stdout != "" %}
+                        <tr>
+                            <th scope="row">stdout:</th>
+                            <td>{{ answer.stdout }}</span></td>
+                        </tr>
+                        {% endif %}
+                        <tr>
+                            <th scope="row">Output:</th>
+                            <td>{{ answer.output|linebreaksbr }}</span></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Expected:</th>
+                            <td>{{ answer.expected_answer }}</span></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <hr/>
+                    {% endif %}
+                    {% else %}
+                    <p class="h4 mb-4">Your answer</p>
+                    {% endif %}
 
+                    {% if answer.submitted_at %}
+                    <p class="text-muted">Submitted at {{ answer.submitted_at }}</p>
+                    {% endif %}
 
-        <!-- Modal -->
-        <div class="modal fade" id="success-modal" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog text-light" role="document">
-                <div class="modal-content bg-success border-0">
-                    <div class="modal-body">
-                        <div class="m-3 d-flex align-items-center">
-                            <img src="{% static 'list/img/dayeon.jpg' %}" alt="Avatar" class="avatar avatar-lg">
-                            <div class="ml-3">
-                                <h5 class="mb-1"><b>Accepted</b></h5>
-                                <span>You are awesome !!!</span>
+                    <div class="form-group">
+                        <textarea class="form-control" id="answer" name="answer" rows="10">{{ user_answer }}</textarea>
+                    </div>
+
+                    <!-- Send button -->
+                    {% if username %}
+                    <button class="btn btn-info btn-block" type="submit">Submit</button>
+                    {% endif %}
+                </form>
+
+                {% elif quiz.quiz_type.name == "MultipleChoice" %}
+                <form class="border border-light p-5" action="/answer/{{quiz.order}}/" method="POST">
+                    {% csrf_token %}
+                    {% if answer.right == 1 %}
+                    <div class="alert alert-success" role="alert">
+                        <b>Accepted</b>
+                    </div>
+                    {% elif answer.right < 0 %}
+                    <div class="alert alert-danger" role="alert">
+                        <b>Wrong Answer</b>
+                    </div>
+                    {% endif %}
+                    {% if quiz.option1 != None %}
+                    <div class="custom-control custom-radio">
+                        {% if user_answer == "" or user_answer == "1" %}
+                        <input class="custom-control-input" name="answer" type="radio" value="1" id="radio1" checked>
+                        {% else %}
+                        <input class="custom-control-input" name="answer" type="radio" value="1" id="radio1">
+                        {% endif %}
+                        <label class="custom-control-label" for="radio1">
+                            <pre><code>{{ quiz.option1|safe }}</code></pre>
+                        </label>
+                    </div>
+                    {% endif %}
+                    {% if quiz.option2 != None %}
+                    <div class="custom-control custom-radio">
+                        {% if user_answer == "2" %}
+                        <input class="custom-control-input" name="answer" type="radio" value="2" id="radio2" checked>
+                        {% else %}
+                        <input class="custom-control-input" name="answer" type="radio" value="2" id="radio2">
+                        {% endif %}
+                        <label class="custom-control-label" for="radio2">
+                            <pre><code>{{ quiz.option2|safe }}</code></pre>
+                        </label>
+                    </div>
+                    {% endif %}
+                    {% if quiz.option3 != None %}
+                    <div class="custom-control custom-radio">
+                        {% if user_answer == "3" %}
+                        <input class="custom-control-input" name="answer" type="radio" value="3" id="radio3" checked>
+                        {% else %}
+                        <input class="custom-control-input" name="answer" type="radio" value="3" id="radio3">
+                        {% endif %}
+                        <label class="custom-control-label" for="radio3">
+                            <pre><code>{{ quiz.option3|safe }}</code></pre>
+                        </label>
+                    </div>
+                    {% endif %}
+                    {% if quiz.option4 != None %}
+                    <div class="custom-control custom-radio">
+                        {% if user_answer == "4" %}
+                        <input class="custom-control-input" name="answer" type="radio" value="4" id="radio4" checked>
+                        {% else %}
+                        <input class="custom-control-input" name="answer" type="radio" value="4" id="radio4">
+                        {% endif %}
+                        <label class="custom-control-label" for="radio4">
+                            <pre><code>{{ quiz.option4|safe }}</code></pre>
+                        </label>
+                    </div>
+                    {% endif %}
+                    <br/>
+                    {% if username %}
+                    <button class="btn btn-info btn-block" type="submit">Submit</button>
+                    {% endif %}
+                </form>
+                {% endif %}
+
+                {% if username == "" %}
+                <button id="show-signin-toast" class="btn btn-primary btn-block">Submit</button>
+                <div aria-live="polite" aria-atomic="true"
+                     style="position: fixed; top: 80px; right: 20px; min-height: 200px; width: 100%">
+                    <div style="position: absolute; top: 0; right: 0;">
+                        <div id="signin-toast" class="toast" role="alert" data-delay="5000">
+                            <div class="toast-header">
+                                <img src="{% static 'list/img/dayeon.jpg' %}" class="avatar mr-2 avatar-sm"
+                                     alt="PyPyKids">
+                                <strong class="mr-auto">PyPyKids</strong>
+                                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="toast-body">
+                                Please sign in first before sumbitting the code.
                             </div>
                         </div>
                     </div>
                 </div>
+                {% endif %}
             </div>
         </div>
+    </div>
 
-        <div class="modal fade" id="wrong-modal" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog text-light" role="document">
-                <div class="modal-content bg-danger border-0">
-                    <div class="modal-body">
-                        <div class="m-3 d-flex align-items-center">
-                            <img src="{% static 'list/img/dayeon.jpg' %}" alt="Avatar" class="avatar avatar-lg">
-                            <div class="ml-3">
-                                <h5 class="mb-1"><b>Wrong Answer</b></h5>
-                                <span>Could you try again?</span>
-                            </div>
-                        </div>
+    <div class="divider">
+        <img class="bg-primary-alt" src="{% static 'assets/img/dividers/divider-3.svg' %}" alt="divider graphic"
+             data-inject-svg/>
+    </div>
+</section>
+
+
+{% if next %}
+<section class="bg-primary-alt">
+    <div class="container">
+        <div class="row mb-4">
+            <div class="col text-center">
+                <h3 class="h2">Next Quiz</h3>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-10 col-xl-8">
+                <a href="/{{ next.order }}" class="card card-body hover-shadow-sm">
+                    <h4 class="mb-2">{{ next.title|safe }}</h4>
+                    <span>{{ next.question|safe }}</span>
+                    <div class="d-flex justify-content-between align-items-center mt-3">
+                        <span class="badge bg-primary-alt text-primary">
+                            <img class="icon bg-primary" src="{% static 'assets/img/icons/interface/heart.svg' %}"
+                                 alt="heart interface icon" data-inject-svg/>0</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+
+<!-- Modal -->
+<div class="modal fade" id="success-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog text-light" role="document">
+        <div class="modal-content bg-success border-0">
+            <div class="modal-body">
+                <div class="m-3 d-flex align-items-center">
+                    <img src="{% static 'list/img/dayeon.jpg' %}" alt="Avatar" class="avatar avatar-lg">
+                    <div class="ml-3">
+                        <h5 class="mb-1"><b>Accepted</b></h5>
+                        <span>You are awesome !!!</span>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+</div>
 
-
-        <div class="modal fade" id="badge-modal" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-body">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <img class="icon bg-dark" src="{% static 'assets/img/icons/interface/cross.svg' %}"
-                                 alt="cross interface icon"
-                                 data-inject-svg/>
-                        </button>
-                        <div class="m-xl-4 m-3">
-                            <div class="bg-primary mx-auto mb-4">
-                                {{ new_badge.html|safe }}
-                            </div>
-                            <div class="text-center mb-4">
-                                <h4 class="h4">{{ new_badge.desc }}</h4>
-                            </div>
-                        </div>
+<div class="modal fade" id="wrong-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog text-light" role="document">
+        <div class="modal-content bg-danger border-0">
+            <div class="modal-body">
+                <div class="m-3 d-flex align-items-center">
+                    <img src="{% static 'list/img/dayeon.jpg' %}" alt="Avatar" class="avatar avatar-lg">
+                    <div class="ml-3">
+                        <h5 class="mb-1"><b>Wrong Answer</b></h5>
+                        <span>Could you try again?</span>
                     </div>
                 </div>
             </div>
@@ -229,7 +237,28 @@
 </div>
 
 
-<!-- Frame Modal Bottom -->
+<div class="modal fade" id="badge-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <img class="icon bg-dark" src="{% static 'assets/img/icons/interface/cross.svg' %}"
+                         alt="cross interface icon"
+                         data-inject-svg/>
+                </button>
+                <div class="m-xl-4 m-3">
+                    <div class="bg-primary mx-auto mb-4">
+                        {{ new_badge.html|safe }}
+                    </div>
+                    <div class="text-center mb-4">
+                        <h4 class="h4">{{ new_badge.desc }}</h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     // modal animation
     {% if right_modal == "1" %}

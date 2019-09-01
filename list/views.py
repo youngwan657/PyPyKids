@@ -12,10 +12,6 @@ from .right import Right
 # login, register
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django import forms
-from django.core.exceptions import ValidationError
-
-from django.contrib.auth.models import User
 
 MONTH = 31
 
@@ -34,9 +30,7 @@ def all_category(request):
         total_quizzes = Quiz.objects.count()
         right_quizzes = answers.filter(right=Right.RIGHT.value).count()
         wrong_quizzes = answers.filter(Q(right=Right.WRONG.value) | Q(right=Right.WRONG_BUT_RIGHT_BEFORE.value)).count()
-        for answer in answers:
-            if answer.right == Right.RIGHT.value:
-                unsolved_quizzes = unsolved_quizzes.filter(~Q(order=answer.quiz.order))
+        unsolved_quizzes = _get_unsolved_quizzes(username)
 
         # Chart
         now = date.today() + timedelta(days=+1)
@@ -138,47 +132,34 @@ def show(request, quiz_order):
     username = _get_username(request)
     context['username'] = username
 
+    answers = Answer.objects.filter(name=username)
+
     quiz = get_object_or_404(Quiz, order=quiz_order)
-    next = Quiz.objects.filter(visible=True).filter(order__gt=quiz_order).first()
-    # TODO:: change related Quiz
+    # TODO:: 404 when visible is False
 
-    # TODO: use get instead of filter
     right_modal = request.GET.get('right_modal')
-    right, user_answer, testcase, output, stdout, expected_answer, submitted_at = 0, "", "", "", "", "", ""
-    answer = Answer.objects.filter(quiz__order=quiz_order, name=username)
-    if len(answer) == 1:
-        right = answer[0].right
-        user_answer = answer[0].answer
-        submitted_at = str(answer[0].date)
-        testcase = answer[0].testcase
-        output = answer[0].output
-        stdout = answer[0].stdout
-        expected_answer = answer[0].expected_answer
-    else:
-        user_answer = quiz.answer_header
+    answer = answers.filter(quiz__order=quiz_order).first()
 
-    new_badge = _add_badge(username)
+    # default answer header
+    context['user_answer'] = quiz.answer_header
+    if answer:
+        context['user_answer'] = answer.answer
+        context['answer'] = answer
 
+    context['next'] = _get_unsolved_quizzes(username, quiz_order).first()
     context['difficulty'] = quiz.category.difficulty
     context['category'] = quiz.category.name
-    context['new_badge'] = new_badge
+    context['new_badge'] = _add_badge(username)
     context['quiz'] = quiz
-    context['user_answer'] = user_answer
-    context['submitted_at'] = submitted_at
-    context['right'] = right
     context['right_modal'] = right_modal
-    context['testcase'] = testcase
-    context['output'] = output
-    context['stdout'] = stdout
-    context['expected_answer'] = expected_answer
-    context['next'] = next
     context['quiz_name'] = quiz_order
+    # TODO:: change to configurable image for quiz
     context['quiz_image'] = 'theme/devices/airpods.svg'
 
     return render(request, 'list/show.html', context)
 
 
-# TODO: check the object input
+# TODO:: check the object input
 # TODO:: dynamic function name depending on quiz.
 def answer(request, quiz_order):
     quiz = get_object_or_404(Quiz, order=quiz_order)
@@ -288,7 +269,6 @@ def signin(request):
     return render(request, "list/signin.html", context)
 
 
-# TODO:: Run before submit
 # TODO:: Answer history
 
 def about(request):
@@ -303,10 +283,6 @@ def about(request):
         'badge': badge,
     }
     return render(request, 'list/about.html', context)
-
-
-# TODO:: right modal is broken.
-# TODO:: code mirror for editor
 
 
 # private
@@ -396,8 +372,21 @@ def _add_badge(username):
 
     return None
 
+
+def _get_unsolved_quizzes(username, quiz_order=-1):
+    quizzes = Quiz.objects.filter(visible=True, order__gt=quiz_order).order_by('order')
+    if len(quizzes) == 0:
+        quizzes = Quiz.objects.filter(visible=True).order_by('order')
+    answers = Answer.objects.filter(name=username)
+    for answer in answers:
+        if answer.right == Right.RIGHT.value:
+            quizzes = quizzes.filter(~Q(order=answer.quiz.order))
+
+    return quizzes
+
+
+
 # TODO:: split multiple view per function.
 # TODO:: like button only for the kids who solved person.
 # TODO:: chat with admin
-# TODO:: next question or related question
 # TODO:: code mirror editor

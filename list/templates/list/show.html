@@ -150,7 +150,7 @@
         <div style="position: absolute; top: 0; right: 0;">
             <div id="signin-toast" class="toast" role="alert" data-delay="5000">
                 <div class="toast-header">
-                    <img src="{% static 'my/img/dayeon.jpg' %}" class="avatar mr-2 avatar-sm"
+                    <img src="{% static 'list/img/dayeon.jpg' %}" class="avatar mr-2 avatar-sm"
                          alt="Avatar image for male 5">
                     <strong class="mr-auto">PyPyKids</strong>
                     <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
@@ -168,27 +168,12 @@
 {% endif %}
 
 
-<!-- Modal: Accepted -->
-<!--<div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel1"-->
-     <!--aria-hidden="true">-->
-    <!--<div class="modal-dialog" role="document">-->
-        <!--<div class="modal-content">-->
-            <!--<div class="modal-header">-->
-                <!--<h5 class="modal-title text-success" id="modalLabel1"><b>Accepted</b></h5>-->
-            <!--</div>-->
-            <!--<div class="modal-body">-->
-                <!--<img src="{% static 'list/Congratulations.png' %}" id="animated-accepted" width="470">-->
-            <!--</div>-->
-        <!--</div>-->
-    <!--</div>-->
-<!--</div>-->
-
-<div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal fade" id="success-modal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog text-light" role="document">
         <div class="modal-content bg-success border-0">
             <div class="modal-body">
                 <div class="m-3 d-flex align-items-center">
-                    <img src="{% static 'my/img/dayeon.jpg' %}" alt="Avatar" class="avatar avatar-lg">
+                    <img src="{% static 'list/img/dayeon.jpg' %}" alt="Avatar" class="avatar avatar-lg">
                     <div class="ml-3">
                         <h5 class="mb-1"><b>Accepted</b></h5>
                         <span>You are awesome !!!</span>
@@ -199,12 +184,12 @@
     </div>
 </div>
 
-<div class="modal fade" id="wrongModal" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal fade" id="wrong-modal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog text-light" role="document">
         <div class="modal-content bg-danger border-0">
             <div class="modal-body">
                 <div class="m-3 d-flex align-items-center">
-                    <img src="{% static 'my/img/dayeon.jpg' %}" alt="Avatar" class="avatar avatar-lg">
+                    <img src="{% static 'list/img/dayeon.jpg' %}" alt="Avatar" class="avatar avatar-lg">
                     <div class="ml-3">
                         <h5 class="mb-1"><b>Wrong Answer</b></h5>
                         <span>Could you try again?</span>
@@ -217,42 +202,51 @@
 
 
 <!-- Frame Modal Bottom -->
-<div class="modal fade top" id="badgeModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel3"
-     aria-hidden="true">
-
-    <div class="modal-dialog modal-frame modal-top" role="document">
+<div class="modal fade" id="badge-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title w-100" id="myModalLabel">{{ new_badge.name }}</h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
             <div class="modal-body">
-                <div class="row d-flex justify-content-center align-items-center">
-                    {{ new_badge.html|safe }} {{ new_badge.desc }}
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <img class="icon bg-dark" src="{% static 'assets/img/icons/interface/cross.svg' %}"
+                         alt="cross interface icon"
+                         data-inject-svg/>
+                </button>
+                <div class="m-xl-4 m-3">
+                    <div class="bg-primary mx-auto mb-4">
+                        {{ new_badge.html|safe }}
+                    </div>
+                    <div class="text-center mb-4">
+                        <h4 class="h3">Congratulations</h4>
+                        <p>{{ new_badge.desc }}</strong>
+                        </p>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+
 <!-- Frame Modal Bottom -->
 
 <script>
     // modal animation
     {% if right_modal == "1" %}
         $('#animated-accepted').addClass('animated zoomIn');
-        $('#successModal').modal('show');
-        setTimeout(function() { $('#successModal').modal('hide');}, 2000);
+        $('#success-modal').modal('show');
+        setTimeout(function() { $('#success-modal').modal('hide');}, 2000);
     {% elif right_modal == "-1" or right_modal == "-2" %}
         $('#animated-wrong').addClass('animated zoomIn');
-        $('#wrongModal').modal('show');
-        setTimeout(function() { $('#wrongModal').modal('hide');}, 2000);
+        $('#wrong-modal').modal('show');
+        setTimeout(function() { $('#wrong-modal').modal('hide');}, 2000);
     {% endif %}
 
     {% if new_badge != None %}
-        $('#badgeModal').modal('show');
+        $('#badge-modal').modal('show');
     {% endif %}
+
+
+
 </script>
 
 

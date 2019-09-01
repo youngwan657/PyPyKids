@@ -9,7 +9,7 @@
         <div class="row my-4 my-md-6" data-aos="fade-up">
             <div class="col-lg-9 col-xl-8">
                 <h1><span data-typed-text data-loop="true" data-type-speed="65"
-                          data-strings='["Badge"]'></span></h1>
+                          data-strings='["Badges"]'></span></h1>
             </div>
         </div>
     </div>
@@ -19,15 +19,19 @@
 </section>
 
 
-<main>
-    <!-- Badge -->
+<!-- Badge -->
+<section>
     <div class="container">
-        {% for badge in badges %}
-        {{ badge.html|safe }}
-        {% endfor %}
-        <br/>
+        <div class="row">
+            {% for badge in badges %}
+            <div class="col-sm-6 col-md-4 col-lg-3">
+                <a href="#" class="card card-sm card-body flex-row align-items-center hover-shadow-3d">
+                    {{ badge.html|safe }}
+                </a>
+            </div>
+            {% endfor %}
+        </div>
     </div>
-
-</main>
+</section>
 {% endblock %}
 

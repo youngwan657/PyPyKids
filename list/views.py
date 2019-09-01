@@ -268,6 +268,7 @@ def signout(request):
 
 
 def signin(request):
+    context = {}
     if request.method == 'POST':
         form = AuthenticationForm(request=request, data=request.POST)
         if form.is_valid():
@@ -278,13 +279,12 @@ def signin(request):
                 login(request, user)
                 return redirect('/')
             else:
-                print("invalid")
+                context['login_error'] = 1
         else:
-            print("invalid")
+            context['login_error'] = 1
+
     form = AuthenticationForm()
-    context = {
-        'form': form,
-    }
+    context['form'] = form
     return render(request, "list/signin.html", context)
 
 

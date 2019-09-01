@@ -398,4 +398,6 @@ def _add_badge(username):
 
 # TODO:: split multiple view per function.
 # TODO:: like button only for the kids who solved person.
-# TODO:: chat question
+# TODO:: chat with admin
+# TODO:: next question or related question
+# TODO:: code mirror editor

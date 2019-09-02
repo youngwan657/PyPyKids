@@ -152,7 +152,7 @@
                     <div style="position: absolute; top: 0; right: 0;">
                         <div id="signin-toast" class="toast" role="alert" data-delay="5000">
                             <div class="toast-header">
-                                <img src="{% static 'list/img/dayeon.jpg' %}" class="avatar mr-2 avatar-sm"
+                                <img src="{% static 'list/img/logo.png' %}" class="avatar mr-2 avatar-sm"
                                      alt="PyPyKids">
                                 <strong class="mr-auto">PyPyKids</strong>
                                 <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
@@ -209,7 +209,7 @@
         <div class="modal-content bg-success border-0">
             <div class="modal-body">
                 <div class="m-3 d-flex align-items-center">
-                    <img src="{% static 'list/img/dayeon.jpg' %}" alt="Avatar" class="avatar avatar-lg">
+                    <img src="{% static 'list/img/logo.png' %}" alt="Avatar" class="avatar avatar-lg">
                     <div class="ml-3">
                         <h5 class="mb-1"><b>Accepted</b></h5>
                         <span>You are awesome !!!</span>
@@ -225,7 +225,7 @@
         <div class="modal-content bg-danger border-0">
             <div class="modal-body">
                 <div class="m-3 d-flex align-items-center">
-                    <img src="{% static 'list/img/dayeon.jpg' %}" alt="Avatar" class="avatar avatar-lg">
+                    <img src="{% static 'list/img/logo.png' %}" alt="Avatar" class="avatar avatar-lg">
                     <div class="ml-3">
                         <h5 class="mb-1"><b>Wrong Answer</b></h5>
                         <span>Could you try again?</span>
@@ -264,7 +264,7 @@
     {% if right_modal == "1" %}
         $('#animated-accepted').addClass('animated zoomIn');
         $('#success-modal').modal('show');
-        setTimeout(function() { $('#success-modal').modal('hide');}, 2000);
+        setTimeout(function() { $('#success-modal').modal('hide');}, 3000);
     {% elif right_modal == "-1" or right_modal == "-2" %}
         $('#animated-wrong').addClass('animated zoomIn');
         $('#wrong-modal').modal('show');

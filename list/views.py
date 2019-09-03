@@ -289,7 +289,6 @@ def _get_username(request):
     return ""
 
 
-# TODO:: dynamic file name
 def _check_answer(testcases, answer):
     f = open("solution.py", "w+")
     f.write(answer.answer)

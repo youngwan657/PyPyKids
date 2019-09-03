@@ -4,13 +4,24 @@ from node import Node
         
 def main(argv):
     if len(argv) == 1:
-        return solve(convert(argv[0]))
+        return output(solve(convert(argv[0])))
     elif len(argv) == 2:
-        return solve(convert(argv[0]), convert(argv[1]))
+        return output(solve(convert(argv[0]), convert(argv[1])))
     elif len(argv) == 3:
-        return solve(convert(argv[0]), convert(argv[1]), convert(argv[2]))
+        return output(solve(convert(argv[0]), convert(argv[1]), convert(argv[2])))
     elif len(argv) == 4:
-        return solve(convert(argv[0]), convert(argv[1]), convert(argv[2]), convert(argv[3]))
+        return output(solve(convert(argv[0]), convert(argv[1]), convert(argv[2]), convert(argv[3])))
+
+def output(param):
+    if type(param) == Node:
+        list = []
+        while param != None:
+            list.append(param.val)
+            param = param.next
+
+        return "Node" + str(list)
+    else:
+        return param
 
 def next(nodes, i):
     if len(nodes) <= i:

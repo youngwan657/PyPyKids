@@ -9,7 +9,6 @@ from django.db.models import Q
 from .models import Quiz, Answer, Testcase, Category, Difficulty, CustomUser, Badge
 from .right import Right
 
-# login, register
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 
@@ -314,7 +313,10 @@ def _check_answer(testcases, answer):
 
         testcase.expected_answer = testcase.expected_answer.replace("\r\n", "\n")
         if str(output) != testcase.expected_answer.strip():
-            answer.right = Right.WRONG.value
+            if answer.right == Right.RIGHT.value or answer.right == Right.WRONG_BUT_RIGHT_BEFORE.value:
+                answer.right = Right.WRONG_BUT_RIGHT_BEFORE.value
+            else:
+                answer.right = Right.WRONG.value
             answer.testcase = testcase.test
             answer.expected_answer = testcase.expected_answer
             answer.output = output
@@ -385,6 +387,10 @@ def _get_unsolved_quizzes(username, quiz_order=-1):
 
 
 # TODO:: split multiple view per function.
-# TODO:: like button only for the kids who solved person.
+# TODO:: like button only for the kids who solved the quiz.
 # TODO:: chat with admin
-# TODO:: code mirror editor
+# TODO:: point or score
+# TODO:: modified date for answer
+# TODO:: checking the answer
+# TODO:: checking.py for multiple users
+# TODO:: set DB primary key

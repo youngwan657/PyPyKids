@@ -136,7 +136,9 @@ class Quiz(SortableMixin):
         if self.title != None:
             title = self.title
         return visible + str(self.category.difficulty.id) + "[" + self.category.name + "] " \
-               + str(self.order) + ". " + title + "  " + str(self.date.strftime("%m-%d %H:%M"))
+               + str(self.order) + ". " + title + "  " + str(self.date.strftime("%m-%d %H:%M")) + "(" + str(
+            self.id) + ")"
+
 
 class Testcase(models.Model):
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
@@ -162,4 +164,5 @@ class Answer(models.Model):
         if self.quiz == None:
             return self.name + " " + str(self.date)
 
-        return str(self.quiz.order) + ". " + self.name + " " + str(self.date.strftime("%Y-%m-%d")) + " right:" + str(self.right)
+        return str(self.quiz.order) + ". " + self.name + " " + str(self.date.strftime("%Y-%m-%d")) + " right:" + str(
+            self.right)

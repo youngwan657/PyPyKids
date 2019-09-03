@@ -18,26 +18,36 @@
     </div>
 </section>
 
-<div class="container animsition">
-    <form class="text-center border border-light p-5" action="/playground/" method="POST">
+<div class="container">
+    <table class="table">
+        <tbody>
+        <tr>
+            <th scope="row" style="width: 10%">Output:</th>
+            <td>{{ stdout|linebreaksbr }}</span></td>
+        </tr>
+        </tbody>
+    </table>
+    <div id="editor">{{ code }}</div>
+    <form class="text-center " action="/playground/" method="POST">
         {%csrf_token %}
-        <p class="h4 mb-4">Playground</p>
-        {% if code != "" %}
-        <table class="table">
-            <tbody>
-            <tr>
-                <th scope="row" style="width: 20%">Output:</th>
-                <td>{{ stdout|linebreaksbr }}</span></td>
-            </tr>
-            </tbody>
-        </table>
-        {% endif %}
-        <div class="form-group">
-            <textarea class="form-control rounded-0" id="answer" name="code" rows="10" autofocus>{{ code }}</textarea>
-        </div>
+        <textarea name="answer" style="display: none;">{{ code }}</textarea>
 
         <!-- Send button -->
-        <button class="btn btn-info btn-block" type="submit">Test</button>
+        <button class="btn btn-secondary btn-block" type="submit">Test</button>
     </form>
+    <br/>
 </div>
+
+<script>
+    var editor = ace.edit("editor");
+    editor.setTheme("ace/theme/katzenmilch");
+    document.getElementById('editor').style.fontSize='18px';
+    document.getElementById("editor").style.height = "400px";
+    editor.session.setMode("ace/mode/python");
+
+    var textarea = $('textarea[name="answer"]');
+    editor.getSession().on("change", function () {
+        textarea.val(editor.getSession().getValue());
+    });
+</script>
 {% endblock %}

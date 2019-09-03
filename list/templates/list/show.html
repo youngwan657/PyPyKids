@@ -20,46 +20,67 @@
 
 {% include "list/quiz.html" %}
 
+
 <section class="has-divider">
     <div class="container pt-3">
         <div class="row justify-content-center">
             <div class="col-lg-10 col-xl-8">
-                {% if quiz.quiz_type.name == "Code" or quiz.quiz_type.name == "Answer" %}
+                {% if quiz.quiz_type.name == "Code" %}
+                {% if answer.right == 1 %}
+                <div class="alert alert-success" role="alert">
+                    Accepted
+                </div>
+                {% elif answer.right < 0 %}
+                <div class="alert alert-danger" role="alert">
+                    Wrong Answer
+                </div>
+                <table class="table">
+                    <tbody>
+                    <tr>
+                        <th scope="row" style="width: 20%">Input:</th>
+                        <td>{{ answer.testcase }}</td>
+                    </tr>
+                    {% if answer.stdout != "" %}
+                    <tr>
+                        <th scope="row">stdout:</th>
+                        <td>{{ answer.stdout }}</span></td>
+                    </tr>
+                    {% endif %}
+                    <tr>
+                        <th scope="row">Output:</th>
+                        <td>{{ answer.output|linebreaksbr }}</span></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Expected:</th>
+                        <td>{{ answer.expected_answer }}</span></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <hr/>
+                {% else %}
+                <p class="h4 mb-4">Your answer</p>
+                {% endif %}
+
+                {% if answer.submitted_at %}
+                <p class="text-muted">Submitted at {{ answer.submitted_at }}</p>
+                {% endif %}
+                <div id="editor">{{ user_answer }}</div>
+                <form class="text-center" action="/answer/{{quiz.order}}/" method="POST">
+                    {%csrf_token %}
+                    <textarea name="answer" style="display: none;">{{ user_answer }}</textarea>
+                    <button class="btn btn-primary btn-block" type="submit">Submit</button>
+                </form>
+                {% elif quiz.quiz_type.name == "Answer" %}
                 <form class="text-center border border-light p-5" action="/answer/{{quiz.order}}/" method="POST">
                     {%csrf_token %}
                     {% if answer.right == 1 %}
                     <div class="alert alert-success" role="alert">
-                        <b>Accepted</b>
+                        Accepted
                     </div>
                     {% elif answer.right < 0 %}
                     <div class="alert alert-danger" role="alert">
-                        <b>Wrong Answer</b>
+                        Wrong Answer
                     </div>
-                    {% if quiz.quiz_type.name == "Code" %}
-                    <table class="table">
-                        <tbody>
-                        <tr>
-                            <th scope="row" style="width: 20%">Input:</th>
-                            <td>{{ answer.testcase }}</td>
-                        </tr>
-                        {% if answer.stdout != "" %}
-                        <tr>
-                            <th scope="row">stdout:</th>
-                            <td>{{ answer.stdout }}</span></td>
-                        </tr>
-                        {% endif %}
-                        <tr>
-                            <th scope="row">Output:</th>
-                            <td>{{ answer.output|linebreaksbr }}</span></td>
-                        </tr>
-                        <tr>
-                            <th scope="row">Expected:</th>
-                            <td>{{ answer.expected_answer }}</span></td>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <hr/>
-                    {% endif %}
                     {% else %}
                     <p class="h4 mb-4">Your answer</p>
                     {% endif %}
@@ -74,7 +95,7 @@
 
                     <!-- Send button -->
                     {% if username %}
-                    <button class="btn btn-info btn-block" type="submit">Submit</button>
+                    <button class="btn btn-primary btn-block" type="submit">Submit</button>
                     {% endif %}
                 </form>
 
@@ -83,11 +104,11 @@
                     {% csrf_token %}
                     {% if answer.right == 1 %}
                     <div class="alert alert-success" role="alert">
-                        <b>Accepted</b>
+                        Accepted
                     </div>
                     {% elif answer.right < 0 %}
                     <div class="alert alert-danger" role="alert">
-                        <b>Wrong Answer</b>
+                        Wrong Answer
                     </div>
                     {% endif %}
                     {% if quiz.option1 != None %}
@@ -140,7 +161,7 @@
                     {% endif %}
                     <br/>
                     {% if username %}
-                    <button class="btn btn-info btn-block" type="submit">Submit</button>
+                    <button class="btn btn-primary btn-block" type="submit">Submit</button>
                     {% endif %}
                 </form>
                 {% endif %}
@@ -274,10 +295,20 @@
     {% if new_badge != None %}
         $('#badge-modal').modal('show');
     {% endif %}
-
-
 </script>
 
+<script>
+    var editor = ace.edit("editor");
+    editor.setTheme("ace/theme/katzenmilch");
+    document.getElementById('editor').style.fontSize='18px';
+    document.getElementById("editor").style.height = "400px";
+    editor.session.setMode("ace/mode/python");
+
+    var textarea = $('textarea[name="answer"]');
+    editor.getSession().on("change", function () {
+        textarea.val(editor.getSession().getValue());
+    });
+</script>
 
 {% endblock %}
 

@@ -194,7 +194,7 @@ def playground(request):
     context["username"] = _get_username(request)
     if request.method == "POST":
         f = open("playground.py", "w+")
-        code = request.POST['code']
+        code = request.POST['answer']
         f.write(code)
         f.close()
         try:
@@ -205,10 +205,8 @@ def playground(request):
             process.kill()
             stdout = "TIMEOUT ERROR"
 
-        context = {
-            'code': code,
-            'stdout': stdout,
-        }
+        context['code'] = code
+        context['stdout'] = stdout
 
     return render(request, 'list/playground.html', context)
 

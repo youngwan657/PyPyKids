@@ -387,9 +387,7 @@ def _get_unsolved_quizzes(username, quiz_order=-1):
 
 # TODO:: split multiple view per function.
 # TODO:: like button only for the kids who solved the quiz.
-# TODO:: chat with admin
 # TODO:: point or score
 # TODO:: modified date for answer
-# TODO:: checking the answer
 # TODO:: checking.py for multiple users
 # TODO:: set DB primary key

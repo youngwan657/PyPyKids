@@ -44,14 +44,6 @@ class Badge(SortableMixin):
         return str(self.name)
 
 
-class CustomUser(models.Model):
-    name = models.CharField(max_length=30)
-    badges = models.ManyToManyField(Badge)
-
-    def __str__(self):
-        return str(self.name)
-
-
 class Category(SortableMixin):
     difficulty = models.ForeignKey(Difficulty, on_delete=models.CASCADE, default=None, blank=True, null=True)
     order = models.PositiveIntegerField(default=0, editable=False, db_index=True)
@@ -166,3 +158,15 @@ class Answer(models.Model):
 
         return str(self.quiz.order) + ". " + self.name + " " + str(self.date.strftime("%Y-%m-%d")) + " right:" + str(
             self.right)
+
+
+class CustomUser(models.Model):
+    name = models.CharField(max_length=30)
+
+    badges = models.ManyToManyField(Badge)
+    goods = models.ManyToManyField(Quiz)
+
+    def __str__(self):
+        return str(self.name)
+
+

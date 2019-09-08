@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime
 
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
@@ -35,6 +35,8 @@ def show(request, quiz_order):
     # TODO:: change to configurable image for quiz
     context['quiz_image'] = 'theme/devices/airpods.svg'
 
+    context['clicked'] = QuizScore.objects.filter(custom_user_id=request.user.id, quiz_id=quiz.id).exists()
+
     return render(request, 'list/show.html', context)
 
 
@@ -43,7 +45,7 @@ def show(request, quiz_order):
 def answer(request, quiz_order):
     quiz = get_object_or_404(Quiz, order=quiz_order)
     testcases = Testcase.objects.filter(quiz__order=quiz_order)
-    answer, created = Answer.objects.get_or_create(quiz__order=quiz_order, name=request.user.username)
+    answer, _ = Answer.objects.get_or_create(quiz_id=quiz.id, name=get_username(request))
     answer.quiz = quiz
     answer.answer = request.POST['answer']
     if answer.right != Right.RIGHT.value and answer.right != Right.WRONG_BUT_RIGHT_BEFORE.value:
@@ -67,3 +69,18 @@ def answer(request, quiz_order):
 
     return HttpResponseRedirect('/' + str(quiz.order) + "?right_modal=" + str(answer.right))
 
+
+def quiz_score(request, quiz_order, score):
+    quiz = get_object_or_404(Quiz, order=quiz_order)
+
+
+    quiz_score, _ = QuizScore.objects.get_or_create(custom_user_id=request.user.id, quiz_id=quiz.id)
+    quiz.score += score - quiz_score.score
+    quiz.save()
+
+    quiz_score.custom_user_id = request.user.id
+    quiz_score.quiz = quiz
+    quiz_score.score = score
+    quiz_score.save()
+
+    return HttpResponseRedirect('/' + str(quiz.order))

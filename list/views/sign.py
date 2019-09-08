@@ -1,9 +1,7 @@
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.shortcuts import redirect, render
-
-from list.models import *
-
+from list.views.common import *
 
 def signup(request):
     form = UserCreationForm(request.POST or None)

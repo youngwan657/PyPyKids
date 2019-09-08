@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from list.views.common import *
-from django.db.models import Q
+from django.db.models import Q, Sum
 
 
 def categories(request):
@@ -51,6 +51,9 @@ def categories(request):
     context['quiz'] = today_quiz
     context['difficulty'] = today_quiz.category.difficulty
     context['category'] = today_quiz.category.name
+
+    score = QuizScore.objects.filter(quiz__order=today_quiz.order).aggregate(Sum('score'))['score__sum']
+    context['score'] = score if score != None else 0
 
     for difficulty in difficulties:
         categories = Category.objects.order_by('order').filter(difficulty=difficulty.id, visible=True)

@@ -6,6 +6,7 @@ from django.utils import timezone
 
 from .right import Right
 
+
 class QuizType(models.Model):
     name = models.CharField(max_length=20)
 
@@ -114,6 +115,7 @@ class Quiz(SortableMixin):
     option4 = models.TextField(default=None, blank=True, null=True)
     date = models.DateTimeField(default=timezone.now)
     right = Right.NOT_TRY.value
+    score = models.IntegerField(default=0)
 
     class Meta:
         ordering = ['-order']
@@ -164,9 +166,18 @@ class CustomUser(models.Model):
     name = models.CharField(max_length=30)
 
     badges = models.ManyToManyField(Badge)
-    goods = models.ManyToManyField(Quiz)
 
     def __str__(self):
         return str(self.name)
 
 
+class QuizScore(models.Model):
+    custom_user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
+    score = models.IntegerField(default=0)
+
+    class Meta:
+        unique_together = ('custom_user', 'quiz',)
+
+    def __str__(self):
+        return str(self.custom_user) + " " + str(self.quiz) + " " + str(self.score)

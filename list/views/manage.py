@@ -19,9 +19,6 @@ def manage(request):
 
 # TODO:: Answer history
 
-
-# TODO:: split multiple view per function.
-# TODO:: like button only for the kids who solved the quiz.
 # TODO:: point or score
 # TODO:: modified date for answer
 # TODO:: checking.py for multiple users

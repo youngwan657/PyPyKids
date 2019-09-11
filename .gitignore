@@ -1,8 +1,5 @@
 .idea
 *.pyc
-checking_answer
 resource
-solution.py
-playground.py
 todo
 .DS_Store

@@ -63,11 +63,27 @@
                 {% if answer.submitted_at %}
                 <p class="text-muted">Submitted at {{ answer.submitted_at }}</p>
                 {% endif %}
+
+                <script>
+                    var editor = ace.edit("editor");
+                    editor.setTheme("ace/theme/katzenmilch");
+                    document.getElementById('editor').style.fontSize='18px';
+                    document.getElementById("editor").style.height = "400px";
+                    editor.session.setMode("ace/mode/python");
+
+                    var textarea = $('textarea[name="answer"]');
+                    editor.getSession().on("change", function () {
+                        textarea.val(editor.getSession().getValue());
+                    });
+                </script>
+
                 <div id="editor">{{ user_answer }}</div>
                 <form class="text-center" action="/answer/{{quiz.order}}/" method="POST">
                     {%csrf_token %}
                     <textarea name="answer" style="display: none;">{{ user_answer }}</textarea>
+                    {% if username %}
                     <button class="btn btn-primary btn-block" type="submit">Submit</button>
+                    {% endif %}
                 </form>
                 {% elif quiz.quiz_type.name == "Answer" %}
                 <form class="text-center border border-light p-5" action="/answer/{{quiz.order}}/" method="POST">
@@ -317,21 +333,11 @@
         $('#badge-modal').modal('show');
     {% endif %}
 
-
-</script>
-
-<script>
-    var editor = ace.edit("editor");
-    editor.setTheme("ace/theme/katzenmilch");
-    document.getElementById('editor').style.fontSize='18px';
-    document.getElementById("editor").style.height = "400px";
-    editor.session.setMode("ace/mode/python");
-
-    var textarea = $('textarea[name="answer"]');
-    editor.getSession().on("change", function () {
-        textarea.val(editor.getSession().getValue());
+    $(function(){
+        $('#show-signin-toast').on("click", function () {
+            $('#signin-toast').toast('show');
+        });
     });
-
 
 </script>
 

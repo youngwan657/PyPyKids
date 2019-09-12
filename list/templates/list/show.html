@@ -64,20 +64,8 @@
                 <p class="text-muted">Submitted at {{ answer.submitted_at }}</p>
                 {% endif %}
 
-                <script>
-                    var editor = ace.edit("editor");
-                    editor.setTheme("ace/theme/katzenmilch");
-                    document.getElementById('editor').style.fontSize='18px';
-                    document.getElementById("editor").style.height = "400px";
-                    editor.session.setMode("ace/mode/python");
-
-                    var textarea = $('textarea[name="answer"]');
-                    editor.getSession().on("change", function () {
-                        textarea.val(editor.getSession().getValue());
-                    });
-                </script>
-
                 <div id="editor">{{ user_answer }}</div>
+
                 <form class="text-center" action="/answer/{{quiz.order}}/" method="POST">
                     {%csrf_token %}
                     <textarea name="answer" style="display: none;">{{ user_answer }}</textarea>
@@ -318,27 +306,39 @@
 </div>
 
 <script>
-    // modal animation
-    {% if right_modal == "1" %}
-        $('#animated-accepted').addClass('animated zoomIn');
-        $('#success-modal').modal('show');
-        setTimeout(function() { $('#success-modal').modal('hide');}, 3000);
-    {% elif right_modal == "-1" or right_modal == "-2" %}
-        $('#animated-wrong').addClass('animated zoomIn');
-        $('#wrong-modal').modal('show');
-        setTimeout(function() { $('#wrong-modal').modal('hide');}, 2000);
-    {% endif %}
+{% if quiz.quiz_type.name == "Code" %}
+    var editor = ace.edit("editor");
+    editor.setTheme("ace/theme/katzenmilch");
+    document.getElementById('editor').style.fontSize='18px';
+    document.getElementById("editor").style.height = "400px";
+    editor.session.setMode("ace/mode/python");
 
-    {% if new_badge != None %}
-        $('#badge-modal').modal('show');
-    {% endif %}
-
-    $(function(){
-        $('#show-signin-toast').on("click", function () {
-            $('#signin-toast').toast('show');
-        });
+    var textarea = $('textarea[name="answer"]');
+    editor.getSession().on("change", function () {
+        textarea.val(editor.getSession().getValue());
     });
+{% endif %}
 
+// modal animation
+{% if right_modal == "1" %}
+    $('#animated-accepted').addClass('animated zoomIn');
+    $('#success-modal').modal('show');
+    setTimeout(function() { $('#success-modal').modal('hide');}, 3000);
+{% elif right_modal == "-1" or right_modal == "-2" %}
+    $('#animated-wrong').addClass('animated zoomIn');
+    $('#wrong-modal').modal('show');
+    setTimeout(function() { $('#wrong-modal').modal('hide');}, 2000);
+{% endif %}
+
+{% if new_badge != None %}
+    $('#badge-modal').modal('show');
+{% endif %}
+
+$(function(){
+    $('#show-signin-toast').on("click", function () {
+        $('#signin-toast').toast('show');
+    });
+});
 </script>
 
 {% endblock %}

@@ -1,5 +1,8 @@
 .idea
 *.pyc
 resource
-todo
+answers/*
+answers/
+checks/
+playgrounds/
 .DS_Store

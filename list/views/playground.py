@@ -2,16 +2,18 @@ from django.shortcuts import render
 from list.views.common import *
 
 
+#TODO:: disable for not login user
 def playground(request):
     context = {}
-    context["username"] = get_username(request)
+    context['username'] = get_username(request)
+    filename = "./list/playgrounds/play_" + context['username'] + ".py"
     if request.method == "POST":
-        f = open("playground.py", "w+")
+        f = open(filename, "w+")
         code = request.POST['answer']
         f.write(code)
         f.close()
         try:
-            process = subprocess.Popen(['python', 'playground.py'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+            process = subprocess.Popen(['python', filename], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
             outs, errs = process.communicate(timeout=1)
             stdout = outs.decode("utf-8")
         except subprocess.TimeoutExpired:

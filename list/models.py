@@ -4,7 +4,7 @@ from ckeditor.fields import RichTextField
 from adminsortable.models import SortableMixin
 from django.utils import timezone
 
-from .right import Right
+from .enums import Right
 
 
 class QuizType(models.Model):

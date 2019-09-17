@@ -32,22 +32,53 @@
         {%csrf_token %}
         <textarea name="answer" style="display: none;">{{ code }}</textarea>
 
-        <!-- Send button -->
-        <button class="btn btn-secondary btn-block" type="submit">Test</button>
+        {% if username %}
+        <button class="btn btn-primary btn-block" type="submit">Run</button>
+        {% endif %}
     </form>
+    {% if username == "" %}
+    <button id="show-signin-toast" class="btn btn-primary btn-block">Submit</button>
+    <div aria-live="polite" aria-atomic="true"
+         style="position: fixed; top: 80px; right: 20px; min-height: 200px; width: 100%">
+        <div style="position: absolute; top: 0; right: 0;">
+            <div id="signin-toast" class="toast" role="alert" data-delay="5000">
+                <div class="toast-header">
+                    <img src="{% static 'list/img/logo.png' %}" class="avatar mr-2 avatar-sm"
+                         alt="PyPyKids">
+                    <strong class="mr-auto">PyPyKids</strong>
+                    <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="toast-body">
+                    Please sign in first before sumbitting the code.
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
     <br/>
 </div>
 
 <script>
-    var editor = ace.edit("editor");
-    editor.setTheme("ace/theme/katzenmilch");
-    document.getElementById('editor').style.fontSize='18px';
-    document.getElementById("editor").style.height = "400px";
-    editor.session.setMode("ace/mode/python");
+// Code editor
+var editor = ace.edit("editor");
+editor.setTheme("ace/theme/katzenmilch");
+document.getElementById('editor').style.fontSize='18px';
+document.getElementById("editor").style.height = "400px";
+editor.session.setMode("ace/mode/python");
 
-    var textarea = $('textarea[name="answer"]');
-    editor.getSession().on("change", function () {
-        textarea.val(editor.getSession().getValue());
+var textarea = $('textarea[name="answer"]');
+editor.getSession().on("change", function () {
+    textarea.val(editor.getSession().getValue());
+});
+
+
+// modal for non-login user.
+$(function(){
+    $('#show-signin-toast').on("click", function () {
+        $('#signin-toast').toast('show');
     });
+});
 </script>
 {% endblock %}

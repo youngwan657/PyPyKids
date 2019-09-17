@@ -6,7 +6,7 @@ from django.db.models import Q
 
 from list.models import *
 
-# constants
+# Constants
 MONTH = 31
 
 
@@ -69,43 +69,3 @@ def add_badge(username):
             return badge
 
     return None
-
-
-def check_answer(testcases, answer):
-    f = open("solution.py", "w+")
-    f.write(answer.answer)
-    f.close()
-
-    for testcase in testcases:
-        output = "None"
-        stdout = ""
-        try:
-            process = subprocess.Popen(['python', 'checking.py'] + testcase.test.split("\n"), stdout=subprocess.PIPE,
-                                       stderr=subprocess.STDOUT)
-            outs, errs = process.communicate(timeout=1)
-            stdout = outs.decode("utf-8")
-            if os.path.exists("checking_answer"):
-                f = open("checking_answer", "r")
-                output = f.read().strip()
-                f.close()
-        except subprocess.TimeoutExpired:
-            process.kill()
-            stdout = "TIMEOUT ERROR"
-
-        testcase.expected_answer = testcase.expected_answer.replace("\r\n", "\n")
-        if str(output) != testcase.expected_answer.strip():
-            if answer.right == Right.RIGHT.value or answer.right == Right.WRONG_BUT_RIGHT_BEFORE.value:
-                answer.right = Right.WRONG_BUT_RIGHT_BEFORE.value
-            else:
-                answer.right = Right.WRONG.value
-            answer.testcase = testcase.test
-            answer.expected_answer = testcase.expected_answer
-            answer.output = output
-            answer.stdout = stdout
-            return
-
-    answer.right = Right.RIGHT.value
-    answer.testcase = ""
-    answer.expected_answer = ""
-    answer.output = ""
-    answer.stdout = ""

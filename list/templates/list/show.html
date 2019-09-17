@@ -306,6 +306,7 @@
 </div>
 
 <script>
+// Code editor
 {% if quiz.quiz_type.name == "Code" %}
     var editor = ace.edit("editor");
     editor.setTheme("ace/theme/katzenmilch");
@@ -334,6 +335,8 @@
     $('#badge-modal').modal('show');
 {% endif %}
 
+
+// modal for non-login user.
 $(function(){
     $('#show-signin-toast').on("click", function () {
         $('#signin-toast').toast('show');

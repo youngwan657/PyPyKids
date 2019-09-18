@@ -21,5 +21,8 @@ def manage(request):
 
 # TODO:: point or score
 # TODO:: modified date for answer
-# TODO:: checking.py for multiple users
 # TODO:: set DB primary key
+# TODO:: like for answer
+# TODO:: comment for answer
+# TODO:: show other people's answer
+# TODO:: profile page

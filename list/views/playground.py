@@ -2,7 +2,6 @@ from django.shortcuts import render
 from list.views.common import *
 
 
-#TODO:: disable for not login user
 def playground(request):
     context = {}
     context['username'] = get_username(request)

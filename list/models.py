@@ -99,7 +99,7 @@ class Quiz(SortableMixin):
 """
 
     order = models.PositiveIntegerField(default=0, editable=False, db_index=True)
-    title = models.CharField(max_length=100, default=None, blank=True, null=True)
+    title = models.CharField(max_length=100, unique=True)
     video = models.CharField(max_length=100, default=None, blank=True, null=True)
     explanation = RichTextField(default=None, blank=True, null=True)
     question = RichTextField(default=None, blank=True, null=True)
@@ -114,8 +114,10 @@ class Quiz(SortableMixin):
     option3 = models.TextField(default=None, blank=True, null=True)
     option4 = models.TextField(default=None, blank=True, null=True)
     date = models.DateTimeField(default=timezone.now)
+
     right = Right.NOT_TRY.value
     score = models.IntegerField(default=0)
+    title_url = ""
 
     class Meta:
         ordering = ['-order']
@@ -132,6 +134,10 @@ class Quiz(SortableMixin):
         return visible + str(self.category.difficulty.id) + "[" + self.category.name + "] " \
                + str(self.order) + ". " + title + "  " + str(self.date.strftime("%m-%d %H:%M")) + "(" + str(
             self.id) + ")"
+
+    def set_title_url(self):
+        self.title_url = self.title.replace(" ", "-")
+        return self
 
 
 class Testcase(models.Model):

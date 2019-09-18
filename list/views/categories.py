@@ -48,7 +48,7 @@ def categories(request):
 
     # Today's Question
     today_quiz = unsolved_quizzes.order_by('?').first()
-    context['quiz'] = today_quiz
+    context['quiz'] = today_quiz.set_title_url()
     context['difficulty'] = today_quiz.category.difficulty
     context['category'] = today_quiz.category.name
 

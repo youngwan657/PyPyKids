@@ -33,7 +33,7 @@
                 <h2 class="h1 mt-3 mb-4">{{ category }}</h2>
 
                 {% for quiz in quizzes %}
-                <a href="/{{ quiz.order }}" class="card card-body hover-shadow-sm">
+                <a href="/quiz/{{ quiz.title_url }}" class="card card-body hover-shadow-sm">
 
                     <h4 class="mb-2">
                         {% if quiz.video %}

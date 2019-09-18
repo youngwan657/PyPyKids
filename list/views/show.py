@@ -6,18 +6,17 @@ from django.shortcuts import get_object_or_404, render
 from list.views.common import *
 
 
-def show(request, quiz_order):
+def show(request, title):
     context = {}
     username = get_username(request)
     context['username'] = username
 
     answers = Answer.objects.filter(name=username)
 
-    quiz = get_object_or_404(Quiz, order=quiz_order)
-    # TODO:: 404 when visible is False
+    quiz = get_object_or_404(Quiz, title=title.replace("-", " "))
 
     right_modal = request.GET.get('right_modal')
-    answer = answers.filter(quiz__order=quiz_order).first()
+    answer = answers.filter(quiz__order=quiz.order).first()
 
     # default answer header
     context['user_answer'] = quiz.answer_header
@@ -25,13 +24,12 @@ def show(request, quiz_order):
         context['user_answer'] = answer.answer
         context['answer'] = answer
 
-    context['next'] = get_unsolved_quizzes(username, quiz_order).first()
+    context['next'] = get_unsolved_quizzes(username, quiz.order).first()
     context['difficulty'] = quiz.category.difficulty
     context['category'] = quiz.category.name
     context['new_badge'] = add_badge(username)
-    context['quiz'] = quiz
+    context['quiz'] = quiz.set_title_url()
     context['right_modal'] = right_modal
-    context['quiz_name'] = quiz_order
     # TODO:: change to configurable image for quiz
     context['quiz_image'] = 'theme/devices/airpods.svg'
 

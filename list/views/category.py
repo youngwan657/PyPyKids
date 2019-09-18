@@ -15,6 +15,7 @@ def category(request, category):
         answers = Answer.objects.filter(name=username)
         right_quizzes = 0
         for quiz in quizzes:
+            quiz.set_title_url()
             answer = answers.filter(quiz__order=quiz.order)
             quiz.right = 0
             if len(answer) > 0:

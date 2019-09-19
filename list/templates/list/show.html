@@ -24,41 +24,40 @@
     <div class="container pt-3">
         <div class="row justify-content-center">
             <div class="col-lg-10 col-xl-8">
+
+                <div id="right-alert" class="alert alert-success" role="alert" {% if answer is None or answer.right < 0 %} style="display: none;" {% endif %}>
+                    <b>Accepted</b>
+                </div>
+                <div id="wrong-alert" class="alert alert-danger" role="alert" {% if answer is None or answer.right > 0 %} style="display: none;" {% endif %}>
+                    <b>Wrong Answer</b>
+                </div>
+                <div id="info-alert" class="alert alert-info" role="alert" {% if answer is not None %} style="display: none;" {% endif %}>
+                    Your Answer
+                </div>
+
                 {% if quiz.quiz_type.name == "Code" %}
-                {% if answer.right == 1 %}
-                <div class="alert alert-success" role="alert">
-                    Accepted
-                </div>
-                {% elif answer.right < 0 %}
-                <div class="alert alert-danger" role="alert">
-                    Wrong Answer
-                </div>
-                <table class="table">
+                <table id="wrong-table" class="table" {% if answer is None or answer.right == 1 %} style="display: none;" {% endif %}>
                     <tbody>
                     <tr>
                         <th scope="row" style="width: 20%">Input:</th>
-                        <td>{{ answer.testcase }}</td>
+                        <td id="testcase">{{ answer.testcase }}</td>
                     </tr>
                     {% if answer.stdout != "" %}
                     <tr>
                         <th scope="row">stdout:</th>
-                        <td>{{ answer.stdout }}</span></td>
+                        <td id="stdout">{{ answer.stdout }}</span></td>
                     </tr>
                     {% endif %}
                     <tr>
                         <th scope="row">Output:</th>
-                        <td>{{ answer.output|linebreaksbr }}</span></td>
+                        <td id="output">{{ answer.output|linebreaksbr }}</span></td>
                     </tr>
                     <tr>
                         <th scope="row">Expected:</th>
-                        <td>{{ answer.expected_answer }}</span></td>
+                        <td id="expected_answer">{{ answer.expected_answer }}</span></td>
                     </tr>
                     </tbody>
                 </table>
-                <hr/>
-                {% else %}
-                <p class="h4 mb-4">Your answer</p>
-                {% endif %}
 
                 {% if answer.submitted_at %}
                 <p class="text-muted">Submitted at {{ answer.submitted_at }}</p>
@@ -66,7 +65,7 @@
 
                 <div id="editor">{{ user_answer }}</div>
 
-                <form class="text-center" action="/answer/{{quiz.order}}/" method="POST">
+                <form id="editor_code" class="text-center">
                     {%csrf_token %}
                     <textarea name="answer" style="display: none;">{{ user_answer }}</textarea>
                     {% if username %}
@@ -74,20 +73,8 @@
                     {% endif %}
                 </form>
                 {% elif quiz.quiz_type.name == "Answer" %}
-                <form class="text-center border border-light p-5" action="/answer/{{quiz.order}}/" method="POST">
+                <form id="editor_answer" class="text-center">
                     {%csrf_token %}
-                    {% if answer.right == 1 %}
-                    <div class="alert alert-success" role="alert">
-                        Accepted
-                    </div>
-                    {% elif answer.right < 0 %}
-                    <div class="alert alert-danger" role="alert">
-                        Wrong Answer
-                    </div>
-                    {% else %}
-                    <p class="h4 mb-4">Your answer</p>
-                    {% endif %}
-
                     {% if answer.submitted_at %}
                     <p class="text-muted">Submitted at {{ answer.submitted_at }}</p>
                     {% endif %}
@@ -101,19 +88,9 @@
                     <button class="btn btn-primary btn-block" type="submit">Submit</button>
                     {% endif %}
                 </form>
-
                 {% elif quiz.quiz_type.name == "MultipleChoice" %}
-                <form class="border border-light p-5" action="/answer/{{quiz.order}}/" method="POST">
+                <form id = "editor_multiple" class="p-3">
                     {% csrf_token %}
-                    {% if answer.right == 1 %}
-                    <div class="alert alert-success" role="alert">
-                        Accepted
-                    </div>
-                    {% elif answer.right < 0 %}
-                    <div class="alert alert-danger" role="alert">
-                        Wrong Answer
-                    </div>
-                    {% endif %}
                     {% if quiz.option1 != None %}
                     <div class="custom-control custom-radio">
                         {% if user_answer == "" or user_answer == "1" %}
@@ -321,27 +298,110 @@
 {% endif %}
 
 // modal animation
-{% if right_modal == "1" %}
-    $('#animated-accepted').addClass('animated zoomIn');
-    $('#success-modal').modal('show');
-    setTimeout(function() { $('#success-modal').modal('hide');}, 3000);
-{% elif right_modal == "-1" or right_modal == "-2" %}
-    $('#animated-wrong').addClass('animated zoomIn');
-    $('#wrong-modal').modal('show');
-    setTimeout(function() { $('#wrong-modal').modal('hide');}, 2000);
-{% endif %}
-
 {% if new_badge != None %}
     $('#badge-modal').modal('show');
 {% endif %}
 
 
-// modal for non-login user.
 $(function(){
+    // Modal for non-login user to login first.
     $('#show-signin-toast').on("click", function () {
         $('#signin-toast').toast('show');
     });
+
+    // Check answer for code
+    $('#editor_code').submit(function(event) {
+        event.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url: '/answer/{{ quiz.order }}/',
+            dataType: 'json',
+            data: $('#editor_code').serialize(),
+            success: function (data, textStatus) {
+                response = JSON.parse(data)
+                if (response['right'] == 1) {
+                    $('#right-alert').show();
+                    $('#wrong-alert').hide();
+                    $('#wrong-table').hide();
+                    $('#animated-accepted').addClass('animated zoomIn');
+                    $('#success-modal').modal('show');
+                    setTimeout(function() { $('#success-modal').modal('hide');}, 3000);
+                } else if (response['right'] == -1 || response['right'] == -2) {
+                    $('#right-alert').hide();
+                    $('#wrong-alert').show();
+                    $('#wrong-table').show();
+                    $('#testcase').html(response['testcase'])
+                    $('#stdout').html(response['stdout'])
+                    $('#output').html(response['output'])
+                    $('#expected_answer').html(response['expected_answer'])
+                    $('#animated-wrong').addClass('animated zoomIn');
+                    $('#wrong-modal').modal('show');
+                    setTimeout(function() { $('#wrong-modal').modal('hide');}, 2000);
+                }
+            },
+            error: function(xhr, status, e) {
+            }
+        });
+    });
+
+    $('#editor_answer').submit(function(event) {
+        event.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url: '/answer/{{ quiz.order }}/',
+            dataType: 'json',
+            data: $('#editor_answer').serialize(),
+            success: function (data, textStatus) {
+                response = JSON.parse(data)
+                if (response['right'] == 1) {
+                    $('#right-alert').show();
+                    $('#wrong-alert').hide();
+                    $('#animated-accepted').addClass('animated zoomIn');
+                    $('#success-modal').modal('show');
+                    setTimeout(function() { $('#success-modal').modal('hide');}, 3000);
+                } else if (response['right'] == -1 || response['right'] == -2) {
+                    $('#right-alert').hide();
+                    $('#wrong-alert').show();
+                    $('#animated-wrong').addClass('animated zoomIn');
+                    $('#wrong-modal').modal('show');
+                    setTimeout(function() { $('#wrong-modal').modal('hide');}, 2000);
+                }
+            },
+            error: function(xhr, status, e) {
+            }
+        });
+    });
+
+    $('#editor_multiple').submit(function(event) {
+        event.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url: '/answer/{{ quiz.order }}/',
+            dataType: 'json',
+            data: $('#editor_multiple').serialize(),
+            success: function (data, textStatus) {
+                response = JSON.parse(data)
+                if (response['right'] == 1) {
+                    $('#right-alert').show();
+                    $('#wrong-alert').hide();
+                    $('#animated-accepted').addClass('animated zoomIn');
+                    $('#success-modal').modal('show');
+                    setTimeout(function() { $('#success-modal').modal('hide');}, 3000);
+                } else if (response['right'] == -1 || response['right'] == -2) {
+                    $('#right-alert').hide();
+                    $('#wrong-alert').show();
+                    $('#animated-wrong').addClass('animated zoomIn');
+                    $('#wrong-modal').modal('show');
+                    setTimeout(function() { $('#wrong-modal').modal('hide');}, 2000);
+                }
+            },
+            error: function(xhr, status, e) {
+            }
+        });
+    });
 });
+
+
 </script>
 
 {% endblock %}

@@ -1,6 +1,7 @@
 from datetime import datetime
 
-from django.http import HttpResponseRedirect
+
+from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404, render
 
 from list.views.common import *
@@ -38,7 +39,6 @@ def show(request, title):
     return render(request, 'list/show.html', context)
 
 
-# TODO:: ajax
 # TODO:: check the object input
 # TODO:: dynamic function name depending on quiz.
 def answer(request, quiz_order):
@@ -66,7 +66,14 @@ def answer(request, quiz_order):
 
     answer.save()
 
-    return HttpResponseRedirect('/quiz/' + quiz.get_title_url() + "?right_modal=" + str(answer.right))
+    response = {
+        "right": answer.right,
+        "output": answer.output,
+        "stdout": answer.stdout,
+        "expected_answer": answer.expected_answer,
+        "testcase": answer.testcase,
+    }
+    return JsonResponse(json.dumps(response), safe=False)
 
 
 def quiz_score(request, quiz_order, score):
@@ -89,6 +96,9 @@ def check_answer(username, testcases, answer):
     f = open("%s/checks/solutions/%s.py" % (folder, username), "w+")
     f.write(answer.answer)
     f.close()
+
+    if os.path.exists("%s/answers/%s" % (folder, username)):
+        os.remove("%s/answers/%s" % (folder, username))
 
     f = open("%s/checks/%s.py" % (folder, username), "w+")
     f.write("""
@@ -135,16 +145,14 @@ def next(nodes, i):
 
 if __name__ == "__main__":
     answer = main(sys.argv[1:])
-    if os.path.exists("./list/users/answers/%s"):
-        os.remove("./list/users/answers/%s")
     f = open("./list/users/answers/%s", "w+")
     if type(answer) == tuple:
         for line in answer:
-            f.write(line + "\\n")
+            f.write(str(line) + "\\n")
     else:
         f.write(str(answer))
     f.close()
-    """ % (username, username, username))
+    """ % (username))
     f.close()
 
     for testcase in testcases:
@@ -182,3 +190,5 @@ if __name__ == "__main__":
     answer.expected_answer = ""
     answer.output = ""
     answer.stdout = ""
+
+# TODO:: image move out effect when clicking 'like'

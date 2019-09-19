@@ -71,5 +71,4 @@ def categories(request):
         context["level" + str(difficulty.id)] = categories
 
     context['quiz_name'] = 'TODAY QUIZ'
-    context['quiz_image'] = 'theme/devices/airpods.svg'
     return render(request, 'list/categories.html', context)

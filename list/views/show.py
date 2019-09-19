@@ -31,15 +31,12 @@ def show(request, title):
     context['category'] = quiz.category.name
     context['quiz'] = quiz.set_title_url()
     context['right_modal'] = right_modal
-    # TODO:: change to configurable image for quiz
-    context['quiz_image'] = 'theme/devices/airpods.svg'
 
     context['clicked'] = QuizScore.objects.filter(custom_user_id=request.user.id, quiz_id=quiz.id).exists()
 
     return render(request, 'list/show.html', context)
 
 
-# TODO:: check the object input
 def answer(request, quiz_order):
     username = get_username(request)
     quiz = get_object_or_404(Quiz, order=quiz_order)
@@ -193,3 +190,5 @@ if __name__ == "__main__":
     answer.stdout = ""
 
 # TODO:: image move out effect when clicking 'like'
+# TODO:: unlock the quiz
+# TODO:: forget password

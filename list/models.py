@@ -135,6 +135,9 @@ class Quiz(SortableMixin):
                + str(self.order) + ". " + title + "  " + str(self.date.strftime("%m-%d %H:%M")) + "(" + str(
             self.id) + ")"
 
+    def get_title_url(self):
+        return self.title.replace(" ", "-")
+
     def set_title_url(self):
         self.title_url = self.title.replace(" ", "-")
         return self

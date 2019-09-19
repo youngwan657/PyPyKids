@@ -24,7 +24,7 @@ def show(request, title):
         context['user_answer'] = answer.answer
         context['answer'] = answer
 
-    context['next'] = get_unsolved_quizzes(username, quiz.order).first()
+    context['next'] = get_unsolved_quizzes(username, quiz.order).first().set_title_url()
     context['difficulty'] = quiz.category.difficulty
     context['category'] = quiz.category.name
     context['new_badge'] = add_badge(username)
@@ -66,7 +66,7 @@ def answer(request, quiz_order):
 
     answer.save()
 
-    return HttpResponseRedirect('/' + str(quiz.order) + "?right_modal=" + str(answer.right))
+    return HttpResponseRedirect('/quiz/' + quiz.get_title_url() + "?right_modal=" + str(answer.right))
 
 
 def quiz_score(request, quiz_order, score):
@@ -81,7 +81,7 @@ def quiz_score(request, quiz_order, score):
     quiz_score.score = score
     quiz_score.save()
 
-    return HttpResponseRedirect('/' + str(quiz.order))
+    return HttpResponseRedirect('/quiz/' + str(quiz.get_title_url()))
 
 
 def check_answer(username, testcases, answer):

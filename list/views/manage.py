@@ -21,7 +21,6 @@ def manage(request):
 
 # TODO:: point or score
 # TODO:: modified date for answer
-# TODO:: set DB primary key
 # TODO:: like for answer
 # TODO:: comment for answer
 # TODO:: show other people's answer

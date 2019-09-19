@@ -40,7 +40,7 @@
                     <tbody>
                     <tr>
                         <th scope="row" style="width: 20%">Input:</th>
-                        <td id="testcase">{{ answer.testcase }}</td>
+                        <td id="testcase">{{ answer.testcase|linebreaksbr }}</td>
                     </tr>
                     {% if answer.stdout != "" %}
                     <tr>
@@ -270,11 +270,10 @@
                          data-inject-svg/>
                 </button>
                 <div class="m-xl-4 m-3">
-                    <div class="bg-primary mx-auto mb-4">
-                        {{ new_badge.html|safe }}
+                    <div id="badge-icon" class="bg-primary mx-auto mb-4">
                     </div>
                     <div class="text-center mb-4">
-                        <h4 class="h4">{{ new_badge.desc }}</h4>
+                        <h4 id="badge-desc" class="h4"></h4>
                     </div>
                 </div>
             </div>
@@ -297,11 +296,6 @@
     });
 {% endif %}
 
-// modal animation
-{% if new_badge != None %}
-    $('#badge-modal').modal('show');
-{% endif %}
-
 
 $(function(){
     // Modal for non-login user to login first.
@@ -309,7 +303,7 @@ $(function(){
         $('#signin-toast').toast('show');
     });
 
-    // Check answer for code
+    // Check answer for Code
     $('#editor_code').submit(function(event) {
         event.preventDefault();
         $.ajax({
@@ -322,13 +316,24 @@ $(function(){
                 if (response['right'] == 1) {
                     $('#right-alert').show();
                     $('#wrong-alert').hide();
+                    $('#info-alert').hide();
                     $('#wrong-table').hide();
                     $('#animated-accepted').addClass('animated zoomIn');
-                    $('#success-modal').modal('show');
+                    $('#success-modal').modal('show')
                     setTimeout(function() { $('#success-modal').modal('hide');}, 3000);
+
+                    i = 0
+                    response['new_badges'].forEach(function(element) {
+                        i = i + 1
+                        $('#badge-icon').html(element['icon'])
+                        $('#badge-desc').html(element['desc'])
+                        setTimeout(function() { $('#badge-modal').modal('show');}, 3000 * i);
+                        setTimeout(function() { $('#badge-modal').modal('hide');}, 3000 * i + 2000);
+                    });
                 } else if (response['right'] == -1 || response['right'] == -2) {
                     $('#right-alert').hide();
                     $('#wrong-alert').show();
+                    $('#info-alert').hide();
                     $('#wrong-table').show();
                     $('#testcase').html(response['testcase'])
                     $('#stdout').html(response['stdout'])
@@ -356,12 +361,23 @@ $(function(){
                 if (response['right'] == 1) {
                     $('#right-alert').show();
                     $('#wrong-alert').hide();
+                    $('#info-alert').hide();
                     $('#animated-accepted').addClass('animated zoomIn');
                     $('#success-modal').modal('show');
                     setTimeout(function() { $('#success-modal').modal('hide');}, 3000);
+
+                    i = 0
+                    response['new_badges'].forEach(function(element) {
+                        i = i + 1
+                        $('#badge-icon').html(element['icon'])
+                        $('#badge-desc').html(element['desc'])
+                        setTimeout(function() { $('#badge-modal').modal('show');}, 3000 * i);
+                        setTimeout(function() { $('#badge-modal').modal('hide');}, 3000 * i + 2000);
+                    });
                 } else if (response['right'] == -1 || response['right'] == -2) {
                     $('#right-alert').hide();
                     $('#wrong-alert').show();
+                    $('#info-alert').hide();
                     $('#animated-wrong').addClass('animated zoomIn');
                     $('#wrong-modal').modal('show');
                     setTimeout(function() { $('#wrong-modal').modal('hide');}, 2000);
@@ -384,12 +400,23 @@ $(function(){
                 if (response['right'] == 1) {
                     $('#right-alert').show();
                     $('#wrong-alert').hide();
+                    $('#info-alert').hide();
                     $('#animated-accepted').addClass('animated zoomIn');
                     $('#success-modal').modal('show');
                     setTimeout(function() { $('#success-modal').modal('hide');}, 3000);
+
+                    i = 0
+                    response['new_badges'].forEach(function(element) {
+                        i = i + 1
+                        $('#badge-icon').html(element['icon'])
+                        $('#badge-desc').html(element['desc'])
+                        setTimeout(function() { $('#badge-modal').modal('show');}, 3000 * i);
+                        setTimeout(function() { $('#badge-modal').modal('hide');}, 3000 * i + 2000);
+                    });
                 } else if (response['right'] == -1 || response['right'] == -2) {
                     $('#right-alert').hide();
                     $('#wrong-alert').show();
+                    $('#info-alert').hide();
                     $('#animated-wrong').addClass('animated zoomIn');
                     $('#wrong-modal').modal('show');
                     setTimeout(function() { $('#wrong-modal').modal('hide');}, 2000);

@@ -28,7 +28,6 @@ def get_unsolved_quizzes(username, quiz_order=-1):
     return quizzes
 
 
-# TODO:: move to check when solving quiz.
 def add_badge(username):
     if username == "":
         return None
@@ -36,6 +35,8 @@ def add_badge(username):
     custom_user = CustomUser.objects.get(name=username)
     answers = Answer.objects.filter(name=username, right=Right.RIGHT.value)
     untaken_badges = Badge.objects.filter(~Q(customuser__name=username))
+
+    new_badges = []
 
     # day streak
     now = date.today() + timedelta(days=+1)
@@ -50,7 +51,10 @@ def add_badge(username):
         if badge.type.name == "DayStreak" and badge.value <= day_streak:
             custom_user.badges.add(badge)
             custom_user.save()
-            return badge
+            new_badges.append({
+                'icon': badge.html,
+                'desc': badge.desc,
+            })
 
     # quiz per day
     quiz_per_day = answers.filter(date=date.today()).count()
@@ -58,7 +62,10 @@ def add_badge(username):
         if badge.type.name == "QuizPerDay" and badge.value <= quiz_per_day:
             custom_user.badges.add(badge)
             custom_user.save()
-            return badge
+            new_badges.append({
+                'icon': badge.html,
+                'desc': badge.desc,
+            })
 
     # total quiz
     total_quiz = answers.count()
@@ -66,6 +73,9 @@ def add_badge(username):
         if badge.type.name == "TotalQuiz" and badge.value <= total_quiz:
             custom_user.badges.add(badge)
             custom_user.save()
-            return badge
+            new_badges.append({
+                'icon': badge.html,
+                'desc': badge.desc,
+            })
 
-    return None
+    return new_badges

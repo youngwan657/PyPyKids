@@ -1,3 +1,4 @@
+import json
 from datetime import datetime
 
 
@@ -28,7 +29,6 @@ def show(request, title):
     context['next'] = get_unsolved_quizzes(username, quiz.order).first().set_title_url()
     context['difficulty'] = quiz.category.difficulty
     context['category'] = quiz.category.name
-    context['new_badge'] = add_badge(username)
     context['quiz'] = quiz.set_title_url()
     context['right_modal'] = right_modal
     # TODO:: change to configurable image for quiz
@@ -40,8 +40,8 @@ def show(request, title):
 
 
 # TODO:: check the object input
-# TODO:: dynamic function name depending on quiz.
 def answer(request, quiz_order):
+    username = get_username(request)
     quiz = get_object_or_404(Quiz, order=quiz_order)
     testcases = Testcase.objects.filter(quiz__order=quiz_order)
     answer, _ = Answer.objects.get_or_create(quiz_id=quiz.id, name=get_username(request))
@@ -72,6 +72,7 @@ def answer(request, quiz_order):
         "stdout": answer.stdout,
         "expected_answer": answer.expected_answer,
         "testcase": answer.testcase,
+        "new_badges": add_badge(username),
     }
     return JsonResponse(json.dumps(response), safe=False)
 
@@ -105,7 +106,7 @@ def check_answer(username, testcases, answer):
 import sys, ast, os
 from node import Node
 
-from solutions.dayeon import solve
+from solutions.%s import solve
 
 def main(argv):
     if len(argv) == 1:
@@ -152,7 +153,7 @@ if __name__ == "__main__":
     else:
         f.write(str(answer))
     f.close()
-    """ % (username))
+    """ % (username, username))
     f.close()
 
     for testcase in testcases:

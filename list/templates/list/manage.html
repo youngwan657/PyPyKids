@@ -41,7 +41,7 @@
                aria-pressed="true" target="_blank">Testcase</a>
         </div>
         <div class="col-md-4">
-            {{ testcase.test }}
+            {{ testcase.test | linebreaksbr }}
         </div>
         <div class="col-md-4">
             {{ testcase.expected_answer }}
@@ -56,7 +56,7 @@
     <div class="row">
         <div class="col-md-4">
             <a href="/admin/list/answer/{{ answer.id }}/change/" class="btn btn-primary btn-sm active" role="button"
-               aria-pressed="true" target="_blank">Anwer</a>
+               aria-pressed="true" target="_blank">Answer</a>
         </div>
         <div class="col-md-4">
             <pre>{{ answer.answer | linebreaksbr }}</pre>

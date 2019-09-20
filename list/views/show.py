@@ -228,3 +228,5 @@ if __name__ == "__main__":
 
 # TODO:: unlock the quiz
 # TODO:: forget password
+# TODO:: today's quiz showing from easiest one.
+# TODO:: daily login for coin

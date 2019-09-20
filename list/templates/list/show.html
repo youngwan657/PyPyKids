@@ -331,10 +331,10 @@ $(function(){
                     $('#wrong-alert').slideDown("slow");
                     $('#info-alert').hide();
                     $('#wrong-table').slideDown("slow");
-                    $('#testcase').html(response['testcase'].replace(/\n/g, "<br\>"))
-                    $('#stdout').html(response['stdout'].replace(/\n/g, "<br\>"))
-                    $('#output').html(response['output'].replace(/\n/g, "<br\>"))
-                    $('#expected_output').html(response['expected_output'].replace(/\n/g, "<br\>"))
+                    $('#testcase').html(response['testcase'].replace(/\n/g, "<br\>"));
+                    $('#stdout').html(response['stdout'].replace(/\n/g, "<br\>"));
+                    $('#output').html(response['output'].replace(/\n/g, "<br\>"));
+                    $('#expected_output').html(response['expected_output'].replace(/\n/g, "<br\>"));
                     $('#animated-wrong').addClass('animated zoomIn');
                     $('#wrong-modal').modal('show');
                     setTimeout(function() { $('#wrong-modal').modal('hide');}, 2000);
@@ -353,7 +353,7 @@ $(function(){
             dataType: 'json',
             data: $('#editor_answer').serialize(),
             success: function (data, textStatus) {
-                response = JSON.parse(data)
+                response = JSON.parse(data);
                 if (response['right'] == 1) {
                     $('#right-alert').slideDown("slow");
                     $('#wrong-alert').hide();
@@ -365,9 +365,9 @@ $(function(){
 
                     i = 0
                     response['new_badges'].forEach(function(element) {
-                        i = i + 1
-                        $('#badge-icon').html(element['icon'])
-                        $('#badge-desc').html(element['desc'])
+                        i = i + 1;
+                        $('#badge-icon').html(element['icon']);
+                        $('#badge-desc').html(element['desc']);
                         setTimeout(function() { $('#badge-modal').modal('show');}, 3000 * i);
                         setTimeout(function() { $('#badge-modal').modal('hide');}, 3000 * i + 2000);
                     });
@@ -393,7 +393,7 @@ $(function(){
             dataType: 'json',
             data: $('#editor_multiple').serialize(),
             success: function (data, textStatus) {
-                response = JSON.parse(data)
+                response = JSON.parse(data);
                 if (response['right'] == 1) {
                     $('#right-alert').slideDown("slow");
                     $('#wrong-alert').hide();
@@ -405,9 +405,9 @@ $(function(){
 
                     i = 0
                     response['new_badges'].forEach(function(element) {
-                        i = i + 1
-                        $('#badge-icon').html(element['icon'])
-                        $('#badge-desc').html(element['desc'])
+                        i = i + 1;
+                        $('#badge-icon').html(element['icon']);
+                        $('#badge-desc').html(element['desc']);
                         setTimeout(function() { $('#badge-modal').modal('show');}, 3000 * i);
                         setTimeout(function() { $('#badge-modal').modal('hide');}, 3000 * i + 2000);
                     });

@@ -23,12 +23,12 @@
         <tbody>
         <tr>
             <th scope="row" style="width: 10%">Output:</th>
-            <td>{{ stdout|linebreaksbr }}</span></td>
+            <td id="output">{{ stdout|linebreaksbr }}</span></td>
         </tr>
         </tbody>
     </table>
     <div id="editor">{{ code }}</div>
-    <form class="text-center " action="/playground/" method="POST">
+    <form id="playground" class="text-center">
         {%csrf_token %}
         <textarea name="answer" style="display: none;">{{ code }}</textarea>
 
@@ -78,6 +78,23 @@ editor.getSession().on("change", function () {
 $(function(){
     $('#show-signin-toast').on("click", function () {
         $('#signin-toast').toast('show');
+    });
+
+    // Check answer for Playground
+    $('#playground').submit(function(event) {
+        event.preventDefault();
+        $.ajax({
+            type: 'POST',
+            url: '/playground/',
+            dataType: 'json',
+            data: $('#playground').serialize(),
+            success: function (data, textStatus) {
+                response = JSON.parse(data);
+                $('#output').html(response['output'].replace(/\n/g, "<br\>"));
+            },
+            error: function(xhr, status, e) {
+            }
+        });
     });
 });
 </script>

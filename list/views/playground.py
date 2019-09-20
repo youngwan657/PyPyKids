@@ -1,3 +1,6 @@
+import json
+
+from django.http import JsonResponse
 from django.shortcuts import render
 from list.views.common import *
 
@@ -19,7 +22,9 @@ def playground(request):
             process.kill()
             stdout = "TIMEOUT ERROR"
 
-        context['code'] = code
-        context['stdout'] = stdout
+        response = {
+            'output': stdout,
+        }
+        return JsonResponse(json.dumps(response), safe=False)
 
     return render(request, 'list/playground.html', context)

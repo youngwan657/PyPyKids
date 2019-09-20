@@ -190,3 +190,5 @@ class QuizScore(models.Model):
 
     def __str__(self):
         return str(self.customuser) + " " + str(self.quiz) + " " + str(self.score)
+
+# TODO:: remove file name from error log

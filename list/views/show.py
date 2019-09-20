@@ -51,7 +51,7 @@ def answer(request, quiz_order):
         check_answer(get_username(request), testcases, answer)
     elif quiz.quiz_type.name in ["Answer", "MultipleChoice"]:
         # answer
-        if answer.answer.replace(" ", "").strip() == testcases[0].expected_answer:
+        if answer.answer.replace(" ", "").strip() == testcases[0].expected_output:
             answer.right = Right.RIGHT.value
             answer.output = ""
         else:
@@ -67,7 +67,7 @@ def answer(request, quiz_order):
         "right": answer.right,
         "output": answer.output,
         "stdout": answer.stdout,
-        "expected_answer": answer.expected_answer,
+        "expected_output": answer.expected_output,
         "testcase": answer.testcase,
         "new_badges": add_badge(username),
     }
@@ -99,7 +99,82 @@ def check_answer(username, testcases, answer):
         os.remove("%s/answers/%s" % (folder, username))
 
     f = open("%s/checks/%s.py" % (folder, username), "w+")
-    f.write("""
+    f.write(checking_code(username))
+    f.close()
+
+    for testcase in testcases:
+        output = "None"
+        stdout = ""
+        try:
+            outs, errs, stdout = "", "", ""
+            if testcase.expected_stdout is not None:
+                process = subprocess.Popen(
+                    ['python', '%s/checks/solutions/%s.py' % (folder, username)] + testcase.test.split("\n"),
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.STDOUT)
+                outs, errs = process.communicate(timeout=1)
+                stdout = outs.decode("utf-8")
+            else:
+                process = subprocess.Popen(
+                    ['python', '%s/checks/%s.py' % (folder, username)] + testcase.test.split("\n"),
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.STDOUT)
+                outs, errs = process.communicate(timeout=1)
+                stdout = outs.decode("utf-8")
+
+            if os.path.exists("%s/answers/%s" % (folder, username)):
+                f = open("%s/answers/%s" % (folder, username), "r")
+                output = f.read().strip()
+                f.close()
+        except subprocess.TimeoutExpired:
+            process.kill()
+            stdout = "TIMEOUT ERROR"
+
+        testcase.expected_output = testcase.expected_output.replace("\r\n", "\n")
+
+        # Check stdout
+        if testcase.expected_stdout is not None:
+            testcase.expected_stdout = testcase.expected_stdout.replace("\r\n", "\n")
+            if str(stdout).strip() == testcase.expected_stdout.strip():
+                answer.right = Right.RIGHT.value
+                answer.testcase = ""
+                answer.stdout = ""
+                answer.output = ""
+                answer.expected_stdout = ""
+                answer.expected_output = ""
+            else:
+                if answer.right in [Right.RIGHT.value, Right.WAS_RIGHT.value]:
+                    answer.right = Right.WAS_RIGHT.value
+                else:
+                    answer.right = Right.WRONG.value
+                answer.testcase = testcase.test
+                answer.output = stdout
+                answer.expected_output = testcase.expected_stdout
+            return
+
+        # Check output
+        if testcase.expected_output is not None:
+            if str(output) == testcase.expected_output.strip():
+                answer.right = Right.RIGHT.value
+                answer.testcase = ""
+                answer.stdout = ""
+                answer.output = ""
+                answer.expected_stdout = ""
+                answer.expected_output = ""
+            else:
+                if answer.right in [Right.RIGHT.value, Right.WAS_RIGHT.value]:
+                    answer.right = Right.WAS_RIGHT.value
+                else:
+                    answer.right = Right.WRONG.value
+                answer.testcase = testcase.test
+                answer.stdout = stdout
+                answer.output = output
+                answer.expected_stdout = ""
+                answer.expected_output = testcase.expected_output
+                return
+
+def checking_code(username):
+    return """
 import sys, ast, os
 from node import Node
 
@@ -149,45 +224,8 @@ if __name__ == "__main__":
             f.write(str(line) + "\\n")
     else:
         f.write(str(answer))
-    f.close()
-    """ % (username, username))
-    f.close()
+    f.close()""" % (username, username)
 
-    for testcase in testcases:
-        output = "None"
-        stdout = ""
-        try:
-            process = subprocess.Popen(
-                ['python', '%s/checks/%s.py' % (folder, username)] + testcase.test.split("\n"),
-                stdout=subprocess.PIPE,
-                stderr=subprocess.STDOUT)
-            outs, errs = process.communicate(timeout=1)
-            stdout = outs.decode("utf-8")
-            if os.path.exists("%s/answers/%s" % (folder, username)):
-                f = open("%s/answers/%s" % (folder, username), "r")
-                output = f.read().strip()
-                f.close()
-        except subprocess.TimeoutExpired:
-            process.kill()
-            stdout = "TIMEOUT ERROR"
-
-        testcase.expected_answer = testcase.expected_answer.replace("\r\n", "\n")
-        if str(output) != testcase.expected_answer.strip():
-            if answer.right in [Right.RIGHT.value, Right.WAS_RIGHT.value]:
-                answer.right = Right.WAS_RIGHT.value
-            else:
-                answer.right = Right.WRONG.value
-            answer.testcase = testcase.test
-            answer.expected_answer = testcase.expected_answer
-            answer.output = output
-            answer.stdout = stdout
-            return
-
-    answer.right = Right.RIGHT.value
-    answer.testcase = ""
-    answer.expected_answer = ""
-    answer.output = ""
-    answer.stdout = ""
 
 # TODO:: image move out effect when clicking 'like'
 # TODO:: unlock the quiz

@@ -146,10 +146,11 @@ class Quiz(SortableMixin):
 class Testcase(models.Model):
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
     test = models.TextField(default=None, blank=True, null=True)
-    expected_answer = models.TextField(default=None, blank=True, null=True)
+    expected_output = models.TextField(default=None, blank=True, null=True)
+    expected_stdout = models.TextField(default=None, blank=True, null=True)
 
     def __str__(self):
-        return str(self.quiz.order) + ". " + self.quiz.title + " - " + self.test + " " + self.expected_answer
+        return str(self.quiz.order) + ". " + self.quiz.title + " - " + self.test + " " + self.expected_output
 
 
 class Answer(models.Model):
@@ -159,8 +160,9 @@ class Answer(models.Model):
     right = models.IntegerField(default=Right.NOT_TRY.value)
     testcase = models.TextField(default=None, blank=True, null=True)
     stdout = models.TextField(default=None, blank=True, null=True)
+    expected_stdout = models.TextField(default=None, blank=True, null=True)
     output = models.TextField(default=None, blank=True, null=True)
-    expected_answer = models.TextField(default=None, blank=True, null=True)
+    expected_output = models.TextField(default=None, blank=True, null=True)
     date = models.DateField(default=timezone.now)
 
     def __str__(self):
@@ -190,3 +192,5 @@ class QuizScore(models.Model):
 
     def __str__(self):
         return str(self.custom_user) + " " + str(self.quiz) + " " + str(self.score)
+
+# TODO:: answer should have link to User, not username string.

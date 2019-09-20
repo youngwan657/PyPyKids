@@ -22,29 +22,35 @@
 <div class="container">
     <hr/>
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-3">
             Modify
         </div>
-        <div class="col-md-4">
-            Test Input
+        <div class="col-md-3">
+            Input
         </div>
-        <div class="col-md-4">
-            Expected Answer
+        <div class="col-md-3">
+            Output
+        </div>
+        <div class="col-md-3">
+            Stdout
         </div>
     </div>
     {% for testcase in testcases %}
     {% if quiz == testcase.quiz %}
     <hr/>
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-3">
             <a href="/admin/list/testcase/{{ testcase.id }}/change/" class="btn btn-primary btn-sm active" role="button"
                aria-pressed="true" target="_blank">Testcase</a>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
             {{ testcase.test | linebreaksbr }}
         </div>
-        <div class="col-md-4">
-            {{ testcase.expected_answer }}
+        <div class="col-md-3">
+            {{ testcase.expected_output | linebreaksbr }}
+        </div>
+        <div class="col-md-3">
+            {{ testcase.expected_stdout | linebreaksbr }}
         </div>
     </div>
     {% endif %}

@@ -24,7 +24,6 @@
     <div class="container pt-3">
         <div class="row justify-content-center">
             <div class="col-lg-10 col-xl-8">
-
                 <div id="right-alert" class="alert alert-success" role="alert" {% if answer is None or answer.right < 0 %} style="display: none;" {% endif %}>
                     <b>Accepted</b>
                 </div>
@@ -47,7 +46,7 @@
                     {% if answer.stdout != "" %}
                     <tr>
                         <th scope="row">stdout:</th>
-                        <td id="stdout">{{ answer.stdout }}</span></td>
+                        <td id="stdout">{{ answer.stdout|linebreaksbr }}</span></td>
                     </tr>
                     {% endif %}
                     <tr>
@@ -171,33 +170,27 @@
                 {% endif %}
             </div>
         </div>
-    </div>
-
-    {% if answer.right == 1 and clicked == False %}
-    <hr>
-    <div class="pt-4 pb-3 text-center">
-        <h6>Do you like this quiz?</h6>
-        <div class="d-flex justify-content-center mb-2">
-            <a href="/quiz/{{ quiz.order }}/score/1" class="btn btn-outline-primary mx-1">
-                <img class="icon bg-primary" src="{% static 'assets/img/icons/interface/check.svg' %}"
-                     alt="check interface icon"
-                     data-inject-svg/>
-                <span>Yes</span>
-            </a>
-            <a href="/quiz/{{ quiz.order }}/score/0" class="btn btn-outline-primary mx-1">
-                <img class="icon bg-primary" src="{% static 'assets/img/icons/interface/cross.svg' %}"
-                     alt="cross interface icon"
-                     data-inject-svg/>
-                <span>No</span>
-            </a>
+        <div id="quiz-like" class="pt-4 pb-3 text-center" {% if answer.right != 1 or clicked %} style="display: none;" {% endif %}>
+            <h6>Do you like this quiz?</h6>
+            <div class="d-flex justify-content-center mb-2">
+                <a href="#" id="quiz-like-yes" class="btn btn-outline-primary mx-1">
+                    <img class="icon bg-primary" src="{% static 'assets/img/icons/interface/check.svg' %}"
+                         alt="check interface icon"
+                         data-inject-svg/>
+                    <span>Yes</span>
+                </a>
+                <a href="#" id="quiz-like-no" class="btn btn-outline-primary mx-1">
+                    <img class="icon bg-primary" src="{% static 'assets/img/icons/interface/cross.svg' %}"
+                         alt="cross interface icon"
+                         data-inject-svg/>
+                    <span>No</span>
+                </a>
+            </div>
         </div>
     </div>
-    <hr>
-    {% endif %}
 
     <div class="divider">
-        <img class="bg-primary-alt" src="{% static 'assets/img/dividers/divider-3.svg' %}" alt="divider graphic"
-             data-inject-svg/>
+        <img class="bg-primary-alt" src="{% static 'assets/img/dividers/divider-3.svg' %}" alt="divider graphic" data-inject-svg/>
     </div>
 </section>
 
@@ -316,10 +309,11 @@ $(function(){
             success: function (data, textStatus) {
                 response = JSON.parse(data)
                 if (response['right'] == 1) {
-                    $('#right-alert').show();
+                    $('#right-alert').slideDown("slow");
                     $('#wrong-alert').hide();
                     $('#info-alert').hide();
                     $('#wrong-table').hide();
+                    $('#quiz-like').show(1000);
                     $('#animated-accepted').addClass('animated zoomIn');
                     $('#success-modal').modal('show')
                     setTimeout(function() { $('#success-modal').modal('hide');}, 3000);
@@ -334,13 +328,13 @@ $(function(){
                     });
                 } else if (response['right'] == -1 || response['right'] == -2) {
                     $('#right-alert').hide();
-                    $('#wrong-alert').show();
+                    $('#wrong-alert').slideDown("slow");
                     $('#info-alert').hide();
-                    $('#wrong-table').show();
-                    $('#testcase').html(response['testcase'])
-                    $('#stdout').html(response['stdout'])
-                    $('#output').html(response['output'])
-                    $('#expected_output').html(response['expected_output'])
+                    $('#wrong-table').slideDown("slow");
+                    $('#testcase').html(response['testcase'].replace(/\n/g, "<br\>"))
+                    $('#stdout').html(response['stdout'].replace(/\n/g, "<br\>"))
+                    $('#output').html(response['output'].replace(/\n/g, "<br\>"))
+                    $('#expected_output').html(response['expected_output'].replace(/\n/g, "<br\>"))
                     $('#animated-wrong').addClass('animated zoomIn');
                     $('#wrong-modal').modal('show');
                     setTimeout(function() { $('#wrong-modal').modal('hide');}, 2000);
@@ -361,9 +355,10 @@ $(function(){
             success: function (data, textStatus) {
                 response = JSON.parse(data)
                 if (response['right'] == 1) {
-                    $('#right-alert').show();
+                    $('#right-alert').slideDown("slow");
                     $('#wrong-alert').hide();
                     $('#info-alert').hide();
+                    $('#quiz-like').show(1000);
                     $('#animated-accepted').addClass('animated zoomIn');
                     $('#success-modal').modal('show');
                     setTimeout(function() { $('#success-modal').modal('hide');}, 3000);
@@ -378,7 +373,7 @@ $(function(){
                     });
                 } else if (response['right'] == -1 || response['right'] == -2) {
                     $('#right-alert').hide();
-                    $('#wrong-alert').show();
+                    $('#wrong-alert').slideDown("slow");
                     $('#info-alert').hide();
                     $('#animated-wrong').addClass('animated zoomIn');
                     $('#wrong-modal').modal('show');
@@ -400,9 +395,10 @@ $(function(){
             success: function (data, textStatus) {
                 response = JSON.parse(data)
                 if (response['right'] == 1) {
-                    $('#right-alert').show();
+                    $('#right-alert').slideDown("slow");
                     $('#wrong-alert').hide();
                     $('#info-alert').hide();
+                    $('#quiz-like').show(1000);
                     $('#animated-accepted').addClass('animated zoomIn');
                     $('#success-modal').modal('show');
                     setTimeout(function() { $('#success-modal').modal('hide');}, 3000);
@@ -417,12 +413,38 @@ $(function(){
                     });
                 } else if (response['right'] == -1 || response['right'] == -2) {
                     $('#right-alert').hide();
-                    $('#wrong-alert').show();
+                    $('#wrong-alert').slideDown("slow");
                     $('#info-alert').hide();
                     $('#animated-wrong').addClass('animated zoomIn');
                     $('#wrong-modal').modal('show');
                     setTimeout(function() { $('#wrong-modal').modal('hide');}, 2000);
                 }
+            },
+            error: function(xhr, status, e) {
+            }
+        });
+    });
+
+    $('#quiz-like-yes').click(function(event) {
+    event.preventDefault();
+    $.ajax({
+            type: 'GET',
+            url: '/quiz/{{ quiz.order }}/score/1',
+            success: function (data, textStatus) {
+                $('#quiz-like').hide(1000);
+            },
+            error: function(xhr, status, e) {
+            }
+        });
+    });
+
+    $('#quiz-like-no').click(function(event) {
+    event.preventDefault();
+    $.ajax({
+            type: 'GET',
+            url: '/quiz/{{ quiz.order }}/score/0',
+            success: function (data, textStatus) {
+                $('#quiz-like').hide(1000);
             },
             error: function(xhr, status, e) {
             }

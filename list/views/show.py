@@ -13,11 +13,10 @@ def show(request, title):
     username = get_username(request)
     context['username'] = username
 
-    answers = Answer.objects.filter(name=username)
+    answers = Answer.objects.filter(customuser__name=username)
 
     quiz = get_object_or_404(Quiz, title=title.replace("-", " "))
 
-    right_modal = request.GET.get('right_modal')
     answer = answers.filter(quiz__order=quiz.order).first()
 
     # default answer header
@@ -30,9 +29,7 @@ def show(request, title):
     context['difficulty'] = quiz.category.difficulty
     context['category'] = quiz.category.name
     context['quiz'] = quiz.set_title_url()
-    context['right_modal'] = right_modal
-
-    context['clicked'] = QuizScore.objects.filter(custom_user_id=request.user.id, quiz_id=quiz.id).exists()
+    context['clicked'] = QuizScore.objects.filter(customuser__name=username, quiz__id=quiz.id).exists()
 
     return render(request, 'list/show.html', context)
 
@@ -41,7 +38,8 @@ def answer(request, quiz_order):
     username = get_username(request)
     quiz = get_object_or_404(Quiz, order=quiz_order)
     testcases = Testcase.objects.filter(quiz__order=quiz_order)
-    answer, _ = Answer.objects.get_or_create(quiz_id=quiz.id, name=get_username(request))
+    answer, _ = Answer.objects.get_or_create(quiz_id=quiz.id, customuser__name=get_username(request))
+    answer.customuser = CustomUser.objects.get(name=username)
     answer.quiz = quiz
     answer.answer = request.POST['answer']
     if answer.right not in [Right.RIGHT.value, Right.WAS_RIGHT.value]:
@@ -77,11 +75,12 @@ def answer(request, quiz_order):
 def quiz_score(request, quiz_order, score):
     quiz = get_object_or_404(Quiz, order=quiz_order)
 
-    quiz_score, _ = QuizScore.objects.get_or_create(custom_user_id=request.user.id, quiz_id=quiz.id)
+    customuser = CustomUser.objects.get(name=get_username(request))
+    quiz_score, _ = QuizScore.objects.get_or_create(customuser=customuser, quiz_id=quiz.id)
     quiz.score += score - quiz_score.score
     quiz.save()
 
-    quiz_score.custom_user_id = request.user.id
+    quiz_score.customuser = customuser
     quiz_score.quiz = quiz
     quiz_score.score = score
     quiz_score.save()
@@ -99,7 +98,7 @@ def check_answer(username, testcases, answer):
         os.remove("%s/answers/%s" % (folder, username))
 
     f = open("%s/checks/%s.py" % (folder, username), "w+")
-    f.write(checking_code(username))
+    f.write(create_checking_code(username))
     f.close()
 
     for testcase in testcases:
@@ -109,14 +108,14 @@ def check_answer(username, testcases, answer):
             outs, errs, stdout = "", "", ""
             if testcase.expected_stdout is not None:
                 process = subprocess.Popen(
-                    ['python', '%s/checks/solutions/%s.py' % (folder, username)] + testcase.test.split("\n"),
+                    ['python', '%s/checks/solutions/%s.py' % (folder, username)] + testcase.input.split("\n"),
                     stdout=subprocess.PIPE,
                     stderr=subprocess.STDOUT)
                 outs, errs = process.communicate(timeout=1)
                 stdout = outs.decode("utf-8")
             else:
                 process = subprocess.Popen(
-                    ['python', '%s/checks/%s.py' % (folder, username)] + testcase.test.split("\n"),
+                    ['python', '%s/checks/%s.py' % (folder, username)] + testcase.input.split("\n"),
                     stdout=subprocess.PIPE,
                     stderr=subprocess.STDOUT)
                 outs, errs = process.communicate(timeout=1)
@@ -147,7 +146,7 @@ def check_answer(username, testcases, answer):
                     answer.right = Right.WAS_RIGHT.value
                 else:
                     answer.right = Right.WRONG.value
-                answer.testcase = testcase.test
+                answer.testcase = testcase.input
                 answer.output = stdout
                 answer.expected_output = testcase.expected_stdout
             return
@@ -166,14 +165,14 @@ def check_answer(username, testcases, answer):
                     answer.right = Right.WAS_RIGHT.value
                 else:
                     answer.right = Right.WRONG.value
-                answer.testcase = testcase.test
+                answer.testcase = testcase.input
                 answer.stdout = stdout
                 answer.output = output
                 answer.expected_stdout = ""
                 answer.expected_output = testcase.expected_output
                 return
 
-def checking_code(username):
+def create_checking_code(username):
     return """
 import sys, ast, os
 from node import Node
@@ -227,6 +226,5 @@ if __name__ == "__main__":
     f.close()""" % (username, username)
 
 
-# TODO:: image move out effect when clicking 'like'
 # TODO:: unlock the quiz
 # TODO:: forget password

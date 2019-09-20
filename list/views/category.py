@@ -14,7 +14,7 @@ def category(request, category):
         quiz.set_title_url()
 
     if username != "":
-        answers = Answer.objects.filter(name=username)
+        answers = Answer.objects.filter(customuser__name=username)
         for quiz in quizzes:
             answer = answers.filter(quiz__order=quiz.order)
             quiz.right = 0

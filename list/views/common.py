@@ -20,7 +20,7 @@ def get_unsolved_quizzes(username, quiz_order=-1):
     quizzes = Quiz.objects.filter(visible=True, order__gt=quiz_order).order_by('order')
     if len(quizzes) == 0:
         quizzes = Quiz.objects.filter(visible=True).order_by('order')
-    answers = Answer.objects.filter(name=username)
+    answers = Answer.objects.filter(customuser__name=username)
     for answer in answers:
         if answer.right == Right.RIGHT.value:
             quizzes = quizzes.filter(~Q(order=answer.quiz.order))
@@ -32,8 +32,8 @@ def add_badge(username):
     if username == "":
         return None
 
-    custom_user = CustomUser.objects.get(name=username)
-    answers = Answer.objects.filter(name=username, right=Right.RIGHT.value)
+    customuser = CustomUser.objects.get(name=username)
+    answers = Answer.objects.filter(customuser__name=username, right=Right.RIGHT.value)
     untaken_badges = Badge.objects.filter(~Q(customuser__name=username))
 
     new_badges = []
@@ -49,8 +49,8 @@ def add_badge(username):
 
     for badge in untaken_badges:
         if badge.type.name == "DayStreak" and badge.value <= day_streak:
-            custom_user.badges.add(badge)
-            custom_user.save()
+            customuser.badges.add(badge)
+            customuser.save()
             new_badges.append({
                 'icon': badge.html,
                 'desc': badge.desc,
@@ -60,8 +60,8 @@ def add_badge(username):
     quiz_per_day = answers.filter(date=date.today()).count()
     for badge in untaken_badges:
         if badge.type.name == "QuizPerDay" and badge.value <= quiz_per_day:
-            custom_user.badges.add(badge)
-            custom_user.save()
+            customuser.badges.add(badge)
+            customuser.save()
             new_badges.append({
                 'icon': badge.html,
                 'desc': badge.desc,
@@ -71,8 +71,8 @@ def add_badge(username):
     total_quiz = answers.count()
     for badge in untaken_badges:
         if badge.type.name == "TotalQuiz" and badge.value <= total_quiz:
-            custom_user.badges.add(badge)
-            custom_user.save()
+            customuser.badges.add(badge)
+            customuser.save()
             new_badges.append({
                 'icon': badge.html,
                 'desc': badge.desc,

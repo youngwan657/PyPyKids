@@ -8,9 +8,9 @@ def signup(request):
     if request.method == "POST":
         if form.is_valid():
             user = form.save()
-            custom_user = CustomUser.objects.create(name=user.username)
-            custom_user.badges.add(Badge.objects.get(order=0))
-            custom_user.save()
+            customuser = CustomUser.objects.create(name=user.username)
+            customuser.badges.add(Badge.objects.get(order=0))
+            customuser.save()
             login(request, user)
             return redirect("/")
 

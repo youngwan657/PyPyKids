@@ -145,18 +145,26 @@ class Quiz(SortableMixin):
 
 class Testcase(models.Model):
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
-    test = models.TextField(default=None, blank=True, null=True)
+    input = models.TextField(default=None, blank=True, null=True)
     expected_output = models.TextField(default=None, blank=True, null=True)
     expected_stdout = models.TextField(default=None, blank=True, null=True)
 
     def __str__(self):
-        return str(self.quiz.order) + ". " + self.quiz.title + " - " + self.test + " " + self.expected_output
+        return str(self.quiz.order) + ". " + self.quiz.title + " - " + self.input + " " + self.expected_output
+
+
+class CustomUser(models.Model):
+    name = models.CharField(max_length=30)
+    badges = models.ManyToManyField(Badge)
+
+    def __str__(self):
+        return str(self.name)
 
 
 class Answer(models.Model):
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE, blank=True, null=True)
     answer = models.TextField(default=None, blank=True, null=True)
-    name = models.CharField(max_length=20)
+    customuser = models.ForeignKey(CustomUser, on_delete=models.CASCADE, blank=True, null=True)
     right = models.IntegerField(default=Right.NOT_TRY.value)
     testcase = models.TextField(default=None, blank=True, null=True)
     stdout = models.TextField(default=None, blank=True, null=True)
@@ -167,30 +175,18 @@ class Answer(models.Model):
 
     def __str__(self):
         if self.quiz == None:
-            return self.name + " " + str(self.date)
+            return str(self.customuser) + " " + str(self.date)
 
-        return str(self.quiz.order) + ". " + self.name + " " + str(self.date.strftime("%Y-%m-%d")) + " right:" + str(
+        return str(self.quiz.order) + ". " + str(self.customuser) + " " + str(self.date.strftime("%Y-%m-%d")) + " right:" + str(
             self.right)
 
-
-class CustomUser(models.Model):
-    name = models.CharField(max_length=30)
-
-    badges = models.ManyToManyField(Badge)
-
-    def __str__(self):
-        return str(self.name)
-
-
 class QuizScore(models.Model):
-    custom_user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    customuser = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
     score = models.IntegerField(default=0)
 
     class Meta:
-        unique_together = ('custom_user', 'quiz',)
+        unique_together = ('customuser', 'quiz',)
 
     def __str__(self):
-        return str(self.custom_user) + " " + str(self.quiz) + " " + str(self.score)
-
-# TODO:: answer should have link to User, not username string.
+        return str(self.customuser) + " " + str(self.quiz) + " " + str(self.score)

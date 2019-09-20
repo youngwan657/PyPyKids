@@ -13,7 +13,7 @@ def categories(request):
     context['username'] = username
 
     if request.user.is_authenticated:
-        answers = Answer.objects.filter(name=username)
+        answers = Answer.objects.filter(customuser__name=username)
         total_quizzes = Quiz.objects.count()
         right_quizzes = answers.filter(right=Right.RIGHT.value).count()
         wrong_quizzes = answers.filter(Q(right=Right.WRONG.value) | Q(right=Right.WAS_RIGHT.value)).count()
@@ -58,7 +58,7 @@ def categories(request):
     for difficulty in difficulties:
         categories = Category.objects.order_by('order').filter(difficulty=difficulty.id, visible=True)
         all_quizzes = Quiz.objects;
-        answers = Answer.objects.filter(name=username, right=Right.RIGHT.value)
+        answers = Answer.objects.filter(customuser__name=username, right=Right.RIGHT.value)
         for category in categories:
             quizzes = all_quizzes.filter(category__name=category.name, visible=True)
             category.total_quiz = quizzes.count()

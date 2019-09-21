@@ -9,6 +9,7 @@ def category(request, category):
 
     username = get_username(request)
     context['username'] = username
+    context['profile_badge_count'] = get_badge_count(username)
 
     for quiz in quizzes:
         quiz.set_title_url()

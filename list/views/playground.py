@@ -7,7 +7,9 @@ from list.views.common import *
 
 def playground(request):
     context = {}
-    context['username'] = get_username(request)
+    username = get_username(request)
+    context['username'] = username
+    context['profile_badge_count'] = get_badge_count(username)
     filename = "./list/users/playgrounds/" + context['username'] + ".py"
     if request.method == "POST":
         f = open(filename, "w+")

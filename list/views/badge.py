@@ -5,8 +5,9 @@ from list.views.common import *
 
 
 def badge(request):
-    context = {
-        'username': get_username(request),
-        'badges': Badge.objects.all(),
-    }
+    context = {}
+    username = get_username(request)
+    context['username'] = username
+    context['badges'] = Badge.objects.all()
+    context['profile_badge_count'] = get_badge_count(username)
     return render(request, 'list/badge.html', context)

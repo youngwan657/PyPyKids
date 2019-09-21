@@ -12,11 +12,13 @@ def about(request):
 
     badge = Badge.objects.count()
 
+    username = get_username(request)
     context = {
-        'username': get_username(request),
+        'username': username,
         'user': user,
         'video': video,
         'quiz': quiz,
         'badge': badge,
+        'profile_badge_count': get_badge_count(username)
     }
     return render(request, 'list/about.html', context)

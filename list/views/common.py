@@ -79,3 +79,8 @@ def add_badge(username):
             })
 
     return new_badges
+
+
+def get_badge_count(username):
+    return Badge.objects.filter(customuser__name=username).count()
+

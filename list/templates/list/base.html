@@ -57,14 +57,59 @@
 
             {% if username %}
             <div class="dropdown">
-                <button class="btn btn-primary-2 dropdown-toggle text-light" type="button" data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false">
+                <button class="btn btn-primary-2 dropdown-toggle text-light" data-toggle="dropdown-grid" type="button"
+                        aria-expanded="false" aria-haspopup="false">
                     <b>{{ username }}</b>
                     <img class="icon" src="{% static 'assets/img/icons/interface/arrow-caret.svg' %}"
                          alt="arrow-caret interface icon" data-inject-svg/>
                 </button>
-                <div class="dropdown-menu">
-                    <a class="dropdown-item text-danger" href="/signout">Sign out</a>
+
+                <div class="dropdown-menu row">
+                    <div class="col-xl-2 col-lg-2" data-dropdown-content>
+                        <div class="card card-body shadow p-0">
+                            <div class="row no-gutters">
+                                <div class="col-md">
+                                    <a href="#" class="d-flex m-3">
+                                        <img class="icon bg-primary-2"
+                                             src="{% static 'assets/img/icons/theme/shopping/dollar.svg' %}" alt="timer icon"
+                                             data-inject-svg/>
+                                        <div class="ml-3">
+                                            <span class="text-small">0 Points</span>
+                                        </div>
+                                    </a>
+                                    <a href="#" class="d-flex m-3">
+                                        <img class="icon bg-primary-2"
+                                             src="{% static 'assets/img/icons/theme/general/heart.svg' %}"
+                                             alt="layout-top-panel-2 icon" data-inject-svg/>
+                                        <div class="ml-3">
+                                            <span class="text-small"> 0 Likes</span>
+                                        </div>
+                                    </a>
+                                    <a href="#" class="d-flex m-3">
+                                        <img class="icon bg-primary-2"
+                                             src="{% static 'assets/img/icons/theme/design/sketch.svg' %}"
+                                             alt="layout-top-panel-2 icon" data-inject-svg/>
+                                        <div class="ml-3">
+                                            <span class="text-small"> {{ profile_badge_count }} Badges</span>
+                                        </div>
+                                    </a>
+                                    <a href="#" class="d-flex m-3">
+                                        <img class="icon bg-primary-2"
+                                             src="{% static 'assets/img/icons/theme/communication/group.svg' %}"
+                                             alt="layout-top-panel-2 icon" data-inject-svg/>
+                                        <div class="ml-3">
+                                            <span class="text-small"> 0 Friends</span>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                            <hr class="m-0">
+                            <div class="px-3 py-2 d-flex justify-content-between align-items-center">
+                                <span class="text-small"></span>
+                                <a href="/signout" class="btn btn-sm btn-outline-primary-2">Sign out</a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             {% else %}
@@ -180,7 +225,8 @@
             <div class="col-auto">
                 <ul class="nav">
                     <li class="nav-item">
-                        <a href="https://www.youtube.com/channel/UCd5AyycvcmALoExSmcr8HJQ" target="_blank" class="nav-link">
+                        <a href="https://www.youtube.com/channel/UCd5AyycvcmALoExSmcr8HJQ" target="_blank"
+                           class="nav-link">
                             <img class="icon undefined" src="{% static 'assets/img/icons/social/youtube.svg' %}"
                                  alt="youtube social icon" data-inject-svg/>
                         </a>

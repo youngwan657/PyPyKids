@@ -11,6 +11,7 @@ def categories(request):
     context['difficulties'] = difficulties
     username = get_username(request)
     context['username'] = username
+    context['profile_badge_count'] = get_badge_count(username)
 
     if request.user.is_authenticated:
         answers = Answer.objects.filter(customuser__name=username)

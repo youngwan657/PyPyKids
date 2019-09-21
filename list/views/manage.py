@@ -5,6 +5,8 @@ from list.views.common import *
 
 def manage(request):
     quizzes = Quiz.objects.all()
+    for quiz in quizzes:
+        quiz.set_title_url()
     testcases = Testcase.objects.all()
     answers = Answer.objects.all()
 

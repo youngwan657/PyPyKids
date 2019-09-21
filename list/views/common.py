@@ -95,3 +95,4 @@ def get_badge_count(username):
 
 def get_quiz_count(username):
     return Answer.objects.filter(customuser__name=username, right=Right.RIGHT.value).count()
+

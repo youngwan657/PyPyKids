@@ -193,3 +193,5 @@ class QuizScore(models.Model):
 
 # TODO:: remove file name from error log
 # TODO:: checking no testcase in manage.html
+# TODO:: sign in, sign up - modal
+# TODO:: reset code

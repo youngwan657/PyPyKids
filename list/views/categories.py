@@ -3,15 +3,26 @@ from list.views.common import *
 from django.db.models import Q, Sum
 
 
+def welcome(request):
+    context = {}
+    username = get_profile(request, context)
+
+    if username != "":
+        return categories(request)
+
+    return render(request, 'list/welcome.html', context)
+
+
 def categories(request):
     context = {}
+    username = get_profile(request, context)
+
     quizzes = Quiz.objects.order_by('order').filter(visible=True)
     unsolved_quizzes = quizzes
     difficulties = Difficulty.objects.order_by('id')
     context['difficulties'] = difficulties
-    username = get_profile(request, context)
 
-    if request.user.is_authenticated:
+    if username != "":
         answers = Answer.objects.filter(customuser__name=username)
         total_quizzes = Quiz.objects.count()
         right_quizzes = answers.filter(right=Right.RIGHT.value).count()

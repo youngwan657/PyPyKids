@@ -10,9 +10,7 @@ from list.views.common import *
 
 def show(request, title):
     context = {}
-    username = get_username(request)
-    context['profile_badge_count'] = get_badge_count(username)
-    context['username'] = username
+    username = get_profile(request, context)
 
     answers = Answer.objects.filter(customuser__name=username)
 

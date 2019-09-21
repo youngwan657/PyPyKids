@@ -3,22 +3,20 @@ from list.views.common import *
 
 
 def about(request):
-    user = CustomUser.objects.count()
-    quiz = Quiz.objects.count()
-    video = 0
+    user_count = CustomUser.objects.count()
+    quiz_count = Quiz.objects.count()
+    video_count = 0
     for quiz in Quiz.objects.all():
         if quiz.video != None:
-            video += 1
+            video_count += 1
 
-    badge = Badge.objects.count()
+    badge_count = Badge.objects.count()
 
-    username = get_username(request)
     context = {
-        'username': username,
-        'user': user,
-        'video': video,
-        'quiz': quiz,
-        'badge': badge,
-        'profile_badge_count': get_badge_count(username)
+        'user': user_count,
+        'video': video_count,
+        'quiz': quiz_count,
+        'badge': badge_count,
     }
+    get_profile(request, context)
     return render(request, 'list/about.html', context)

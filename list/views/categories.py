@@ -9,9 +9,7 @@ def categories(request):
     unsolved_quizzes = quizzes
     difficulties = Difficulty.objects.order_by('id')
     context['difficulties'] = difficulties
-    username = get_username(request)
-    context['username'] = username
-    context['profile_badge_count'] = get_badge_count(username)
+    username = get_profile(request, context)
 
     if request.user.is_authenticated:
         answers = Answer.objects.filter(customuser__name=username)
@@ -71,5 +69,4 @@ def categories(request):
 
         context["level" + str(difficulty.id)] = categories
 
-    context['quiz_name'] = 'TODAY QUIZ'
     return render(request, 'list/categories.html', context)

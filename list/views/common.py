@@ -15,6 +15,14 @@ def get_username(request):
         return request.user.username
     return ""
 
+def get_profile(request, context):
+    username = get_username(request)
+    if username != "":
+        context['username'] = username
+        context['profile_quiz_count'] = get_quiz_count(username)
+        context['profile_badge_count'] = get_badge_count(username)
+
+    return username
 
 def get_unsolved_quizzes(username, quiz_order=-1):
     quizzes = Quiz.objects.filter(visible=True, order__gt=quiz_order).order_by('order')
@@ -84,3 +92,6 @@ def add_badge(username):
 def get_badge_count(username):
     return Badge.objects.filter(customuser__name=username).count()
 
+
+def get_quiz_count(username):
+    return Answer.objects.filter(customuser__name=username, right=Right.RIGHT.value).count()

@@ -192,3 +192,4 @@ class QuizScore(models.Model):
         return str(self.customuser) + " " + str(self.quiz) + " " + str(self.score)
 
 # TODO:: remove file name from error log
+# TODO:: checking no testcase in manage.html

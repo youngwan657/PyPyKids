@@ -644,6 +644,11 @@
         script.onload = script.onreadystatechange;
         script.src = source;
         prior.parentNode.insertBefore(script, prior);
+      },
+      isIE: function isIE() {
+        var ua = window.navigator.userAgent;
+        var isIE = /MSIE|Trident/.test(ua);
+        return isIE;
       }
     };
     return Util;
@@ -1198,7 +1203,7 @@
   }
 
   var flatpickr = createCommonjsModule(function (module, exports) {
-  /* flatpickr v4.6.1, @license MIT */
+  /* flatpickr v4.6.2, @license MIT */
   (function (global, factory) {
        module.exports = factory() ;
   }(commonjsGlobal, function () {
@@ -1287,6 +1292,7 @@
           locale: "default",
           minuteIncrement: 5,
           mode: "single",
+          monthSelectorType: "dropdown",
           nextArrow: "<svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='0 0 17 17'><g></g><path d='M13.207 8.472l-7.854 7.854-0.707-0.707 7.146-7.146-7.146-7.148 0.707-0.707 7.854 7.854z' /></svg>",
           noCalendar: false,
           now: new Date(),
@@ -1380,6 +1386,8 @@
           toggleTitle: "Click to toggle",
           amPM: ["AM", "PM"],
           yearAriaLabel: "Year",
+          hourAriaLabel: "Hour",
+          minuteAriaLabel: "Minute",
           time_24hr: false
       };
 
@@ -2342,7 +2350,8 @@
               }
           }
           function buildMonthSwitch() {
-              if (self.config.showMonths > 1)
+              if (self.config.showMonths > 1 ||
+                  self.config.monthSelectorType !== "dropdown")
                   return;
               var shouldBuildMonth = function (month) {
                   if (self.config.minDate !== undefined &&
@@ -2361,7 +2370,7 @@
                       continue;
                   var month = createElement("option", "flatpickr-monthDropdown-month");
                   month.value = new Date(self.currentYear, i).getMonth().toString();
-                  month.textContent = monthToStr(i, false, self.l10n);
+                  month.textContent = monthToStr(i, self.config.shorthandCurrentMonth, self.l10n);
                   month.tabIndex = -1;
                   if (self.currentMonth === i) {
                       month.selected = true;
@@ -2373,7 +2382,8 @@
               var container = createElement("div", "flatpickr-month");
               var monthNavFragment = window.document.createDocumentFragment();
               var monthElement;
-              if (self.config.showMonths > 1) {
+              if (self.config.showMonths > 1 ||
+                  self.config.monthSelectorType === "static") {
                   monthElement = createElement("span", "cur-month");
               }
               else {
@@ -2463,9 +2473,13 @@
               self.timeContainer = createElement("div", "flatpickr-time");
               self.timeContainer.tabIndex = -1;
               var separator = createElement("span", "flatpickr-time-separator", ":");
-              var hourInput = createNumberInput("flatpickr-hour");
+              var hourInput = createNumberInput("flatpickr-hour", {
+                  "aria-label": self.l10n.hourAriaLabel
+              });
               self.hourElement = hourInput.getElementsByTagName("input")[0];
-              var minuteInput = createNumberInput("flatpickr-minute");
+              var minuteInput = createNumberInput("flatpickr-minute", {
+                  "aria-label": self.l10n.minuteAriaLabel
+              });
               self.minuteElement = minuteInput.getElementsByTagName("input")[0];
               self.hourElement.tabIndex = self.minuteElement.tabIndex = -1;
               self.hourElement.value = pad(self.latestSelectedDateObj
@@ -3394,7 +3408,8 @@
                   return self.clear(triggerChange);
               setSelectedDate(date, format);
               self.showTimeInput = self.selectedDates.length > 0;
-              self.latestSelectedDateObj = self.selectedDates[self.selectedDates.length - 1];
+              self.latestSelectedDateObj =
+                  self.selectedDates[self.selectedDates.length - 1];
               self.redraw();
               jumpToDate();
               setHoursFromDate();
@@ -3592,7 +3607,8 @@
               self.yearElements.forEach(function (yearElement, i) {
                   var d = new Date(self.currentYear, self.currentMonth, 1);
                   d.setMonth(self.currentMonth + i);
-                  if (self.config.showMonths > 1) {
+                  if (self.config.showMonths > 1 ||
+                      self.config.monthSelectorType === "static") {
                       self.monthElements[i].textContent =
                           monthToStr(d.getMonth(), self.config.shorthandCurrentMonth, self.l10n) + " ";
                   }
@@ -5478,7 +5494,7 @@
      * ------------------------------------------------------------------------
      */
     var NAME = 'mrOverlayNav';
-    var VERSION = '1.0.0';
+    var VERSION = '1.1.0';
     var DATA_KEY = 'mr.overlayNav';
     var EVENT_KEY = "." + DATA_KEY;
     var JQUERY_NO_CONFLICT = $.fn[NAME];
@@ -5487,7 +5503,7 @@
       RESIZED: "resized" + EVENT_KEY,
       IMAGE_LOAD: 'load',
       TOGGLE_SHOW: 'show.bs.collapse',
-      TOGGLE_HIDE: 'hide.bs.collapse',
+      TOGGLE_HIDDEN: 'hidden.bs.collapse',
       NOTIFICATION_CLOSE: '',
       ALERT_CLOSE: 'close.bs.alert'
     };
@@ -5496,10 +5512,8 @@
       OVERLAY_NAV: 'body > div.navbar-container > nav[data-overlay]',
       NAV: 'nav',
       OVERLAY_SECTION: '[data-overlay]',
-      IMAGE: 'img'
-    };
-    var ClassName = {
-      TOGGLED_SHOW: 'navbar-toggled-show'
+      IMAGE: 'img',
+      NAV_TOGGLED: 'navbar-toggled-show'
     };
     /**
      * ------------------------------------------------------------------------
@@ -5515,12 +5529,13 @@
 
         this.element = element;
         this.navHeight = this.getNavHeight();
+        this.navToggled = false;
         this.container = OverlayNav.getContainerElement();
         this.overlayElement = OverlayNav.getFirstOverlayElement();
         this.setImageLoadEvent();
         this.updateValues();
         this.setResizeEvent();
-        this.setToggleEvent();
+        this.setNavToggleEvents();
       } // getters
 
 
@@ -5538,7 +5553,8 @@
       };
 
       _proto.updateContainer = function updateContainer() {
-        if (!this.container) {
+        // Don't update min height on the container if the nav is toggled/open.
+        if (!this.container || this.navToggled) {
           return;
         }
 
@@ -5547,7 +5563,7 @@
       };
 
       _proto.updateOverlayElement = function updateOverlayElement() {
-        if (!this.overlayElement) {
+        if (!this.overlayElement || this.navToggled) {
           return;
         }
 
@@ -5569,13 +5585,16 @@
         });
       };
 
-      _proto.setToggleEvent = function setToggleEvent() {
+      _proto.setNavToggleEvents = function setNavToggleEvents() {
         var _this2 = this;
 
-        $(this.container).on(Event.TOGGLE_SHOW + " " + Event.TOGGLE_HIDE, function (evt) {
-          var action = evt.type + "." + evt.namespace === Event.TOGGLE_SHOW ? 'add' : 'remove';
+        $(this.element).on("" + Event.TOGGLE_SHOW, function () {
+          _this2.navToggled = true;
+        }); // navHeight should only be recalculated when the nav is not open/toggled
+        // Don't allow the navHeight to be recalculated until the nav is fully hidden
 
-          _this2.element.classList[action](ClassName.TOGGLED_SHOW);
+        $(this.element).on("" + Event.TOGGLE_HIDDEN, function () {
+          _this2.navToggled = false;
         });
       };
 
@@ -5659,6 +5678,28 @@
 
     return OverlayNav;
   }(jQuery$1);
+
+  //
+
+  (function ($) {
+    var Event = {
+      TOGGLE_SHOW: 'show.bs.collapse',
+      TOGGLE_HIDE: 'hide.bs.collapse'
+    };
+    var Selector = {
+      CONTAINER: 'body > div.navbar-container',
+      NAV: '.navbar-container > .navbar'
+    };
+    var ClassName = {
+      TOGGLED_SHOW: 'navbar-toggled-show'
+    };
+    var container = document.querySelector(Selector.CONTAINER);
+    var nav = document.querySelector(Selector.NAV);
+    $(container).on(Event.TOGGLE_SHOW + " " + Event.TOGGLE_HIDE, function (evt) {
+      var action = evt.type + "." + evt.namespace === Event.TOGGLE_SHOW ? 'add' : 'remove';
+      nav.classList[action](ClassName.TOGGLED_SHOW);
+    });
+  })(jQuery$1);
 
   //
   Plyr.setup('[data-provider],.plyr');
@@ -5927,7 +5968,7 @@
 
 
     var NAME = 'mrSticky';
-    var VERSION = '1.3.0';
+    var VERSION = '1.4.0';
     var DATA_KEY = 'mr.sticky';
     var EVENT_KEY = "." + DATA_KEY;
     var DATA_API_KEY = '.data-api';
@@ -5948,7 +5989,9 @@
     var Event = {
       LOAD_DATA_API: "load" + EVENT_KEY + DATA_API_KEY,
       WINDOW_RESIZE: 'resize',
-      ALERT_CLOSED: 'closed.bs.alert'
+      ALERT_CLOSED: 'closed.bs.alert',
+      TOGGLE_SHOW: 'show.bs.collapse',
+      TOGGLE_HIDDEN: 'hidden.bs.collapse'
     };
     var Options = {
       BELOW_NAV: 'below-nav',
@@ -5978,6 +6021,7 @@
         this.stickBelowNav = stickyData === Options.BELOW_NAV;
         this.stickBottom = stickyData === Options.BOTTOM;
         this.stickyUntil = stickyUntil;
+        this.navToggled = false;
         this.updateNavProperties();
         this.isNavElement = $element.is(this.navElement);
         this.initWatcher($element);
@@ -5987,6 +6031,10 @@
 
         this.onWatcherChange($element);
         this.ticking = false; // for debouncing resize event with RequestAnimationFrame
+
+        if (this.isNavElement) {
+          this.setNavToggleEvents();
+        }
       } // getters
 
 
@@ -6084,6 +6132,19 @@
         }
       };
 
+      _proto.setNavToggleEvents = function setNavToggleEvents() {
+        var _this4 = this;
+
+        $(this.element).on("" + Event.TOGGLE_SHOW, function () {
+          _this4.navToggled = true;
+        }); // navHeight should only be recalculated when the nav is not open/toggled
+        // Don't allow the navHeight to be recalculated until the nav is fully hidden
+
+        $(this.element).on("" + Event.TOGGLE_HIDDEN, function () {
+          _this4.navToggled = false;
+        });
+      };
+
       _proto.updateCss = function updateCss() {
         var $element = $(this.element); // Fix width by getting parent's width to avoid element spilling out when pos-fixed
 
@@ -6094,7 +6155,11 @@
         // but not applied to the nav element itself unless it is overlay (absolute) nav
 
         if (!this.navIsAbsolute && this.isNavElement || notNavElement) {
-          $element.parent().css(Css.HEIGHT, elemHeight);
+          // navHeight should only be recalculated when the nav is not open/toggled
+          // Don't allow the navHeight to be set until the nav is fully hidden
+          if (!this.navToggled) {
+            $element.parent().css(Css.HEIGHT, elemHeight);
+          }
         }
 
         if (this.navIsSticky && notNavElement) {
@@ -6326,7 +6391,7 @@
   (module.exports = function (key, value) {
     return store[key] || (store[key] = value !== undefined ? value : {});
   })('versions', []).push({
-    version: '3.1.3',
+    version: '3.2.1',
     mode:  'global',
     copyright: '© 2019 Denis Pushkarev (zloirock.ru)'
   });
@@ -7165,7 +7230,15 @@
   var from_1 = path.Array.from;
 
   //
-  svgInjector.SVGInjector(document.querySelectorAll('[data-inject-svg]'));
+
+  if (mrUtil.isIE()) {
+    window.addEventListener('load', function () {
+      svgInjector.SVGInjector(document.querySelectorAll('[class][data-inject-svg]'));
+    });
+    svgInjector.SVGInjector(document.querySelectorAll('[data-inject-svg]'));
+  } else {
+    svgInjector.SVGInjector(document.querySelectorAll('[data-inject-svg]'));
+  }
 
   var mrTwitterFetcher = function ($) {
     /**

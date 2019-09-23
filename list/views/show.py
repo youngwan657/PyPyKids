@@ -62,10 +62,10 @@ def answer(request, quiz_order):
 
     response = {
         "right": answer.right,
+        "input": answer.input,
         "output": answer.output,
         "stdout": answer.stdout,
         "expected_output": answer.expected_output,
-        "testcase": answer.testcase,
         "new_badges": add_badge(username),
     }
     return JsonResponse(json.dumps(response), safe=False)
@@ -135,7 +135,7 @@ def check_answer(username, testcases, answer):
             testcase.expected_stdout = testcase.expected_stdout.replace("\r\n", "\n")
             if str(stdout).strip() == testcase.expected_stdout.strip():
                 answer.right = Right.RIGHT.value
-                answer.testcase = ""
+                answer.input = ""
                 answer.stdout = ""
                 answer.output = ""
                 answer.expected_stdout = ""
@@ -145,7 +145,7 @@ def check_answer(username, testcases, answer):
                     answer.right = Right.WAS_RIGHT.value
                 else:
                     answer.right = Right.WRONG.value
-                answer.testcase = testcase.input
+                answer.input = testcase.input
                 answer.output = stdout
                 answer.expected_output = testcase.expected_stdout
             return
@@ -154,7 +154,7 @@ def check_answer(username, testcases, answer):
         if testcase.expected_output is not None:
             if str(output) == testcase.expected_output.strip():
                 answer.right = Right.RIGHT.value
-                answer.testcase = ""
+                answer.input = ""
                 answer.stdout = ""
                 answer.output = ""
                 answer.expected_stdout = ""
@@ -164,7 +164,7 @@ def check_answer(username, testcases, answer):
                     answer.right = Right.WAS_RIGHT.value
                 else:
                     answer.right = Right.WRONG.value
-                answer.testcase = testcase.input
+                answer.input = testcase.input
                 answer.stdout = stdout
                 answer.output = output
                 answer.expected_stdout = ""

@@ -44,7 +44,7 @@
                aria-pressed="true" target="_blank">Testcase</a>
         </div>
         <div class="col-md-3">
-            {{ testcase.test | linebreaksbr }}
+            {{ testcase.input | linebreaksbr }}
         </div>
         <div class="col-md-3">
             {{ testcase.expected_output | linebreaksbr }}
@@ -56,15 +56,19 @@
     {% endif %}
     {% endfor %}
     <hr/>
+
     {% for answer in answers %}
     {% if quiz == answer.quiz %}
     <hr/>
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-3">
             <a href="/admin/list/answer/{{ answer.id }}/change/" class="btn btn-primary btn-sm active" role="button"
                aria-pressed="true" target="_blank">Answer</a>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
+            {{ answer.customuser }}
+        </div>
+        <div class="col-md-3">
             <pre>{{ answer.answer | linebreaksbr }}</pre>
         </div>
     </div>

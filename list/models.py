@@ -73,6 +73,17 @@ class Category(SortableMixin):
 # TODO:: solution after answering
 # TODO:: admin filter by category
 class Quiz(SortableMixin):
+    default_explanation = """<table border="1" cellpadding="1" cellspacing="1" class="table table-bordered">
+    <tbody>
+        <tr>
+            <td>
+                <p><strong>Block</strong></p>
+            </td>
+        </tr>
+    </tbody>
+</table>
+"""
+
     default_example = """<p>Example 1:</p>
 <table border="1" cellpadding="1" cellspacing="1" class="table table-bordered">
 	<tbody>
@@ -101,7 +112,7 @@ class Quiz(SortableMixin):
     order = models.PositiveIntegerField(default=0, editable=False, db_index=True)
     title = models.CharField(max_length=100, unique=True)
     video = models.CharField(max_length=100, default=None, blank=True, null=True)
-    explanation = RichTextField(default=None, blank=True, null=True)
+    explanation = RichTextField(default=default_explanation, blank=True, null=True)
     question = RichTextField(default=None, blank=True, null=True)
     example = RichTextField(default=default_example, blank=True, null=True)
     hint = models.TextField(default=None, blank=True, null=True)
@@ -166,7 +177,7 @@ class Answer(models.Model):
     answer = models.TextField(default=None, blank=True, null=True)
     customuser = models.ForeignKey(CustomUser, on_delete=models.CASCADE, blank=True, null=True)
     right = models.IntegerField(default=Right.NOT_TRY.value)
-    testcase = models.TextField(default=None, blank=True, null=True)
+    input = models.TextField(default=None, blank=True, null=True)
     stdout = models.TextField(default=None, blank=True, null=True)
     expected_stdout = models.TextField(default=None, blank=True, null=True)
     output = models.TextField(default=None, blank=True, null=True)

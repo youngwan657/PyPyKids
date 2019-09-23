@@ -1,0 +1,97 @@
+{% extends 'list/base.html' %}
+{% block content %}
+{% load static %}
+
+
+<section class="bg-primary-3 has-divider text-light o-hidden">
+    <div class="container layer-2">
+        <div class="row justify-content-center pt-lg-5">
+            <div class="col-xl-5 col-lg-6 col-md-7 text-center text-lg-left mb-5 mb-lg-0">
+                <h1 class="display-3">Learn how to code python</h1>
+                <div class="my-4">
+                    <p class="lead">Here is the service to teach you how to write python code.</p>
+                </div>
+                <div class="d-flex justify-content-center justify-content-lg-start">
+                    <div class="d-flex mr-2">
+                        <img class="icon bg-warning" src="{% static 'assets/img/icons/interface/star.svg' %}" alt="star interface icon"
+                             data-inject-svg/>
+                        <img class="icon bg-warning" src="{% static 'assets/img/icons/interface/star.svg' %}" alt="star interface icon"
+                             data-inject-svg/>
+                        <img class="icon bg-warning" src="{% static 'assets/img/icons/interface/star.svg' %}" alt="star interface icon"
+                             data-inject-svg/>
+                        <img class="icon bg-warning" src="{% static 'assets/img/icons/interface/star.svg' %}" alt="star interface icon"
+                             data-inject-svg/>
+                        <img class="icon bg-warning" src="{% static 'assets/img/icons/interface/star.svg' %}" alt="star interface icon"
+                             data-inject-svg/>
+                    </div>
+                    <span>(Average score: 4.9/5)</span>
+                </div>
+            </div>
+            <div class="col">
+                <div class="row justify-content-center">
+                    <div class="col-xl-8 col-md-10">
+                        <form>
+                            <div class="form-group">
+                                <label for="course-name-1">Your Name</label>
+                                <input name="course-name" id="course-name-1" type="text"
+                                       class="form-control form-control-lg" placeholder="Type your name">
+                            </div>
+                            <div class="form-group">
+                                <label for="course-email-1">Email Address</label>
+                                <input name="course-email" id="course-email-1" type="email"
+                                       class="form-control form-control-lg" placeholder="you@yoursite.com">
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="form-group mb-1">
+                                        <label>Skill Level:</label>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-group rounded bg-white p-2 border">
+                                        <div class="custom-control custom-radio">
+                                            <input type="radio" id="course-radio-beginner-1" name="course-radio-1"
+                                                   class="custom-control-input">
+                                            <label class="custom-control-label"
+                                                   for="course-radio-beginner-1">Beginner</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <div class="form-group rounded bg-white p-2 border">
+                                        <div class="custom-control custom-radio">
+                                            <input type="radio" id="course-radio-advanced-1" name="course-radio-1"
+                                                   class="custom-control-input">
+                                            <label class="custom-control-label"
+                                                   for="course-radio-advanced-1">Advanced</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group text-center">
+                                <button class="btn btn-lg btn-primary btn-block mb-2" type="submit">Claim your free
+                                    first lesson
+                                </button>
+                                <small>You’ll recieve your first lesson via email in less than a minute.</small>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="decoration-wrapper d-none d-sm-block">
+        <div data-jarallax-element="0 50">
+            <div class="decoration top middle-y scale-5">
+                <img class="bg-primary-2" src="{% static 'assets/img/decorations/deco-blob-9.svg' %}" alt="deco-blob-9 decoration"
+                     data-inject-svg/>
+            </div>
+        </div>
+    </div>
+    <div class="divider">
+        <img class="bg-primary-alt" src="{% static 'assets/img/dividers/divider-2.svg' %}" alt="divider graphic" data-inject-svg/>
+    </div>
+</section>
+
+{% endblock %}
+

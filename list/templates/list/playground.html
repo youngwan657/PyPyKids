@@ -91,6 +91,8 @@ $(function(){
             success: function (data, textStatus) {
                 response = JSON.parse(data);
                 $('#output').html(response['output'].replace(/\n/g, "<br\>"));
+                $('#output').hide();
+                $('#output').fadeIn("slow");
             },
             error: function(xhr, status, e) {
             }

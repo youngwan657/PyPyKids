@@ -177,7 +177,7 @@ class Answer(models.Model):
         if self.quiz == None:
             return str(self.customuser) + " " + str(self.date)
 
-        return str(self.quiz.order) + ". " + str(self.customuser) + " " + str(self.date.strftime("%Y-%m-%d")) + " right:" + str(
+        return str(self.quiz.order) + ". (" + str(self.quiz.id) + ")" + str(self.customuser) + " " + str(self.date.strftime("%Y-%m-%d")) + " right:" + str(
             self.right)
 
 class QuizScore(models.Model):

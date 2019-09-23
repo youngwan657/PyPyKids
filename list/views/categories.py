@@ -74,7 +74,7 @@ def categories(request):
             category.total_quiz = quizzes.count()
             category.unsolved_quiz = quizzes.count()
             for quiz in quizzes:
-                if len(answers.filter(quiz__order=quiz.order)) == Right.RIGHT.value:
+                if len(answers.filter(quiz__order=quiz.order)) > 0:
                     category.unsolved_quiz -= 1
             category.solved_quiz = category.total_quiz - category.unsolved_quiz
 

@@ -205,4 +205,5 @@ class QuizScore(models.Model):
 # TODO:: remove file name from error log
 # TODO:: checking no testcase in manage.html
 # TODO:: sign in, sign up - modal
-# TODO:: reset code
+# TODO:: reset code to show the default function definition
+# TODO:: separate the badge and graph for quiz and multiple choice.

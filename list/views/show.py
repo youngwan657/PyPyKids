@@ -105,7 +105,7 @@ def check_answer(username, testcases, answer):
         stdout = ""
         try:
             outs, errs, stdout = "", "", ""
-            if testcase.expected_stdout is not None:
+            if testcase.expected_stdout:
                 process = subprocess.Popen(
                     ['python', '%s/checks/solutions/%s.py' % (folder, username)] + testcase.input.split("\n"),
                     stdout=subprocess.PIPE,
@@ -131,7 +131,7 @@ def check_answer(username, testcases, answer):
         testcase.expected_output = testcase.expected_output.replace("\r\n", "\n")
 
         # Check stdout
-        if testcase.expected_stdout is not None:
+        if testcase.expected_stdout:
             testcase.expected_stdout = testcase.expected_stdout.replace("\r\n", "\n")
             if str(stdout).strip() == testcase.expected_stdout.strip():
                 answer.right = Right.RIGHT.value
@@ -151,7 +151,7 @@ def check_answer(username, testcases, answer):
             return
 
         # Check output
-        if testcase.expected_output is not None:
+        if testcase.expected_output:
             if str(output) == testcase.expected_output.strip():
                 answer.right = Right.RIGHT.value
                 answer.input = ""

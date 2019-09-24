@@ -7,3 +7,4 @@ from .playground import *
 from .show import *
 from .sign import *
 from .manage import *
+from .search import *

@@ -40,15 +40,15 @@
             </a>
 
             <div class="d-flex align-items-center order-lg-3">
-                <div class="input-group">
-                    <div class="input-group-prepend">
-                            <span class="input-group-text" id="basic-addon-1">
-                                <img class="icon" src="{% static 'assets/img/icons/theme/general/search.svg' %}"
-                                     alt="search icon" data-inject-svg/>
-                            </span>
-                    </div>
-                    <input type="text" name="country" id="autocomplete"/>
-                </div>
+                <!--<div class="input-group">-->
+                    <!--<div class="input-group-prepend">-->
+                            <!--<span class="input-group-text" id="basic-addon-1">-->
+                                <!--<img class="icon" src="{% static 'assets/img/icons/theme/general/search.svg' %}"-->
+                                     <!--alt="search icon" data-inject-svg/>-->
+                            <!--</span>-->
+                    <!--</div>-->
+                    <!--<input type="text" name="country" id="autocomplete"/>-->
+                <!--</div>-->
                 &nbsp
                 {% if username %}
                 <div class="dropdown">
@@ -118,8 +118,9 @@
                     </div>
                 </div>
                 {% else %}
-                <div class="col-xl-2 col-lg-2">
+                <div class="collapse navbar-collapse justify-content-end">
                     <a href="/signin" class="btn ml-lg-3">Sign&nbspin</a>
+                    <a href="/signup" class="btn btn-primary ml-lg-3">Sign up</a>
                 </div>
                 {% endif %}
 

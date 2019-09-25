@@ -7,10 +7,11 @@ def welcome(request):
     context = {}
     username = get_profile(request, context)
 
-    if username != "":
-        return categories(request)
+    # if username == "":
+    #     return render(request, 'list/welcome.html', context)
 
-    return render(request, 'list/welcome.html', context)
+    return categories(request)
+
 
 
 def categories(request):

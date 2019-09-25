@@ -37,26 +37,21 @@
                 {% if quiz.quiz_type.name == "Code" %}
                 <table id="wrong-table" class="table" {% if answer is None or answer.right == 1 %} style="display: none;" {% endif %}>
                     <tbody>
-                    {% if answer.input %}
                     <tr>
                         <th scope="row" style="width: 20%">Input:</th>
                         <td id="input">{{ answer.input|linebreaksbr }}</td>
                     </tr>
-                    {% endif %}
-
-                    {% if answer.stdout %}
                     <tr>
                         <th scope="row">stdout:</th>
-                        <td id="stdout">{{ answer.stdout|linebreaksbr }}</span></td>
+                        <td id="stdout">{{ answer.stdout|linebreaksbr }}</td>
                     </tr>
-                    {% endif %}
                     <tr>
                         <th scope="row">Output:</th>
-                        <td id="output">{{ answer.output|linebreaksbr }}</span></td>
+                        <td id="output">{{ answer.output|linebreaksbr }}</td>
                     </tr>
                     <tr>
                         <th scope="row">Expected:</th>
-                        <td id="expected_output">{{ answer.expected_output }}</span></td>
+                        <td id="expected_output">{{ answer.expected_output }}</td>
                     </tr>
                     </tbody>
                 </table>

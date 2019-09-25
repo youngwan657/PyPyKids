@@ -4,17 +4,23 @@ from list.views.common import *
 
 
 def manage(request):
-    quizzes = Quiz.objects.all()
-    for quiz in quizzes:
-        quiz.set_title_url()
     testcases = Testcase.objects.all()
     answers = Answer.objects.all()
 
+    quizzes = Quiz.objects.all()
+    error_quizzes = []
+    for quiz in quizzes:
+        quiz.set_title_url()
+        if testcases.filter(quiz__id=quiz.id).exists() == False:
+            error_quizzes.append(quiz)
+
     context = {
+        'error_quizzes': error_quizzes,
         'quizzes': quizzes,
         'testcases': testcases,
         'answers': answers,
     }
+
     return render(request, 'list/manage.html', context)
 
 

@@ -3,6 +3,18 @@
 
 {% block content %}
 
+<div class="container">
+    <h4>Error testcase</h4>
+    <h5>Missed testcases</h5>
+    {% for quiz in error_quizzes %}
+    {% include "list/quiz.html" %}
+    <a href="/admin/list/quiz/{{ quiz.id }}/change/" class="btn btn-primary btn-sm active" role="button"
+       aria-pressed="true"
+       target="_blank">Quiz</a>
+    {% endfor %}
+</div>
+<hr/>
+
 {% for quiz in quizzes %}
 {% include "list/quiz.html" %}
 {% if quiz.quiz_type.name == "MultipleChoice" %}
@@ -26,7 +38,7 @@
             Modify
         </div>
         <div class="col-md-3">
-            Input
+            Input (Right)
         </div>
         <div class="col-md-3">
             Output

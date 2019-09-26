@@ -316,11 +316,12 @@ $(function(){
 
                     i = 0
                     response['new_badges'].forEach(function(element) {
+                        setTimeout(function() {
+                            $('#badge-icon').html(element['icon'])
+                            $('#badge-desc').html(element['desc'])
+                            $('#badge-modal').modal('show');
+                        }, 3000 * i + 1000);
                         i = i + 1
-                        $('#badge-icon').html(element['icon'])
-                        $('#badge-desc').html(element['desc'])
-                        setTimeout(function() { $('#badge-modal').modal('show');}, 3000 * i);
-                        setTimeout(function() { $('#badge-modal').modal('hide');}, 3000 * i + 2000);
                     });
                 } else if (response['right'] == -1 || response['right'] == -2) {
                     $('#right-alert').hide();
@@ -361,11 +362,12 @@ $(function(){
 
                     i = 0
                     response['new_badges'].forEach(function(element) {
-                        i = i + 1;
-                        $('#badge-icon').html(element['icon']);
-                        $('#badge-desc').html(element['desc']);
-                        setTimeout(function() { $('#badge-modal').modal('show');}, 3000 * i);
-                        setTimeout(function() { $('#badge-modal').modal('hide');}, 3000 * i + 2000);
+                        setTimeout(function() {
+                            $('#badge-icon').html(element['icon'])
+                            $('#badge-desc').html(element['desc'])
+                            $('#badge-modal').modal('show');
+                        }, 3000 * i + 1000);
+                        i = i + 1
                     });
                 } else if (response['right'] == -1 || response['right'] == -2) {
                     $('#right-alert').hide();
@@ -401,11 +403,12 @@ $(function(){
 
                     i = 0
                     response['new_badges'].forEach(function(element) {
-                        i = i + 1;
-                        $('#badge-icon').html(element['icon']);
-                        $('#badge-desc').html(element['desc']);
-                        setTimeout(function() { $('#badge-modal').modal('show');}, 3000 * i);
-                        setTimeout(function() { $('#badge-modal').modal('hide');}, 3000 * i + 2000);
+                        setTimeout(function() {
+                            $('#badge-icon').html(element['icon'])
+                            $('#badge-desc').html(element['desc'])
+                            $('#badge-modal').modal('show');
+                        }, 3000 * i + 1000);
+                        i = i + 1
                     });
                 } else if (response['right'] == -1 || response['right'] == -2) {
                     $('#right-alert').hide();

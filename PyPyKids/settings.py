@@ -78,7 +78,7 @@ WSGI_APPLICATION = 'PyPyKids.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'HOST': 'pypykids-254102:us-west2:pypykids',
+        'HOST': 'pypykids-254208:us-west2:pypykids',
         'NAME': 'pypykids',
         'USER': 'root',
         'PASSWORD': '',

@@ -27,7 +27,7 @@ SECRET_KEY = 'qx$46ujui(eo%39%ha^iq=efb$^crzu6x02a$e_ej0xlyppq)l'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['dayeon.com', 'PyPyKids.com']
+ALLOWED_HOSTS = ['pypykids.com', 'pypykids-254208.appspot.com']
 
 
 # Application definition

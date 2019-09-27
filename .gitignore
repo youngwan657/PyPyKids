@@ -1,7 +1,6 @@
 .idea
 *.pyc
-resource
-answers/*
+resource/
 answers/
 checks/
 playgrounds/

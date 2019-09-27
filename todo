@@ -7,3 +7,7 @@ pip install django-admin-sortable
 # TODO:: Super-Junior instead of space
 # TODO:: Run button
 # TODO:: Refer Kotlin page for English sentence
+
+
+# Re-run mysql
+- launchctl load -w ~/Library/LaunchAgents/homebrew.mxcl.mysql.plist

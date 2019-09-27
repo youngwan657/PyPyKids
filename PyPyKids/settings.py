@@ -78,10 +78,10 @@ WSGI_APPLICATION = 'PyPyKids.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
+        'HOST': 'pypykids-254102:us-west2:pypykids',
         'NAME': 'pypykids',
         'USER': 'root',
         'PASSWORD': '',
-        'HOST': '127.0.0.1',
         'PORT': '3306',
     }
 }
@@ -125,4 +125,4 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
-# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')

@@ -1,0 +1,7 @@
+Django==2.2.3
+PyMySQL==0.9.3
+django-admin-sortable==2.1.18
+django-ckeditor==5.7.1
+django-markdownx==2.0.28
+mysqlclient==1.4.4
+

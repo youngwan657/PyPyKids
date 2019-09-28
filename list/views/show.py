@@ -88,15 +88,15 @@ def quiz_score(request, quiz_order, score):
 
 
 def check_answer(username, testcases, answer):
-    folder = "./list/users"
-    f = open("%s/checks/solutions/%s.py" % (folder, username), "w+")
+    folder = "/tmp"
+    f = open("%s/solution_%s.py" % (folder, username), "w+")
     f.write(answer.answer)
     f.close()
 
-    if os.path.exists("%s/answers/%s" % (folder, username)):
-        os.remove("%s/answers/%s" % (folder, username))
+    if os.path.exists("%s/answer_%s" % (folder, username)):
+        os.remove("%s/answer_%s" % (folder, username))
 
-    f = open("%s/checks/%s.py" % (folder, username), "w+")
+    f = open("%s/check_%s.py" % (folder, username), "w+")
     f.write(create_checking_code(username))
     f.close()
 
@@ -107,21 +107,21 @@ def check_answer(username, testcases, answer):
             outs, errs, stdout = "", "", ""
             if testcase.expected_stdout:
                 process = subprocess.Popen(
-                    ['python', '%s/checks/solutions/%s.py' % (folder, username)] + testcase.input.split("\n"),
+                    ['python', '%s/solution_%s.py' % (folder, username)] + testcase.input.split("\n"),
                     stdout=subprocess.PIPE,
                     stderr=subprocess.STDOUT)
                 outs, errs = process.communicate(timeout=1)
                 stdout = outs.decode("utf-8")
             else:
                 process = subprocess.Popen(
-                    ['python', '%s/checks/%s.py' % (folder, username)] + testcase.input.split("\n"),
+                    ['python', '%s/check_%s.py' % (folder, username)] + testcase.input.split("\n"),
                     stdout=subprocess.PIPE,
                     stderr=subprocess.STDOUT)
                 outs, errs = process.communicate(timeout=1)
                 stdout = outs.decode("utf-8")
 
-            if os.path.exists("%s/answers/%s" % (folder, username)):
-                f = open("%s/answers/%s" % (folder, username), "r")
+            if os.path.exists("%s/answer_%s" % (folder, username)):
+                f = open("%s/answer_%s" % (folder, username), "r")
                 output = f.read().strip()
                 f.close()
         except subprocess.TimeoutExpired:
@@ -174,9 +174,13 @@ def check_answer(username, testcases, answer):
 def create_checking_code(username):
     return """
 import sys, ast, os
-from node import Node
 
-from solutions.%s import solve
+from solution_%s import solve
+
+class Node:
+    def __init__(self, val):
+        self.val = val
+        self.next = None
 
 def main(argv):
     if len(argv) == 1:
@@ -216,7 +220,7 @@ def next(nodes, i):
 
 if __name__ == "__main__":
     answer = main(sys.argv[1:])
-    f = open("./list/users/answers/%s", "w+")
+    f = open("/tmp/answer_%s", "w+")
     if type(answer) == tuple:
         for line in answer:
             f.write(str(line) + "\\n")

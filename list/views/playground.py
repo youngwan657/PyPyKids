@@ -8,7 +8,7 @@ from list.views.common import *
 def playground(request):
     context = {}
     username = get_profile(request, context)
-    filename = "./list/users/playgrounds/" + username + ".py"
+    filename = "/tmp/playground_" + username + ".py"
     if request.method == "POST":
         f = open(filename, "w+")
         code = request.POST['answer']

@@ -30,7 +30,6 @@
 </div>
 
 
-
 <div class="navbar-container">
 
     <nav class="navbar navbar-expand-lg bg-white navbar-light" data-sticky="top">
@@ -38,6 +37,14 @@
             <a class="navbar-brand fade-page" href="/">
                 <img src="{% static 'list/img/logo_title.png' %}" alt="PyPyKids">
             </a>
+
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <img class="icon navbar-toggler-open" src="{% static 'assets/img/icons/interface/menu.svg' %}"
+                     alt="menu interface icon" data-inject-svg/>
+                <img class="icon navbar-toggler-close" src="{% static 'assets/img/icons/interface/cross.svg' %}"
+                     alt="cross interface icon" data-inject-svg/>
+            </button>
 
             <div class="d-flex align-items-center order-lg-3">
                 <!--<div class="input-group">-->
@@ -118,23 +125,14 @@
                     </div>
                 </div>
                 {% else %}
-                <div class="collapse navbar-collapse justify-content-end">
-                    <a href="/signin" class="btn ml-lg-3">Sign&nbspin</a>
-                    <a href="/signup" class="btn btn-primary ml-lg-3">Sign up</a>
-                </div>
+                <a href="/signin" class="btn ml-lg-3">Sign&nbspin</a>
+                <a href="/signup" class="btn btn-primary ml-lg-3">Sign up</a>
                 {% endif %}
 
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <img class="icon navbar-toggler-open" src="{% static 'assets/img/icons/interface/menu.svg' %}"
-                         alt="menu interface icon" data-inject-svg/>
-                    <img class="icon navbar-toggler-close" src="{% static 'assets/img/icons/interface/cross.svg' %}"
-                         alt="cross interface icon" data-inject-svg/>
-                </button>
             </div>
 
 
-            <div class="collapse navbar-collapse justify-content-between order-lg-2">
+            <div class="collapse navbar-collapse justify-content-between">
                 <div class="py-2 py-lg-0">
                     <ul class="navbar-nav">
                         <li class="nav-item">

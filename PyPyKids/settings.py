@@ -27,7 +27,7 @@ SECRET_KEY = 'qx$46ujui(eo%39%ha^iq=efb$^crzu6x02a$e_ej0xlyppq)l'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['pypykids.com', 'pypykids-254208.appspot.com']
+ALLOWED_HOSTS = ['pypykids.com', 'pypykids-254208.appspot.com', 'dayeon.com']
 
 
 # Application definition
@@ -75,16 +75,35 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'PyPyKids.wsgi.application'
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'HOST': 'pypykids-254208:us-west2:pypykids',
-        'NAME': 'pypykids',
-        'USER': 'root',
-        'PASSWORD': '',
-        'PORT': '3306',
+if os.getenv('GAE_APPLICATION', None):
+    # Running on production App Engine, so connect to Google Cloud SQL using
+    # the unix socket at /cloudsql/<your-cloudsql-connection string>
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'HOST': '/cloudsql/pypykids-254208:us-west2:pypykids-01',
+            'NAME': 'pypykids',
+            'USER': 'root',
+            'PASSWORD': '',
+            'PORT': '3306',
+        }
     }
-}
+else:
+    # Running locally so connect to either a local MySQL instance or connect
+    # to Cloud SQL via the proxy.  To start the proxy via command line:
+    #    $ cloud_sql_proxy -instances=[INSTANCE_CONNECTION_NAME]=tcp:3306
+    # See https://cloud.google.com/sql/docs/mysql-connect-proxy
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'HOST': '127.0.0.1',
+            'NAME': 'pypykids',
+            'USER': 'root',
+            'PASSWORD': '',
+            'PORT': '3306',
+        }
+    }
+# [END db_setup]
 
 
 

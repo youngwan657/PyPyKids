@@ -33,7 +33,7 @@
         <textarea name="answer" style="display: none;">{{ code }}</textarea>
 
         {% if username %}
-        <button class="btn btn-primary btn-block" type="submit">Run</button>
+        <button id="submit" class="btn btn-primary btn-block" type="submit">Submit</button>
         {% endif %}
     </form>
     {% if username == "" %}
@@ -60,6 +60,23 @@
     <br/>
 </div>
 
+<!-- Modal -->
+<div class="modal fade" id="output-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog text-light" role="document">
+        <div class="modal-content bg-success border-0">
+            <div class="modal-body">
+                <div class="m-3 d-flex align-items-center">
+                    <img src="{% static 'list/img/logo.png' %}" alt="Avatar" class="avatar avatar-lg">
+                    <div class="ml-3">
+                        <h5 class="mb-1"><b>Output</b></h5>
+                        <span id="output-in-modal"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
 // Code editor
 var editor = ace.edit("editor");
@@ -83,6 +100,7 @@ $(function(){
     // Check answer for Playground
     $('#playground').submit(function(event) {
         event.preventDefault();
+        $('#submit').html('<div class="spinner-border" role="status"></div>')
         $.ajax({
             type: 'POST',
             url: '/playground/',
@@ -90,6 +108,9 @@ $(function(){
             data: $('#playground').serialize(),
             success: function (data, textStatus) {
                 response = JSON.parse(data);
+                $('#submit').html('Submit')
+                $('#output-in-modal').html(response['output'].replace(/\n/g, "<br\>"))
+                $('#output-modal').modal('show')
                 $('#output').html(response['output'].replace(/\n/g, "<br\>"));
                 $('#output').hide();
                 $('#output').fadeIn("slow");

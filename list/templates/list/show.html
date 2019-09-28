@@ -66,7 +66,7 @@
                     {%csrf_token %}
                     <textarea name="answer" style="display: none;">{{ user_answer }}</textarea>
                     {% if username %}
-                    <button class="btn btn-primary btn-block" type="submit">Submit</button>
+                    <button id="submit" class="btn btn-primary btn-block" type="submit">Submit</button>
                     {% endif %}
                 </form>
                 {% elif quiz.quiz_type.name == "Answer" %}
@@ -82,7 +82,7 @@
 
                     <!-- Send button -->
                     {% if username %}
-                    <button class="btn btn-primary btn-block" type="submit">Submit</button>
+                    <button id="submit" class="btn btn-primary btn-block" type="submit">Submit</button>
                     {% endif %}
                 </form>
                 {% elif quiz.quiz_type.name == "MultipleChoice" %}
@@ -138,7 +138,7 @@
                     {% endif %}
                     <br/>
                     {% if username %}
-                    <button class="btn btn-primary btn-block" type="submit">Submit</button>
+                    <button id="submit" class="btn btn-primary btn-block" type="submit">Submit</button>
                     {% endif %}
                 </form>
                 {% endif %}
@@ -297,6 +297,7 @@ $(function(){
     // Check answer for Code
     $('#editor_code').submit(function(event) {
         event.preventDefault();
+        $('#submit').html('<div class="spinner-border" role="status"></div>')
         $.ajax({
             type: 'POST',
             url: '/answer/{{ quiz.order }}/',
@@ -304,13 +305,13 @@ $(function(){
             data: $('#editor_code').serialize(),
             success: function (data, textStatus) {
                 response = JSON.parse(data)
+                $('#submit').html('Submit')
                 if (response['right'] == 1) {
                     $('#right-alert').slideDown("slow");
                     $('#wrong-alert').hide();
                     $('#info-alert').hide();
                     $('#wrong-table').hide();
                     $('#quiz-like').show(1000);
-                    $('#animated-accepted').addClass('animated zoomIn');
                     $('#success-modal').modal('show')
                     setTimeout(function() { $('#success-modal').modal('hide');}, 3000);
 
@@ -332,7 +333,6 @@ $(function(){
                     $('#stdout').html(response['stdout'].replace(/\n/g, "<br\>"));
                     $('#output').html(response['output'].replace(/\n/g, "<br\>"));
                     $('#expected_output').html(response['expected_output'].replace(/\n/g, "<br\>"));
-                    $('#animated-wrong').addClass('animated zoomIn');
                     $('#wrong-modal').modal('show');
                     setTimeout(function() { $('#wrong-modal').modal('hide');}, 2000);
                 }
@@ -344,6 +344,7 @@ $(function(){
 
     $('#editor_answer').submit(function(event) {
         event.preventDefault();
+        $('#submit').html('<div class="spinner-border" role="status"></div>')
         $.ajax({
             type: 'POST',
             url: '/answer/{{ quiz.order }}/',
@@ -351,12 +352,12 @@ $(function(){
             data: $('#editor_answer').serialize(),
             success: function (data, textStatus) {
                 response = JSON.parse(data);
+                $('#submit').html('Submit')
                 if (response['right'] == 1) {
                     $('#right-alert').slideDown("slow");
                     $('#wrong-alert').hide();
                     $('#info-alert').hide();
                     $('#quiz-like').show(1000);
-                    $('#animated-accepted').addClass('animated zoomIn');
                     $('#success-modal').modal('show');
                     setTimeout(function() { $('#success-modal').modal('hide');}, 3000);
 
@@ -373,7 +374,6 @@ $(function(){
                     $('#right-alert').hide();
                     $('#wrong-alert').slideDown("slow");
                     $('#info-alert').hide();
-                    $('#animated-wrong').addClass('animated zoomIn');
                     $('#wrong-modal').modal('show');
                     setTimeout(function() { $('#wrong-modal').modal('hide');}, 2000);
                 }
@@ -385,6 +385,7 @@ $(function(){
 
     $('#editor_multiple').submit(function(event) {
         event.preventDefault();
+        $('#submit').html('<div class="spinner-border" role="status"></div>')
         $.ajax({
             type: 'POST',
             url: '/answer/{{ quiz.order }}/',
@@ -392,12 +393,12 @@ $(function(){
             data: $('#editor_multiple').serialize(),
             success: function (data, textStatus) {
                 response = JSON.parse(data);
+                $('#submit').html('Submit')
                 if (response['right'] == 1) {
                     $('#right-alert').slideDown("slow");
                     $('#wrong-alert').hide();
                     $('#info-alert').hide();
                     $('#quiz-like').show(1000);
-                    $('#animated-accepted').addClass('animated zoomIn');
                     $('#success-modal').modal('show');
                     setTimeout(function() { $('#success-modal').modal('hide');}, 3000);
 
@@ -414,7 +415,6 @@ $(function(){
                     $('#right-alert').hide();
                     $('#wrong-alert').slideDown("slow");
                     $('#info-alert').hide();
-                    $('#animated-wrong').addClass('animated zoomIn');
                     $('#wrong-modal').modal('show');
                     setTimeout(function() { $('#wrong-modal').modal('hide');}, 2000);
                 }

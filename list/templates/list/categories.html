@@ -3,6 +3,7 @@
 {% load static %}
 
 
+{% if username %}
 <section class="bg-dark text-light header-inner p-0 jarallax position-relative" data-jarallax data-speed="0.2"
          data-overlay>
     <img src="{% static 'assets/img/inner-1.jpg' %}" alt="Image" class="jarallax-img opacity-40">
@@ -19,7 +20,6 @@
     </div>
 </section>
 
-{% if username %}
 <!-- Badge -->
 <section>
     <div class="container">
@@ -113,6 +113,20 @@
 
     </script>
 </div>
+{% else %}
+<section class="bg-primary text-light o-hidden">
+    <div class="container">
+        <div class="row align-items-center min-vh-50">
+            <div class="col-lg-6 text-center text-lg-left mb-4 mb-lg-0">
+                <h3 class="display-3">Welcome to Python World</h3>
+                <a href="/signup" class="btn btn-lg btn-primary-2">Create account > </a>
+            </div>
+            <div class="col-lg-6 text-center" data-aos="fade-left">
+                <img src="{% static 'assets/img/saas-sketch-1.svg' %}" alt="Image" class="min-vw-60">
+            </div>
+        </div>
+    </div>
+</section>
 {% endif %}
 
 <!-- Today's Quiz -->

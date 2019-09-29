@@ -41,8 +41,11 @@ def answer(request, quiz_order):
     answer.customuser = CustomUser.objects.get(name=username)
     answer.quiz = quiz
     answer.answer = request.POST['answer']
+
     if answer.right not in [Right.RIGHT.value, Right.WAS_RIGHT.value]:
         answer.date = datetime.now()
+
+    answer.modified_date = datetime.now()
 
     if quiz.quiz_type.name == "Code":
         check_answer(get_username(request), testcases, answer)
@@ -231,5 +234,4 @@ if __name__ == "__main__":
 
 # TODO:: unlock the quiz
 # TODO:: forget password
-# TODO:: today's quiz showing from easiest one.
 # TODO:: daily login for coin

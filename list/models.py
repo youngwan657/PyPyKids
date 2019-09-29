@@ -183,6 +183,7 @@ class Answer(models.Model):
     output = models.TextField(default=None, blank=True, null=True)
     expected_output = models.TextField(default=None, blank=True, null=True)
     date = models.DateField(default=timezone.now)
+    modified_date = models.DateField(default=timezone.now)
 
     def __str__(self):
         if self.quiz == None:
@@ -203,7 +204,6 @@ class QuizScore(models.Model):
         return str(self.customuser) + " " + str(self.quiz) + " " + str(self.score)
 
 # TODO:: remove file name from error log
-# TODO:: checking no testcase in manage.html
 # TODO:: sign in, sign up - modal
 # TODO:: reset code to show the default function definition
 # TODO:: separate the badge and graph for quiz and multiple choice.

@@ -1,1 +1,1 @@
-sudo ../manage.py runserver 80
+sudo ../manage.py runserver 80 --insecure

@@ -7,9 +7,6 @@ def welcome(request):
     context = {}
     username = get_profile(request, context)
 
-    # if username == "":
-    #     return render(request, 'list/welcome.html', context)
-
     return categories(request)
 
 
@@ -58,7 +55,7 @@ def categories(request):
         context['badges'] = Badge.objects.filter(customuser__name=username)
 
     # Today's Question
-    today_quiz = unsolved_quizzes.order_by('?').first()
+    today_quiz = unsolved_quizzes.order_by('order').first()
     context['quiz'] = today_quiz.set_title_url()
     context['difficulty'] = today_quiz.category.difficulty
     context['category'] = today_quiz.category.name

@@ -4,4 +4,5 @@ resource/
 answers/
 checks/
 playgrounds/
+env/
 .DS_Store

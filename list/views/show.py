@@ -51,6 +51,11 @@ def answer(request, quiz_order):
         check_answer(get_username(request), testcases, answer)
     elif quiz.quiz_type.name in ["Answer", "MultipleChoice"]:
         # answer
+        answer.answer = answer.answer.replace(" ", "").strip()
+        if answer.answer[0] == '"' and answer.answer[-1] == '"':
+            answer.answer = answer.answer[1:-1]
+        if answer.answer[0] == "'" and answer.answer[-1] == "'":
+            answer.answer = answer.answer[1:-1]
         if answer.answer.replace(" ", "").strip() == testcases[0].expected_output:
             answer.right = Right.RIGHT.value
             answer.output = ""

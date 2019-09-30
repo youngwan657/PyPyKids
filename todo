@@ -8,6 +8,7 @@ pip install django-admin-sortable
 # TODO:: Run button
 # TODO:: Refer Kotlin page for English sentence
 # TODO:: local mysql
+# TODO:: don't save for non-login user
 
 
 # Re-run mysql

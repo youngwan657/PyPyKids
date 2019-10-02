@@ -23,5 +23,7 @@ def category(request, category):
     context["difficulty"] = quizzes[0].category.difficulty
     context["category"] = category
     context["quizzes"] = quizzes
+    context['page_title'] = category
+    context['page_description'] = quizzes[0].category.desc
     return render(request, 'list/category.html', context)
 

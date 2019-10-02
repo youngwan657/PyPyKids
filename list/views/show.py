@@ -6,6 +6,7 @@ from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404, render
 
 from list.views.common import *
+from django.utils.html import strip_tags
 
 
 def show(request, title):
@@ -29,6 +30,9 @@ def show(request, title):
     context['category'] = quiz.category.name
     context['quiz'] = quiz.set_title_url()
     context['clicked'] = QuizScore.objects.filter(customuser__name=username, quiz__id=quiz.id).exists()
+
+    context['page_title'] = title
+    context['page_description'] = get_description(strip_tags(quiz.explanation.replace("&nbsp;", " ").replace("&quot;", "").replace("&bull;", "").replace("&#39;", "")))
 
     return render(request, 'list/show.html', context)
 

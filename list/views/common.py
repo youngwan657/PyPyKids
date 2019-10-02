@@ -10,6 +10,12 @@ from list.models import *
 MONTH = 31
 
 
+def get_description(desc):
+    description = ""
+    for line in desc.split("\r\n")[:3]:
+        description += line + " "
+    return description.strip()
+
 def get_username(request):
     if request.user.is_authenticated:
         return request.user.username

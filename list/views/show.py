@@ -31,7 +31,7 @@ def show(request, title):
     context['quiz'] = quiz.set_title_url()
     context['clicked'] = QuizScore.objects.filter(customuser__name=username, quiz__id=quiz.id).exists()
 
-    context['page_title'] = title
+    context['page_title'] = title.replace("-", " ")
     context['page_description'] = get_description(strip_tags(quiz.explanation.replace("&nbsp;", " ").replace("&quot;", "").replace("&bull;", "").replace("&#39;", "")))
 
     return render(request, 'list/show.html', context)

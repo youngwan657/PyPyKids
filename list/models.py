@@ -115,7 +115,7 @@ class Quiz(SortableMixin):
     explanation = RichTextField(default=default_explanation, blank=True, null=True)
     question = RichTextField(default=None, blank=True, null=True)
     example = RichTextField(default=default_example, blank=True, null=True)
-    hint = models.TextField(default=None, blank=True, null=True)
+    hint = RichTextField(default=None, blank=True, null=True)
     quiz_type = models.ForeignKey(QuizType, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     visible = models.BooleanField(default=True)

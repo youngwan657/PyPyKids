@@ -40,8 +40,9 @@
                     {% endif %}
                 </p>
                 <br/>
-                <img class="icon" src="{% static 'assets/img/icons/theme/home/bulb-1.svg' %}" alt="decoration"
+                <img class="icon" src="{% static 'assets/img/icons/theme/code/question-circle.svg' %}" alt="decoration"
                      data-inject-svg/> <b>Quiz</b>
+                <hr/>
                 <p>
                     {{ quiz.question|safe }}
                 </p>
@@ -49,4 +50,32 @@
             </article>
         </div>
     </div>
+
+    {% if quiz.hint %}
+    <div class="row justify-content-center">
+        <div class="col-xl-7 col-lg-8 col-md-10">
+            <article class="article">
+                <div class="border-bottom pb-3 mb-3">
+                    <div data-target="#hint" class="accordion-panel-title" data-toggle="collapse" role="button"
+                         aria-expanded="false" aria-controls="hint">
+                        <span class="h6 mb-0">
+                            <img class="icon" src="{% static 'assets/img/icons/theme/home/bulb-1.svg' %}" alt="decoration"
+                             data-inject-svg/>
+                            Hint</span>
+                        <img class="icon" src="{% static 'assets/img/icons/interface/plus.svg' %}"
+                             alt="plus interface icon" data-inject-svg/>
+                    </div>
+                    <div class="collapse" id="hint">
+                        <div class="pt-3">
+                            <p class="mb-0">
+                                {{ quiz.hint|safe }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </div>
+    {% endif %}
 </div>
+

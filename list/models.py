@@ -143,8 +143,7 @@ class Quiz(SortableMixin):
         if self.title != None:
             title = self.title
         return visible + str(self.category.difficulty.id) + "[" + self.category.name + "] " \
-               + str(self.order) + ". " + title + "  " + str(self.date.strftime("%m-%d %H:%M")) + "(" + str(
-            self.id) + ")"
+               + str(self.order) + "(" + str(self.id) + "). " + title + "  " + str(self.date.strftime("%m-%d %H:%M"))
 
     def get_title_url(self):
         return self.title.replace(" ", "-")
@@ -161,7 +160,8 @@ class Testcase(models.Model):
     expected_stdout = models.TextField(default=None, blank=True, null=True)
 
     def __str__(self):
-        return str(self.quiz.order) + ". (" + str(self.quiz.id) + ") " + self.quiz.title + " - " + self.input + " " + self.expected_output
+        return str(self.quiz.order) + "(" + str(
+            self.quiz.id) + "). " + self.quiz.title + " - " + self.input + " " + self.expected_output
 
 
 class CustomUser(models.Model):
@@ -189,8 +189,10 @@ class Answer(models.Model):
         if self.quiz == None:
             return str(self.customuser) + " " + str(self.date)
 
-        return str(self.quiz.order) + ". (" + str(self.quiz.id) + ")" + str(self.customuser) + " " + str(self.date.strftime("%Y-%m-%d")) + " right:" + str(
+        return str(self.quiz.order) + "(" + str(self.quiz.id) + "). " + str(self.customuser) + " " + str(
+            self.date.strftime("%Y-%m-%d")) + " right:" + str(
             self.right)
+
 
 class QuizScore(models.Model):
     customuser = models.ForeignKey(CustomUser, on_delete=models.CASCADE)

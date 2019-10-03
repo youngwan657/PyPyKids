@@ -161,7 +161,7 @@ class Testcase(models.Model):
     expected_stdout = models.TextField(default=None, blank=True, null=True)
 
     def __str__(self):
-        return str(self.quiz.order) + ". " + self.quiz.title + " - " + self.input + " " + self.expected_output
+        return str(self.quiz.order) + ". (" + str(self.quiz.id) + ") " + self.quiz.title + " - " + self.input + " " + self.expected_output
 
 
 class CustomUser(models.Model):

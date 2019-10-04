@@ -3,12 +3,9 @@ from list.views.common import *
 from django.db.models import Q, Sum
 
 
+# TODO:: Initial page for non-login user?
 def welcome(request):
-    context = {}
-    username = get_profile(request, context)
-
     return categories(request)
-
 
 
 def categories(request):

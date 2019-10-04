@@ -167,7 +167,7 @@ class Testcase(models.Model):
 class CustomUser(models.Model):
     name = models.CharField(max_length=30, db_index=True)
     badges = models.ManyToManyField(Badge)
-    point = models.IntegerField(default=100)
+    point = models.IntegerField(default=10)
 
     def __str__(self):
         return str(self.name)

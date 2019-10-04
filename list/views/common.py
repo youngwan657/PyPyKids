@@ -25,6 +25,7 @@ def get_profile(request, context):
     username = get_username(request)
     if username != "":
         context['username'] = username
+        context['profile_point'] = CustomUser.objects.get(name=username).point
         context['profile_quiz_count'] = get_quiz_count(username)
         context['profile_badge_count'] = get_badge_count(username)
 

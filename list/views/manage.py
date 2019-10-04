@@ -27,7 +27,6 @@ def manage(request):
 
 # TODO:: Answer history
 
-# TODO:: point or score
 # TODO:: modified date for answer
 # TODO:: like for answer
 # TODO:: comment for answer

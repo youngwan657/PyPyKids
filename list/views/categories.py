@@ -12,6 +12,21 @@ def categories(request):
     context = {}
     username = get_profile(request, context)
 
+    if username != "":
+        user_point, created = UserPoint.objects.get_or_create(customuser__name=username, date=date.today(),
+                                                               pointtype__name="DailyCheckIn")
+        if created:
+            customuser = CustomUser.objects.get(name=username)
+            pointtype = PointType.objects.get(name="DailyCheckIn")
+            user_point.customuser = customuser
+            user_point.pointtype = pointtype
+            user_point.save()
+
+            customuser.point += pointtype.point
+            context['profile_point'] += pointtype.point
+            customuser.save()
+            context['daily_check_in'] = True
+
     quizzes = Quiz.objects.order_by('order').filter(visible=True)
     unsolved_quizzes = quizzes
     difficulties = Difficulty.objects.order_by('id')

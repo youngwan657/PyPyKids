@@ -165,8 +165,9 @@ class Testcase(models.Model):
 
 
 class CustomUser(models.Model):
-    name = models.CharField(max_length=30)
+    name = models.CharField(max_length=30, db_index=True)
     badges = models.ManyToManyField(Badge)
+    point = models.IntegerField(default=100)
 
     def __str__(self):
         return str(self.name)
@@ -200,10 +201,35 @@ class QuizScore(models.Model):
     score = models.IntegerField(default=0)
 
     class Meta:
-        unique_together = ('customuser', 'quiz',)
+        unique_together = [
+            ('customuser', 'quiz',)
+        ]
 
     def __str__(self):
         return str(self.customuser) + " " + str(self.quiz) + " " + str(self.score)
+
+
+# Daily Check-in(1), Solve Quiz for MultipleCode(2), Answer(3), Code(5)
+class PointType(models.Model):
+    name = models.CharField(max_length=20)
+    point = models.IntegerField(default=0)
+
+    def __str__(self):
+        return str(self.name)
+
+
+class UserPoint(models.Model):
+    customuser = models.ForeignKey(CustomUser, on_delete=models.CASCADE, blank=True, null=True)
+    date = models.DateField(default=timezone.now)
+    pointtype = models.ForeignKey(PointType, on_delete=models.CASCADE, blank=True, null=True)
+
+    class Meta:
+        index_together = [
+            ('customuser', 'date', 'pointtype'),
+        ]
+
+    def __str__(self):
+        return str(self.customuser) + " " + str(self.point)
 
 # TODO:: remove file name from error log
 # TODO:: sign in, sign up - modal

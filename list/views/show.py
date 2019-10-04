@@ -41,7 +41,7 @@ def answer(request, quiz_order):
     username = get_username(request)
     quiz = get_object_or_404(Quiz, order=quiz_order)
     testcases = Testcase.objects.filter(quiz__order=quiz_order)
-    answer, _ = Answer.objects.get_or_create(quiz_id=quiz.id, customuser__name=get_username(request))
+    answer, _ = Answer.objects.get_or_create(quiz__id=quiz.id, customuser__name=username)
     answer.customuser = CustomUser.objects.get(name=username)
     answer.quiz = quiz
     answer.answer = request.POST['answer']
@@ -87,7 +87,7 @@ def quiz_score(request, quiz_order, score):
     quiz = get_object_or_404(Quiz, order=quiz_order)
 
     customuser = CustomUser.objects.get(name=get_username(request))
-    quiz_score, _ = QuizScore.objects.get_or_create(customuser=customuser, quiz_id=quiz.id)
+    quiz_score, _ = QuizScore.objects.get_or_create(customuser=customuser, quiz__id=quiz.id)
     quiz.score += score - quiz_score.score
     quiz.save()
 
@@ -243,4 +243,11 @@ if __name__ == "__main__":
 
 # TODO:: unlock the quiz
 # TODO:: forget password
-# TODO:: daily login for coin
+# TODO:: remove the filename
+#Traceback (most recent call last):
+#File "/tmp/check_tiny657.py", line 4, in
+#from solution_tiny657 import solve
+#File "/private/tmp/solution_tiny657.py", line 1
+#def solve(str):
+#^
+#SyntaxError: unexpected EOF while parsing

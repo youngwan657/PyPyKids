@@ -1,6 +1,7 @@
 from django.contrib import admin
 
-from .models import Quiz, Answer, Testcase, QuizType, Category, Difficulty, CustomUser, BadgeType, Badge, QuizScore
+from .models import Quiz, Answer, Testcase, QuizType, Category, Difficulty, CustomUser, BadgeType, Badge, QuizScore, \
+    PointType, UserPoint
 
 from adminsortable.admin import SortableAdmin
 
@@ -14,3 +15,5 @@ admin.site.register(CustomUser)
 admin.site.register(BadgeType)
 admin.site.register(Badge, SortableAdmin)
 admin.site.register(QuizScore)
+admin.site.register(PointType)
+admin.site.register(UserPoint)

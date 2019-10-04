@@ -169,6 +169,22 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="server-error-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog text-light" role="document">
+        <div class="modal-content bg-info border-0">
+            <div class="modal-body">
+                <div class="m-3 d-flex align-items-center">
+                    <img src="{% static 'list/img/dayeon.png' %}" alt="Avatar" class="avatar avatar-lg">
+                    <div class="ml-3">
+                        <h5 class="mb-1">Server error.</h5>
+                        <span>Please try again later.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% block content %}
 {% endblock %}
 

@@ -20,7 +20,10 @@ def playground(request):
             stdout = outs.decode("utf-8")
         except subprocess.TimeoutExpired:
             process.kill()
-            stdout = "TIMEOUT ERROR"
+            stdout = "Timeout Error"
+
+        if "Traceback (most recent call last):" in stdout:
+            stdout = stdout.replace("File \"/tmp/playground_{}.py\", ".format(username), "")
 
         response = {
             'output': stdout,

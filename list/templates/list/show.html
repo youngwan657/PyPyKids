@@ -205,7 +205,7 @@
         <div class="modal-content bg-success border-0">
             <div class="modal-body">
                 <div class="m-3 d-flex align-items-center">
-                    <img src="{% static 'list/img/logo.png' %}" alt="Avatar" class="avatar avatar-lg">
+                    <img src="{% static 'list/img/dayeon.png' %}" alt="Avatar" class="avatar avatar-lg">
                     <div class="ml-3">
                         <h5 class="mb-1"><b>Accepted</b></h5>
                         <span>You are awesome !!!</span>
@@ -221,7 +221,7 @@
         <div class="modal-content bg-danger border-0">
             <div class="modal-body">
                 <div class="m-3 d-flex align-items-center">
-                    <img src="{% static 'list/img/logo.png' %}" alt="Avatar" class="avatar avatar-lg">
+                    <img src="{% static 'list/img/dayeon.png' %}" alt="Avatar" class="avatar avatar-lg">
                     <div class="ml-3">
                         <h5 class="mb-1"><b>Wrong Answer</b></h5>
                         <span>Could you try again?</span>
@@ -320,6 +320,8 @@ $(function(){
                 }
             },
             error: function(xhr, status, e) {
+                $('#server-error-modal').modal('show');
+                $('#submit').html('Please try again later.');
             }
         });
     });
@@ -361,6 +363,8 @@ $(function(){
                 }
             },
             error: function(xhr, status, e) {
+                $('#server-error-modal').modal('show');
+                $('#submit').html('Please try again later.');
             }
         });
     });
@@ -402,6 +406,8 @@ $(function(){
                 }
             },
             error: function(xhr, status, e) {
+                $('#server-error-modal').modal('show');
+                $('#submit').html('Please try again later.');
             }
         });
     });
@@ -415,6 +421,7 @@ $(function(){
                 $('#quiz-like').hide(1000);
             },
             error: function(xhr, status, e) {
+                $('#server-error-modal').modal('show');
             }
         });
     });
@@ -428,6 +435,7 @@ $(function(){
                 $('#quiz-like').hide(1000);
             },
             error: function(xhr, status, e) {
+                $('#server-error-modal').modal('show');
             }
         });
     });

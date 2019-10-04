@@ -98,6 +98,8 @@ $(function(){
                 $('#output').fadeIn("slow");
             },
             error: function(xhr, status, e) {
+                $('#server-error-modal').modal('show');
+                $('#submit').html('Please try again later.');
             }
         });
     });

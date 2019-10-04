@@ -153,6 +153,22 @@
         </div>
     </nav>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="signin-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog text-light" role="document">
+        <div class="modal-content bg-info border-0">
+            <div class="modal-body">
+                <div class="m-3 d-flex align-items-center">
+                    <img src="{% static 'list/img/dayeon.png' %}" alt="Avatar" class="avatar avatar-lg">
+                    <div class="ml-3">
+                        <h5 class="mb-1"><b>Please login first.</b></h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% block content %}
 {% endblock %}
 
@@ -196,7 +212,7 @@
                 <ul class="list-unstyled list-articles">
                     <li class="row row-tight">
                         <a href="#" class="col-3">
-                            <img src="{% static 'list/img/dayeon.jpg' %}" alt="Image" class="rounded">
+                            <img src="{% static 'list/img/dayeon.png' %}" alt="Image" class="rounded">
                         </a>
                         <div class="col">
                             <a href="#">

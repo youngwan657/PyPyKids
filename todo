@@ -11,11 +11,4 @@ pip install django-admin-sortable
 # TODO:: don't save for non-login user
 # TODO:: limit app engine server to 3 (?)
 # TODO:: github page for main static page
-# TODO:: not clear for icon
 # TODO:: copy the code
-
-
-# Re-run mysql
-- launchctl load -w ~/Library/LaunchAgents/homebrew.mxcl.mysql.plist
-
-

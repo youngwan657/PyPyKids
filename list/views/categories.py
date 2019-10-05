@@ -66,11 +66,16 @@ def categories(request):
         # Badge
         context['badges'] = Badge.objects.filter(customuser__name=username)
 
-    # Today's Question
+    # Today's Quiz
     today_quiz = unsolved_quizzes.order_by('order').first()
     context['quiz'] = today_quiz.set_title_url()
     context['difficulty'] = today_quiz.category.difficulty
     context['category'] = today_quiz.category.name
+
+    # New Video for non-login user
+    if username == "":
+        recently_updated_video = Quiz.objects.get(id=97)
+        context['quiz'] = recently_updated_video.set_title_url()
 
     score = QuizScore.objects.filter(quiz__order=today_quiz.order).aggregate(Sum('score'))['score__sum']
     context['score'] = score if score != None else 0

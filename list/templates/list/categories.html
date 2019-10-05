@@ -111,8 +111,19 @@
                         }
                     });
 
+
     </script>
 </div>
+
+<!-- Today's Quiz -->
+<section class="has-divider bg-primary-alt">
+    {% include "list/quiz.html" %}
+    <div class="divider">
+        <img class="bg-primary-3" src="{% static 'assets/img/dividers/divider-2.svg' %}" alt="divider graphic"
+             data-inject-svg/>
+    </div>
+</section>
+
 {% else %}
 <section class="bg-primary text-light o-hidden">
     <div class="container">
@@ -127,16 +138,30 @@
         </div>
     </div>
 </section>
-{% endif %}
 
-<!-- Today's Quiz -->
+
+<!-- New Video -->
 <section class="has-divider bg-primary-alt">
-    {% include "list/quiz.html" %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10 col-xl-8">
+                <span class="badge badge-primary">
+                  <img class="icon bg-light" src="{% static 'assets/img/icons/theme/devices/video-camera.svg' %}" alt="video-camera icon" data-inject-svg />
+                    NEW VIDEO
+                </span>
+                <h1 class="font-title"><a href="/quiz/{{ quiz.title_url }}">{{ quiz.title }}</a></h1>
+                <div class="rounded o-hidden">
+                    <div class="plyr" data-plyr-provider="youtube" data-plyr-embed-id="LJW1MQBz2DE"></div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="divider">
         <img class="bg-primary-3" src="{% static 'assets/img/dividers/divider-2.svg' %}" alt="divider graphic"
              data-inject-svg/>
     </div>
 </section>
+{% endif %}
 
 <!-- Level 0 -->
 <section class="has-divider bg-primary-3">
@@ -436,6 +461,7 @@
 $(document).ready(function(){
     $("#daily-check-in-modal").modal('show');
 });
+
 </script>
 {% endif %}
 {% endblock %}

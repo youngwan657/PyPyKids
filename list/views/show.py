@@ -29,7 +29,7 @@ def show(request, title):
     context['difficulty'] = quiz.category.difficulty
     context['category'] = quiz.category.name
     context['quiz'] = quiz.set_title_url()
-    context['clicked'] = QuizScore.objects.filter(customuser__name=username, quiz__id=quiz.id).exists()
+    context['clicked'] = QuizScore.objects.filter(customuser__name=username, quiz_id=quiz.id).exists()
 
     context['page_title'] = title.replace("-", " ")
     context['page_description'] = get_description(strip_tags(quiz.explanation.replace("&nbsp;", " ").replace("&quot;", "").replace("&bull;", "").replace("&#39;", "")))
@@ -41,7 +41,7 @@ def answer(request, quiz_order):
     username = get_username(request)
     quiz = get_object_or_404(Quiz, order=quiz_order)
     testcases = Testcase.objects.filter(quiz__order=quiz_order)
-    answer, _ = Answer.objects.get_or_create(quiz__id=quiz.id, customuser__name=username)
+    answer, _ = Answer.objects.get_or_create(quiz_id=quiz.id, customuser__name=username)
     answer.customuser = CustomUser.objects.get(name=username)
     answer.quiz = quiz
     answer.answer = request.POST['answer']
@@ -85,9 +85,8 @@ def answer(request, quiz_order):
 
 def quiz_score(request, quiz_order, score):
     quiz = get_object_or_404(Quiz, order=quiz_order)
-
     customuser = CustomUser.objects.get(name=get_username(request))
-    quiz_score, _ = QuizScore.objects.get_or_create(customuser=customuser, quiz__id=quiz.id)
+    quiz_score, _ = QuizScore.objects.get_or_create(customuser=customuser, quiz_id=quiz.id)
     quiz.score += score - quiz_score.score
     quiz.save()
 

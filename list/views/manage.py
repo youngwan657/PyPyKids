@@ -11,7 +11,7 @@ def manage(request):
     error_quizzes = []
     for quiz in quizzes:
         quiz.set_title_url()
-        if testcases.filter(quiz__id=quiz.id).exists() == False:
+        if testcases.filter(quiz_id=quiz.id).exists() == False:
             error_quizzes.append(quiz)
 
     context = {

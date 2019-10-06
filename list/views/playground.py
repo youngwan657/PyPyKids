@@ -12,6 +12,7 @@ def playground(request):
     if request.method == "POST":
         f = open(filename, "w+")
         code = request.POST['answer']
+        code = remove_unsafe_code(code)
         f.write(code)
         f.close()
         try:

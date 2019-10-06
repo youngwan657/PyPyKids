@@ -101,6 +101,7 @@ def quiz_score(request, quiz_order, score):
 def check_answer(username, testcases, answer):
     folder = "/tmp"
     f = open("%s/solution_%s.py" % (folder, username), "w+")
+    answer.answer = remove_unsafe_code(answer.answer)
     f.write(answer.answer)
     f.close()
 
@@ -113,9 +114,7 @@ def check_answer(username, testcases, answer):
 
     for testcase in testcases:
         output = "None"
-        stdout = ""
         try:
-            outs, errs, stdout = "", "", ""
             if testcase.expected_stdout:
                 process = subprocess.Popen(
                     ['python', '%s/solution_%s.py' % (folder, username)] + testcase.input.split("\n"),
@@ -130,6 +129,18 @@ def check_answer(username, testcases, answer):
                     stderr=subprocess.STDOUT)
                 outs, errs = process.communicate(timeout=1)
                 stdout = outs.decode("utf-8")
+
+            if "Traceback (most recent call last):" in stdout:
+                i = 0
+                lines = stdout.split("\n")
+                while i < len(lines):
+                    if "File \"/tmp/check_" in lines[i]:
+                        del lines[i:i+2]
+                    else:
+                        i += 1
+
+                stdout = "\n".join(lines)
+                stdout = stdout.replace("File \"/private/tmp/solution_{}.py\", ".format(username), "")
 
             if os.path.exists("%s/answer_%s" % (folder, username)):
                 f = open("%s/answer_%s" % (folder, username), "r")
@@ -159,10 +170,8 @@ def check_answer(username, testcases, answer):
                 answer.input = testcase.input
                 answer.output = stdout
                 answer.expected_output = testcase.expected_stdout
-            return
-
         # Check output
-        if testcase.expected_output:
+        elif testcase.expected_output:
             if str(output) == testcase.expected_output.strip():
                 answer.right = Right.RIGHT.value
                 answer.input = ""
@@ -180,7 +189,7 @@ def check_answer(username, testcases, answer):
                 answer.output = output
                 answer.expected_stdout = ""
                 answer.expected_output = testcase.expected_output
-                return
+
 
 def create_checking_code(username):
     return """
@@ -242,11 +251,4 @@ if __name__ == "__main__":
 
 # TODO:: unlock the quiz
 # TODO:: forget password
-# TODO:: remove the filename
-#Traceback (most recent call last):
-#File "/tmp/check_tiny657.py", line 4, in
-#from solution_tiny657 import solve
-#File "/private/tmp/solution_tiny657.py", line 1
-#def solve(str):
-#^
-#SyntaxError: unexpected EOF while parsing
+# TODO:: block for 3 seconds after submitting the code.

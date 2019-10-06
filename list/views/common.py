@@ -95,6 +95,11 @@ def add_badge(username):
 
     return new_badges
 
+def remove_unsafe_code(code):
+    return code\
+        .replace("import os\r\n", "")\
+        .replace("import os\n", "")
+
 
 def get_badge_count(username):
     return Badge.objects.filter(customuser__name=username).count()

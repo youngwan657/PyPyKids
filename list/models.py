@@ -231,7 +231,6 @@ class UserPoint(models.Model):
     def __str__(self):
         return str(self.customuser) + " " + str(self.point)
 
-# TODO:: remove file name from error log
 # TODO:: sign in, sign up - modal
 # TODO:: reset code to show the default function definition
 # TODO:: separate the badge and graph for quiz and multiple choice.

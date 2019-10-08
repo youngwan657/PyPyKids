@@ -26,8 +26,8 @@ def show(request, title):
         context['answer'] = answer
 
     context['next'] = get_unsolved_quizzes(username, quiz.order).first().set_title_url()
-    context['difficulty'] = quiz.category.difficulty
-    context['category'] = quiz.category.name
+    context['difficulty'] = quiz.category.difficulty.set_name_url()
+    context['category'] = quiz.category.set_name_url()
     context['quiz'] = quiz.set_title_url()
     context['clicked'] = QuizScore.objects.filter(customuser__name=username, quiz_id=quiz.id).exists()
 

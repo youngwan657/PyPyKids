@@ -239,7 +239,7 @@ class UserPoint(models.Model):
         ]
 
     def __str__(self):
-        return str(self.customuser) + " " + str(self.point)
+        return str(self.date.strftime("%m-%d")) + " " + str(self.customuser) + " " + str(self.pointtype)
 
 # TODO:: sign in, sign up - modal
 # TODO:: reset code to show the default function definition

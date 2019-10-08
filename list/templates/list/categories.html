@@ -182,7 +182,7 @@
 
 <!-- Level 0 -->
 <section class="has-divider bg-primary-3">
-    <div class="container" id="{{ difficulties.0.name }}">
+    <div class="container" id="{{ difficulties.0.name_url }}">
         <div class="row mb-4 text-light">
             <div class="col">
                 <h3 class="h3">{{ difficulties.0.name }}</h3>
@@ -192,7 +192,7 @@
         <div class="row justify-content-center">
             <div class="col-lg-10 col-xl-8">
                 {% for category in level1 %}
-                <a href="/category/{{ category.name }}"
+                <a href="/category/{{ category.name_url }}"
                    class="card card-body flex-row align-items-center hover-shadow-sm">
                     {% if category.unsolved_quiz == 0 %}
                     <div class="icon-round icon-round-lg bg-primary mx-md-4">
@@ -236,7 +236,7 @@
 
 <!-- Level 1 -->
 <section class="has-divider">
-    <div class="container" id="{{ difficulties.1.name }}">
+    <div class="container" id="{{ difficulties.1.name_url }}">
         <div class="row mb-4">
             <div class="col">
                 <h3 class="h3">{{ difficulties.1.name }}</h3>
@@ -246,7 +246,7 @@
         <div class="row justify-content-center">
             <div class="col-lg-10 col-xl-8">
                 {% for category in level2 %}
-                <a href="/category/{{ category.name }}"
+                <a href="/category/{{ category.name_url }}"
                    class="card card-body flex-row align-items-center hover-shadow-sm">
                     {% if category.unsolved_quiz == 0 %}
                     <div class="icon-round icon-round-lg bg-primary mx-md-4">
@@ -291,7 +291,7 @@
 
 <!-- Level 2 -->
 <section class="has-divider bg-primary-alt">
-    <div class="container" id="{{ difficulties.2.name }}">
+    <div class="container" id="{{ difficulties.2.name_url }}">
         <div class="row mb-4">
             <div class="col">
                 <h3 class="h3">{{ difficulties.2.name }}</h3>
@@ -301,7 +301,7 @@
         <div class="row justify-content-center">
             <div class="col-lg-10 col-xl-8">
                 {% for category in level3 %}
-                <a href="/category/{{ category.name }}"
+                <a href="/category/{{ category.name_url }}"
                    class="card card-body flex-row align-items-center hover-shadow-sm">
                     {% if category.unsolved_quiz == 0 %}
                     <div class="icon-round icon-round-lg bg-primary mx-md-4">
@@ -346,7 +346,7 @@
 
 <!-- Level 3 -->
 <section class="has-divider bg-primary-3">
-    <div class="container" id="{{ difficulties.3.name }}">
+    <div class="container" id="{{ difficulties.3.name_url }}">
         <div class="row mb-4 text-light">
             <div class="col">
                 <h3 class="h3">{{ difficulties.3.name }}</h3>
@@ -356,7 +356,7 @@
         <div class="row justify-content-center">
             <div class="col-lg-10 col-xl-8">
                 {% for category in level4 %}
-                <a href="/category/{{ category.name }}"
+                <a href="/category/{{ category.name_url }}"
                    class="card card-body flex-row align-items-center hover-shadow-sm">
                     <div class="icon-round icon-round-lg bg-primary mx-md-4">
                         {% if category.unsolved_quiz == 0 %}
@@ -402,7 +402,7 @@
 
 <!-- Level 4 -->
 <section>
-    <div class="container" id="{{ difficulties.4.name }}">
+    <div class="container" id="{{ difficulties.4.name_url }}">
         <div class="row mb-4">
             <div class="col">
                 <h3 class="h3">{{ difficulties.4.name }}</h3>
@@ -412,7 +412,7 @@
         <div class="row justify-content-center">
             <div class="col-lg-10 col-xl-8">
                 {% for category in level5 %}
-                <a href="/category/{{ category.name }}"
+                <a href="/category/{{ category.name_url }}"
                    class="card card-body flex-row align-items-center hover-shadow-sm">
                     <div class="icon-round icon-round-lg bg-primary mx-md-4">
                         {% if category.unsolved_quiz == 0 %}

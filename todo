@@ -11,3 +11,14 @@ pip install django-admin-sortable
 # TODO:: limit app engine server to 3 (?)
 # TODO:: github page for main static page
 # TODO:: copy the code
+# TODO:: share the badge? score? in facebook
+# TODO:: badge re-new
+
+# TODO:: grayscale for svg
+# filter: grayscale(100%);
+# <div class="bg-primary" style="filter: grayscale(100%);">
+# <img class="icon icon-lg bg-primary"
+#     src="{% static 'list/badge/17940.svg' %}" alt="unlock icon" width="400" />
+# </div>
+
+

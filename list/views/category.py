@@ -5,6 +5,7 @@ from list.views.common import *
 
 def category(request, category):
     context = {}
+    category = category.replace("-", " ")
     quizzes = Quiz.objects.filter(category__name=category, visible=True).order_by('order')
 
     username = get_profile(request, context)
@@ -20,7 +21,7 @@ def category(request, category):
             if len(answer) > 0:
                 quiz.right = answer[0].right
 
-    context["difficulty"] = quizzes[0].category.difficulty
+    context["difficulty"] = quizzes[0].category.difficulty.set_name_url()
     context["category"] = category
     context["quizzes"] = quizzes
     context['page_title'] = category

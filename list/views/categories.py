@@ -30,6 +30,8 @@ def categories(request):
     quizzes = Quiz.objects.order_by('order').filter(visible=True)
     unsolved_quizzes = quizzes
     difficulties = Difficulty.objects.order_by('id')
+    for difficulty in difficulties:
+        difficulty.set_name_url()
     context['difficulties'] = difficulties
 
     if username != "":
@@ -69,8 +71,8 @@ def categories(request):
     # Today's Quiz
     today_quiz = unsolved_quizzes.order_by('order').first()
     context['quiz'] = today_quiz.set_title_url()
-    context['difficulty'] = today_quiz.category.difficulty
-    context['category'] = today_quiz.category.name
+    context['difficulty'] = today_quiz.category.difficulty.set_name_url()
+    context['category'] = today_quiz.category.set_name_url()
 
     # New Video for non-login user
     if username == "":
@@ -92,6 +94,7 @@ def categories(request):
                 if len(answers.filter(quiz__order=quiz.order)) > 0:
                     category.unsolved_quiz -= 1
             category.solved_quiz = category.total_quiz - category.unsolved_quiz
+            category.set_name_url()
 
         context["level" + str(difficulty.id)] = categories
 

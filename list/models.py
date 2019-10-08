@@ -17,9 +17,14 @@ class QuizType(models.Model):
 class Difficulty(models.Model):
     name = models.CharField(max_length=20)
     desc = models.TextField(default=None, blank=True, null=True)
+    name_url = ""
 
     def __str__(self):
         return str(self.name)
+
+    def set_name_url(self):
+        self.name_url = self.name.replace(" ", "-")
+        return self
 
 
 class BadgeType(models.Model):
@@ -55,6 +60,7 @@ class Category(SortableMixin):
     total_quiz = 0
     solved_quiz = 0
     unsolved_quiz = 0
+    name_url = ""
 
     class Meta:
         ordering = ['order']
@@ -68,6 +74,10 @@ class Category(SortableMixin):
         if self.visible == False:
             visible = "x "
         return visible + self.difficulty.name + "-" + str(self.order) + ". " + str(self.name)
+
+    def set_name_url(self):
+        self.name_url = self.name.replace(" ", "-")
+        return self
 
 
 # TODO:: solution after answering

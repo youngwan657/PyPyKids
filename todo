@@ -13,6 +13,7 @@ pip install django-admin-sortable
 # TODO:: copy the code
 # TODO:: share the badge? score? in facebook
 # TODO:: badge re-new
+# TODO:: pre test for level checking.
 
 # TODO:: grayscale for svg
 # filter: grayscale(100%);
@@ -20,5 +21,4 @@ pip install django-admin-sortable
 # <img class="icon icon-lg bg-primary"
 #     src="{% static 'list/badge/17940.svg' %}" alt="unlock icon" width="400" />
 # </div>
-
 

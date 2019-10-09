@@ -29,6 +29,11 @@
                 </div>
                 <div id="wrong-alert" class="alert alert-danger" role="alert" {% if answer is None or answer.right > 0 %} style="display: none;" {% endif %}>
                     <b>Wrong Answer</b>
+
+                    <button class="btn" data-toggle="modal" data-toggle="tooltip" data-placement="top" title="Reset to default code definition"
+                            data-target="#reset-code-modal">
+                        <img src="{% static 'assets/img/icons/theme/text/undo.svg' %}" alt="undo" />
+                    </button>
                 </div>
                 <div id="info-alert" class="alert alert-info" role="alert" {% if answer is not None %} style="display: none;" {% endif %}>
                     Your Answer
@@ -62,9 +67,9 @@
 
                 <div id="editor">{{ user_answer }}</div>
 
-                <form id="editor_code" class="text-center">
+                <form id="editor-code" class="text-center">
                     {%csrf_token %}
-                    <textarea name="answer" style="display: none;">{{ user_answer }}</textarea>
+                    <textarea id="your-answer" name="answer" style="display: none;">{{ user_answer }}</textarea>
                     {% if username %}
                     <button id="submit" class="btn btn-primary btn-block" type="submit">Submit</button>
                     {% endif %}
@@ -144,7 +149,7 @@
                 {% endif %}
 
                 {% if username == None %}
-                <button id="show-signin-modal" class="btn btn-primary btn-block">Submit</button>
+                <button class="btn btn-primary btn-block" data-toggle="modal" data-target="#signin-modal">Submit</button>
                 {% endif %}
             </div>
         </div>
@@ -254,6 +259,36 @@
     </div>
 </div>
 
+<div class="modal fade" id="reset-code-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog text-light" role="document">
+        <div class="modal-content bg-info border-0">
+            <div class="modal-body">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <img class="icon bg-dark" src="{% static 'assets/img/icons/interface/cross.svg' %}" alt="cross interface icon" data-inject-svg />
+                </button>
+                <div class="m-3 d-flex align-items-center">
+                    <img src="{% static 'list/img/dayeon.png' %}" alt="Avatar" class="avatar avatar-lg">
+                    <div class="ml-3">
+                        <p>
+                        <h5 class="mb-1"><b>Are you sure?</b></h5>
+                        <span>Your code will be back to the default code.</span>
+                        </p>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <button type="button" class="btn btn-light" data-dismiss="modal" aria-label="Close">
+                        Cancel
+                    </button>
+                    <button id="reset-code" type="button" class="btn btn-warning" data-dismiss="modal">
+                        Confirm
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <script>
 // Code editor
 {% if quiz.quiz_type.name == "Code" %}
@@ -271,20 +306,20 @@
 
 
 $(function(){
-    // Modal for non-login user to login first.
-    $('#show-signin-modal').on("click", function () {
-        $('#signin-modal').modal('show');
+    $('#reset-code').click(function () {
+        $('#your-answer').html("{{ quiz.answer_header }}");
+        ace.edit("editor").getSession().setValue("{{ quiz.answer_header }}");
     });
 
     // Check answer for Code
-    $('#editor_code').submit(function(event) {
+    $('#editor-code').submit(function(event) {
         event.preventDefault();
         $('#submit').html('<div class="spinner-border" role="status"></div>')
         $.ajax({
             type: 'POST',
             url: '/answer/{{ quiz.order }}/',
             dataType: 'json',
-            data: $('#editor_code').serialize(),
+            data: $('#editor-code').serialize(),
             success: function (data, textStatus) {
                 response = JSON.parse(data)
                 $('#submit').html('Submit')

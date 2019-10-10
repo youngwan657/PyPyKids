@@ -10,7 +10,7 @@ def manage(request):
     quizzes = Quiz.objects.all()
     error_quizzes = []
     for quiz in quizzes:
-        quiz.set_title_url()
+        quiz.set_title_url().convert_explanation()
         if testcases.filter(quiz_id=quiz.id).exists() == False:
             error_quizzes.append(quiz)
 

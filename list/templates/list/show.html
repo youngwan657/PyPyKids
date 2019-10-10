@@ -307,8 +307,8 @@
 
 $(function(){
     $('#reset-code').click(function () {
-        $('#your-answer').html("{{ quiz.answer_header }}");
-        ace.edit("editor").getSession().setValue("{{ quiz.answer_header }}");
+        $('#your-answer').html("{{ quiz.answer_header|escapejs }}");
+        ace.edit("editor").getSession().setValue("{{ quiz.answer_header|escapejs }}");
     });
 
     // Check answer for Code

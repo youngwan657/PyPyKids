@@ -4,7 +4,6 @@ pip install django-admin-sortable
 
 
 
-# TODO:: Run button
 # TODO:: Refer Kotlin page for English sentence
 # TODO:: local mysql
 # TODO:: don't save for non-login user
@@ -22,3 +21,5 @@ pip install django-admin-sortable
 #     src="{% static 'list/badge/17940.svg' %}" alt="unlock icon" width="400" />
 # </div>
 
+
+# TODO:: google description when searching

@@ -1,3 +1,4 @@
+import re
 from django.db import models
 
 from ckeditor.fields import RichTextField
@@ -162,6 +163,19 @@ class Quiz(SortableMixin):
         self.title_url = self.title.replace(" ", "-")
         return self
 
+    def convert_explanation(self):
+        self.explanation = re.sub("<p>#run-([\d]*)</p>([\s\S]*?)<p>#end</p>",
+        r"""<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#run-\1">
+    <img class="icon" src="/static/assets/img/icons/theme/media/play.svg" alt="run icon" data-inject-svg /><span>Run</span>
+</button>
+<div class="collapse" id="run-\1">
+    <br/>
+    <img class="icon" src="/static/assets/img/icons/theme/devices/display-1.svg" alt="display icon" data-inject-svg /> <span class="text-success"><b>Output:</b></span>
+    <div class="pt-3">\2</div>
+</div>""", self.explanation)
+
+        return self
+
 
 class Testcase(models.Model):
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
@@ -186,7 +200,7 @@ class CustomUser(models.Model):
 class Answer(models.Model):
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE, blank=True, null=True)
     answer = models.TextField(default=None, blank=True, null=True)
-    customuser = models.ForeignKey(CustomUser, on_delete=models.CASCADE, blank=True, null=True)
+    customuser = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     right = models.IntegerField(default=Right.NOT_TRY.value)
     input = models.TextField(default=None, blank=True, null=True)
     stdout = models.TextField(default=None, blank=True, null=True)

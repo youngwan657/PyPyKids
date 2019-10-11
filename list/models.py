@@ -82,7 +82,6 @@ class Category(SortableMixin):
 
 
 # TODO:: solution after answering
-# TODO:: admin filter by category
 class Quiz(SortableMixin):
     default_explanation = """<table border="1" cellpadding="1" cellspacing="1" class="table table-bordered">
     <tbody>

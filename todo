@@ -6,7 +6,6 @@ pip install django-admin-sortable
 
 # TODO:: Refer Kotlin page for English sentence
 # TODO:: local mysql
-# TODO:: don't save for non-login user
 # TODO:: limit app engine server to 3 (?)
 # TODO:: github page for main static page
 # TODO:: copy the code
@@ -20,6 +19,3 @@ pip install django-admin-sortable
 # <img class="icon icon-lg bg-primary"
 #     src="{% static 'list/badge/17940.svg' %}" alt="unlock icon" width="400" />
 # </div>
-
-
-# TODO:: google description when searching

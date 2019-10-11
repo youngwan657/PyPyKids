@@ -99,5 +99,6 @@ def categories(request):
         context["level" + str(difficulty.id)] = categories
 
     context['page_title'] = "Python for Kids"
-    context['page_description'] = "Python for Kids"
+    context['page_description'] = "PyPykids is an online Python coding service. Python is perfect for kids to think logically."
+
     return render(request, 'list/categories.html', context)

@@ -12,6 +12,7 @@ pip install django-admin-sortable
 # TODO:: share the badge? score? in facebook
 # TODO:: badge re-new
 # TODO:: pre test for level checking.
+# TODO:: message box
 
 # TODO:: grayscale for svg
 # filter: grayscale(100%);

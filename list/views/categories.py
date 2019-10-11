@@ -3,7 +3,6 @@ from list.views.common import *
 from django.db.models import Q, Sum
 
 
-# TODO:: Initial page for non-login user?
 def welcome(request):
     return categories(request)
 

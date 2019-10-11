@@ -27,8 +27,6 @@ def manage(request):
 
 # TODO:: Answer history
 
-# TODO:: like for answer
-# TODO:: comment for answer
-# TODO:: show other people's answer
+# TODO:: like, comment for answer
 # TODO:: profile page
 # TODO:: search

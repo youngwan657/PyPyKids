@@ -30,10 +30,12 @@
                 <div id="wrong-alert" class="alert alert-danger" role="alert" {% if answer is None or answer.right > 0 %} style="display: none;" {% endif %}>
                     <b>Wrong Answer</b>
 
+                    {% if quiz.quiz_type.name == "Code" %}
                     <button class="btn" data-toggle="modal" data-toggle="tooltip" data-placement="top" title="Reset to default code definition"
                             data-target="#reset-code-modal">
                         <img src="{% static 'assets/img/icons/theme/text/undo.svg' %}" alt="undo" />
                     </button>
+                    {% endif %}
                 </div>
                 <div id="info-alert" class="alert alert-info" role="alert" {% if answer is not None %} style="display: none;" {% endif %}>
                     Your Answer

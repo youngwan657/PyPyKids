@@ -253,6 +253,3 @@ class UserPoint(models.Model):
 
     def __str__(self):
         return str(self.date.strftime("%m-%d")) + " " + str(self.customuser) + " " + str(self.pointtype)
-
-# TODO:: sign in, sign up - modal
-# TODO:: separate the badge and graph for quiz and multiple choice.

@@ -163,8 +163,20 @@ class Quiz(SortableMixin):
         return self
 
     def convert_explanation(self):
+        while True:
+            START = "<p>#code</p>"
+            END = "<p>#end</p>"
+            start_index = self.explanation.find(START)
+            if start_index == -1:
+                break
+            end_index = self.explanation.find(END, start_index)
+
+            self.explanation = self.explanation[:start_index] + '<pre><code class="language-py">' + \
+                               self.explanation[start_index + len(START): end_index].replace("\r\n", "").replace("</p><p>", "</p>\n<p>") + \
+                               "</code></pre>" + self.explanation[end_index + len(END):]
+
         self.explanation = re.sub("<p>#run-([\d]*)</p>([\s\S]*?)<p>#end</p>",
-        r"""<button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#run-\1">
+        r"""<button class="btn btn-sm btn-primary" type="button" data-toggle="collapse" data-target="#run-\1">
     <img class="icon" src="/static/assets/img/icons/theme/media/play.svg" alt="run icon" data-inject-svg /><span>Run</span>
 </button>
 <div class="collapse" id="run-\1">

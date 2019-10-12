@@ -69,7 +69,7 @@ def categories(request):
 
     # Today's Quiz
     today_quiz = unsolved_quizzes.order_by('order').first()
-    context['quiz'] = today_quiz.set_title_url().convert_explanation()
+    context['quiz'] = today_quiz.set_title_url().set_pretty_code()
     context['difficulty'] = today_quiz.category.difficulty.set_name_url()
     context['category'] = today_quiz.category.set_name_url()
 

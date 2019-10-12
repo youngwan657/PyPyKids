@@ -14,6 +14,7 @@ pip install django-admin-sortable
 # TODO:: pre test for level checking.
 # TODO:: message box
 # TODO:: memo, star
+# TODO:: hide quiz and make a open button
 
 # TODO:: grayscale for svg
 # filter: grayscale(100%);

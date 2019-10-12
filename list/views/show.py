@@ -28,7 +28,7 @@ def show(request, title):
     context['next'] = get_unsolved_quizzes(username, quiz.order).first().set_title_url()
     context['difficulty'] = quiz.category.difficulty.set_name_url()
     context['category'] = quiz.category.set_name_url()
-    context['quiz'] = quiz.set_title_url().convert_explanation()
+    context['quiz'] = quiz.set_title_url().set_pretty_code()
     context['clicked'] = QuizScore.objects.filter(customuser__name=username, quiz_id=quiz.id).exists()
 
     context['page_title'] = title.replace("-", " ")

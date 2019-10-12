@@ -162,7 +162,7 @@ class Quiz(SortableMixin):
         self.title_url = self.title.replace(" ", "-")
         return self
 
-    def convert_explanation(self):
+    def set_pretty_code(self):
         while True:
             START = "<p>#code</p>"
             END = "<p>#end</p>"
@@ -172,7 +172,12 @@ class Quiz(SortableMixin):
             end_index = self.explanation.find(END, start_index)
 
             self.explanation = self.explanation[:start_index] + '<pre><code class="language-py">' + \
-                               self.explanation[start_index + len(START): end_index].replace("\r\n", "").replace("</p><p>", "</p>\n<p>") + \
+                               "<p>\n</p>" + \
+                               self.explanation[start_index + len(START): end_index]\
+                                   .replace("\r\n", "")\
+                                   .replace("</p><p>", "</p>\n<p>") + \
+                               "<p>\n</p>" + \
+                               "<p>\n</p>" + \
                                "</code></pre>" + self.explanation[end_index + len(END):]
 
         self.explanation = re.sub("<p>#run-([\d]*)</p>([\s\S]*?)<p>#end</p>",
@@ -184,6 +189,23 @@ class Quiz(SortableMixin):
     <img class="icon" src="/static/assets/img/icons/theme/devices/display-1.svg" alt="display icon" data-inject-svg /> <span class="text-success"><b>Output:</b></span>
     <div class="pt-3">\2</div>
 </div>""", self.explanation)
+
+        while True:
+            START = "<p>#code</p>"
+            END = "<p>#end</p>"
+            start_index = self.example.find(START)
+            if start_index == -1:
+                break
+            end_index = self.example.find(END, start_index)
+
+            self.example = self.example[:start_index] + '<pre><code class="language-py">' + \
+                            "<p>\n</p>" + \
+                            self.example[start_index + len(START): end_index] \
+                               .replace("\r\n", "") \
+                               .replace("</p><p>", "</p>\n<p>") + \
+                           "<p>\n</p>" + \
+                           "<p>\n</p>" + \
+                           "</code></pre>" + self.example[end_index + len(END):]
 
         return self
 

@@ -3,19 +3,14 @@
 
 {% block content %}
 
-<div class="container">
-    <h4>Error testcase</h4>
-    <h5>Missed testcases</h5>
-    {% for quiz in error_quizzes %}
-    {% include "list/quiz.html" %}
-    <a href="/admin/list/quiz/{{ quiz.id }}/change/" class="btn btn-primary btn-sm active" role="button"
-       aria-pressed="true"
-       target="_blank">Quiz</a>
-    {% endfor %}
-</div>
-<hr/>
-
 {% for quiz in quizzes %}
+{% if quiz.order == current_page %}
+<a href="/manage/{{ quiz.order }}" class="text-danger"> *** </a>
+{% else %}
+<a href="/manage/{{ quiz.order }}"> {{ quiz.order }} </a>
+{% endif %}
+{% endfor %}
+
 {% include "list/quiz.html" %}
 {% if quiz.quiz_type.name == "MultipleChoice" %}
 <div class="container">
@@ -48,7 +43,6 @@
         </div>
     </div>
     {% for testcase in testcases %}
-    {% if quiz == testcase.quiz %}
     <hr/>
     <div class="row">
         <div class="col-md-3">
@@ -65,12 +59,10 @@
             {{ testcase.expected_stdout | linebreaksbr }}
         </div>
     </div>
-    {% endif %}
-    {% endfor %}
     <hr/>
+    {% endfor %}
 
     {% for answer in answers %}
-    {% if quiz == answer.quiz %}
     <hr/>
     <div class="row">
         <div class="col-md-3">
@@ -84,12 +76,16 @@
             <pre>{{ answer.answer | linebreaksbr }}</pre>
         </div>
     </div>
-    {% endif %}
     {% endfor %}
     <hr/>
 </div>
 
-
+{% for quiz in quizzes %}
+{% if quiz.order == current_page %}
+<a href="/manage/{{ quiz.order }}" class="text-danger"> *** </a>
+{% else %}
+<a href="/manage/{{ quiz.order }}"> {{ quiz.order }} </a>
+{% endif %}
 {% endfor %}
 
 {% endblock %}

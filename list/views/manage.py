@@ -3,20 +3,20 @@ from django.shortcuts import render
 from list.views.common import *
 
 
-def manage(request):
-    testcases = Testcase.objects.all()
-    answers = Answer.objects.all()
-
+def manage(request, quiz_order):
     quizzes = Quiz.objects.all()
-    error_quizzes = []
-    for quiz in quizzes:
-        quiz.set_title_url().convert_explanation()
-        if testcases.filter(quiz_id=quiz.id).exists() == False:
-            error_quizzes.append(quiz)
+
+    quiz = Quiz.objects.get(order=quiz_order)
+    quiz.set_title_url().set_pretty_code()
+
+    testcases = Testcase.objects.filter(quiz__order=quiz.order)
+
+    answers = Answer.objects.filter(quiz__order=quiz.order)
 
     context = {
-        'error_quizzes': error_quizzes,
+        'current_page': quiz_order,
         'quizzes': quizzes,
+        'quiz': quiz.set_pretty_code(),
         'testcases': testcases,
         'answers': answers,
     }

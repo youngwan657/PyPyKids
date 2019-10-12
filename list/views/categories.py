@@ -83,15 +83,11 @@ def categories(request):
 
     for difficulty in difficulties:
         categories = Category.objects.order_by('order').filter(difficulty=difficulty.id, visible=True)
-        all_quizzes = Quiz.objects;
         answers = Answer.objects.filter(customuser__name=username, right=Right.RIGHT.value)
         for category in categories:
-            quizzes = all_quizzes.filter(category__name=category.name, visible=True)
+            quizzes = Quiz.objects.filter(category_id=category.id, visible=True)
             category.total_quiz = quizzes.count()
-            category.unsolved_quiz = quizzes.count()
-            for quiz in quizzes:
-                if len(answers.filter(quiz__order=quiz.order)) > 0:
-                    category.unsolved_quiz -= 1
+            category.unsolved_quiz = quizzes.count() - len(answers.filter(quiz_id__in=quizzes))
             category.solved_quiz = category.total_quiz - category.unsolved_quiz
             category.set_name_url()
 

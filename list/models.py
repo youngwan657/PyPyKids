@@ -251,6 +251,11 @@ class Answer(models.Model):
             self.date.strftime("%Y-%m-%d")) + " right:" + str(
             self.right)
 
+    class Meta:
+        index_together = [
+            ('date', 'right'),
+        ]
+
 
 class QuizScore(models.Model):
     customuser = models.ForeignKey(CustomUser, on_delete=models.CASCADE)

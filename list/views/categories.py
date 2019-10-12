@@ -12,10 +12,10 @@ def categories(request):
     username = get_profile(request, context)
 
     if username != "":
-        user_point, created = UserPoint.objects.get_or_create(customuser__name=username, date=date.today(),
+        customuser = CustomUser.objects.get(name=username)
+        user_point, created = UserPoint.objects.get_or_create(customuser=customuser, date=date.today(),
                                                                pointtype__name="DailyCheckIn")
         if created:
-            customuser = CustomUser.objects.get(name=username)
             pointtype = PointType.objects.get(name="DailyCheckIn")
             user_point.customuser = customuser
             user_point.pointtype = pointtype
@@ -34,7 +34,7 @@ def categories(request):
     context['difficulties'] = difficulties
 
     if username != "":
-        answers = Answer.objects.filter(customuser__name=username)
+        answers = Answer.objects.filter(customuser=customuser)
         total_quizzes = Quiz.objects.count()
         right_quizzes = answers.filter(right=Right.RIGHT.value).count()
         wrong_quizzes = answers.filter(Q(right=Right.WRONG.value) | Q(right=Right.WAS_RIGHT.value)).count()

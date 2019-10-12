@@ -41,7 +41,8 @@ def answer(request, quiz_order):
     username = get_username(request)
     quiz = get_object_or_404(Quiz, order=quiz_order)
     testcases = Testcase.objects.filter(quiz__order=quiz_order)
-    answer, _ = Answer.objects.get_or_create(quiz_id=quiz.id, customuser__name=username)
+    customuser = CustomUser.objects.get(name=username)
+    answer, _ = Answer.objects.get_or_create(quiz_id=quiz.id, customuser=customuser)
     answer.customuser = CustomUser.objects.get(name=username)
     answer.quiz = quiz
     answer.answer = request.POST['answer']

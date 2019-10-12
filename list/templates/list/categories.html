@@ -219,7 +219,11 @@
                         <h4 class="mb-2">{{ category.name }}</h4>
                         <span>{{ category.desc }} </span>
                         <div class="d-flex align-items-center mt-3">
-                            {% if category.unsolved_quiz > 0 %}
+                            {% if category.unsolved_quiz == 0 %}
+                            <div class="text-small">
+                                <span class="d-block text-success">COMPLETED</span>
+                            </div>
+                            {% else %}
                             <div class="text-small">
                                 <span class="d-block">{{ category.unsolved_quiz }} Quizzes</span>
                             </div>
@@ -273,7 +277,11 @@
                         <h4 class="mb-2">{{ category.name }}</h4>
                         <span>{{ category.desc }} </span>
                         <div class="d-flex align-items-center mt-3">
-                            {% if category.unsolved_quiz > 0 %}
+                            {% if category.unsolved_quiz == 0 %}
+                            <div class="text-small">
+                                <span class="d-block text-success">COMPLETED</span>
+                            </div>
+                            {% else %}
                             <div class="text-small">
                                 <span class="d-block">{{ category.unsolved_quiz }} Quizzes</span>
                             </div>
@@ -328,7 +336,11 @@
                         <h4 class="mb-2">{{ category.name }}</h4>
                         <span>{{ category.desc }} </span>
                         <div class="d-flex align-items-center mt-3">
-                            {% if category.unsolved_quiz > 0 %}
+                            {% if category.unsolved_quiz == 0 %}
+                            <div class="text-small">
+                                <span class="d-block text-success">COMPLETED</span>
+                            </div>
+                            {% else %}
                             <div class="text-small">
                                 <span class="d-block">{{ category.unsolved_quiz }} Quizzes</span>
                             </div>
@@ -383,7 +395,11 @@
                         <h4 class="mb-2">{{ category.name }}</h4>
                         <span>{{ category.desc }} </span>
                         <div class="d-flex align-items-center mt-3">
-                            {% if category.unsolved_quiz > 0 %}
+                            {% if category.unsolved_quiz == 0 %}
+                            <div class="text-small">
+                                <span class="d-block text-success">COMPLETED</span>
+                            </div>
+                            {% else %}
                             <div class="text-small">
                                 <span class="d-block">{{ category.unsolved_quiz }} Quizzes</span>
                             </div>
@@ -437,7 +453,11 @@
                         <h4 class="mb-2">{{ category.name }}</h4>
                         <span>{{ category.desc }} </span>
                         <div class="d-flex align-items-center mt-3">
-                            {% if category.unsolved_quiz > 0 %}
+                            {% if category.unsolved_quiz == 0 %}
+                            <div class="text-small">
+                                <span class="d-block text-success">COMPLETED</span>
+                            </div>
+                            {% else %}
                             <div class="text-small">
                                 <span class="d-block">{{ category.unsolved_quiz }} Quizzes</span>
                             </div>

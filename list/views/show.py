@@ -251,4 +251,3 @@ if __name__ == "__main__":
 
 # TODO:: unlock the quiz
 # TODO:: forget password
-# TODO:: block for 3 seconds after submitting the code.

@@ -317,6 +317,7 @@ $(function(){
     $('#editor-code').submit(function(event) {
         event.preventDefault();
         $('#submit').html('<div class="spinner-border" role="status"></div>')
+        $('#submit').attr('disabled', true)
         $.ajax({
             type: 'POST',
             url: '/answer/{{ quiz.order }}/',
@@ -325,6 +326,7 @@ $(function(){
             success: function (data, textStatus) {
                 response = JSON.parse(data)
                 $('#submit').html('Submit')
+                $('#submit').attr('disabled', false)
                 if (response['right'] == 1) {
                     $('#right-alert').slideDown("slow");
                     $('#wrong-alert').hide();
@@ -366,6 +368,7 @@ $(function(){
     $('#editor_answer').submit(function(event) {
         event.preventDefault();
         $('#submit').html('<div class="spinner-border" role="status"></div>')
+        $('#submit').attr('disabled', true)
         $.ajax({
             type: 'POST',
             url: '/answer/{{ quiz.order }}/',
@@ -374,6 +377,7 @@ $(function(){
             success: function (data, textStatus) {
                 response = JSON.parse(data);
                 $('#submit').html('Submit')
+                $('#submit').attr('disabled', false)
                 if (response['right'] == 1) {
                     $('#right-alert').slideDown("slow");
                     $('#wrong-alert').hide();
@@ -409,6 +413,7 @@ $(function(){
     $('#editor_multiple').submit(function(event) {
         event.preventDefault();
         $('#submit').html('<div class="spinner-border" role="status"></div>')
+        $('#submit').attr('disabled', true)
         $.ajax({
             type: 'POST',
             url: '/answer/{{ quiz.order }}/',
@@ -417,6 +422,7 @@ $(function(){
             success: function (data, textStatus) {
                 response = JSON.parse(data);
                 $('#submit').html('Submit')
+                $('#submit').attr('disabled', false)
                 if (response['right'] == 1) {
                     $('#right-alert').slideDown("slow");
                     $('#wrong-alert').hide();

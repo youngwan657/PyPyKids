@@ -78,6 +78,8 @@ $(function(){
     $('#playground').submit(function(event) {
         event.preventDefault();
         $('#submit').html('<div class="spinner-border" role="status"></div>')
+        $('#submit').attr('disabled', true)
+
         $.ajax({
             type: 'POST',
             url: '/playground/',
@@ -86,6 +88,7 @@ $(function(){
             success: function (data, textStatus) {
                 response = JSON.parse(data);
                 $('#submit').html('Submit')
+                $('#submit').attr('disabled', false)
                 $('#output-in-modal').html(response['output'].replace(/\n/g, "<br\>"))
                 $('#output-modal').modal('show')
                 $('#output').html(response['output'].replace(/\n/g, "<br\>"));

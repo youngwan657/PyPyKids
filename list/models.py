@@ -81,7 +81,6 @@ class Category(SortableMixin):
         return self
 
 
-# TODO:: solution after answering
 class Quiz(SortableMixin):
     default_explanation = """<table border="1" cellpadding="1" cellspacing="1" class="table table-bordered">
     <tbody>
@@ -152,8 +151,8 @@ class Quiz(SortableMixin):
         title = ""
         if self.title != None:
             title = self.title
-        return visible + str(self.category.difficulty.id) + "[" + self.category.name + "] " \
-               + str(self.order) + "(" + str(self.id) + "). " + title + "  " + str(self.date.strftime("%m-%d %H:%M"))
+
+        return '{} - {} {} {} {}({})'.format(title, visible, self.category.difficulty.id, self.category.name, self.order, self.id)
 
     def get_title_url(self):
         return self.title.replace(" ", "-")

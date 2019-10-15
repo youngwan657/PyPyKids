@@ -226,7 +226,7 @@ class CustomUser(models.Model):
     point = models.IntegerField(default=10)
 
     def __str__(self):
-        return str(self.name)
+        return str(self.id) + ". " + str(self.name)
 
 
 class Answer(models.Model):

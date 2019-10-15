@@ -247,7 +247,7 @@ class Answer(models.Model):
             return str(self.customuser) + " " + str(self.date)
 
         return str(self.quiz.order) + "(" + str(self.quiz.id) + "). " + str(self.customuser) + " " + str(
-            self.date.strftime("%Y-%m-%d")) + " right:" + str(
+            self.date.strftime("%Y-%m-%d")) + " " + self.quiz.title + " right:" + str(
             self.right)
 
     class Meta:

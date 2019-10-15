@@ -171,6 +171,7 @@ def check_answer(username, testcases, answer):
                 answer.input = testcase.input
                 answer.output = stdout
                 answer.expected_output = testcase.expected_stdout
+                break
         # Check output
         elif testcase.expected_output:
             if str(output) == testcase.expected_output.strip():
@@ -190,6 +191,7 @@ def check_answer(username, testcases, answer):
                 answer.output = output
                 answer.expected_stdout = ""
                 answer.expected_output = testcase.expected_output
+                break
 
 
 def create_checking_code(username):

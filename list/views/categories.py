@@ -75,8 +75,8 @@ def categories(request):
 
     # New Video for non-login user
     if username == "":
-        recently_updated_video = Quiz.objects.get(id=97)
-        context['quiz'] = recently_updated_video.set_title_url()
+        new_video = Quiz.objects.get(id=106)
+        context['quiz'] = new_video.set_title_url()
 
     score = QuizScore.objects.filter(quiz__order=today_quiz.order).aggregate(Sum('score'))['score__sum']
     context['score'] = score if score != None else 0

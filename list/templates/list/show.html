@@ -160,13 +160,13 @@
             <div class="d-flex justify-content-center mb-2">
                 <a href="#" id="quiz-like-yes" class="btn btn-outline-primary mx-1">
                     <img class="icon bg-primary" src="{% static 'assets/img/icons/theme/general/like.svg' %}"
-                         alt="check interface icon"
+                         alt="like icon"
                          data-inject-svg/>
                     <span>Like</span>
                 </a>
                 <a href="#" id="quiz-like-no" class="btn btn-outline-primary mx-1">
                     <img class="icon bg-primary" src="{% static 'assets/img/icons/interface/cross.svg' %}"
-                         alt="cross interface icon"
+                         alt="dislike icon"
                          data-inject-svg/>
                     <span>Dislike</span>
                 </a>
@@ -457,30 +457,28 @@ $(function(){
 
     $('#quiz-like-yes').click(function(event) {
     event.preventDefault();
-    $.ajax({
-            type: 'GET',
-            url: '/quiz/{{ quiz.order }}/score/1',
-            success: function (data, textStatus) {
-                $('#quiz-like').hide(1000);
-            },
-            error: function(xhr, status, e) {
-                $('#server-error-modal').modal('show');
-            }
-        });
+        $('#quiz-like').hide(1000);
+        $.ajax({
+                type: 'GET',
+                url: '/quiz/{{ quiz.order }}/score/1',
+                success: function (data, textStatus) {
+                },
+                error: function(xhr, status, e) {
+                }
+            });
     });
 
     $('#quiz-like-no').click(function(event) {
-    event.preventDefault();
-    $.ajax({
-            type: 'GET',
-            url: '/quiz/{{ quiz.order }}/score/0',
-            success: function (data, textStatus) {
-                $('#quiz-like').hide(1000);
-            },
-            error: function(xhr, status, e) {
-                $('#server-error-modal').modal('show');
-            }
-        });
+        event.preventDefault();
+        $('#quiz-like').hide(1000);
+        $.ajax({
+                type: 'GET',
+                url: '/quiz/{{ quiz.order }}/score/0',
+                success: function (data, textStatus) {
+                },
+                error: function(xhr, status, e) {
+                }
+            });
     });
 });
 

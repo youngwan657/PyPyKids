@@ -1,5 +1,3 @@
-import subprocess
-import os
 from datetime import timedelta, date
 
 from django.db.models import Q
@@ -15,6 +13,9 @@ def get_description(desc):
     for line in desc.split("\r\n")[:3]:
         description += line + " "
     return description.strip()
+
+def is_superuser(request):
+    return request.user.is_superuser
 
 def get_username(request):
     if request.user.is_authenticated:

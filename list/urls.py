@@ -10,12 +10,13 @@ urlpatterns = [
     path('answer/<int:quiz_order>/', views.answer, name='answer'),
     path('badge/', views.badge, name='badge'),
     path('playground/', views.playground, name='playground'),
-    path('manage/<int:quiz_order>', views.manage, name='manage'),
     path('signup/', views.signup, name='signup'),
     path("signin/", views.signin, name="signin"),
     path("signout/", views.signout, name="signout"),
     path("about/", views.about, name="about"),
     path("quiz/<int:quiz_order>/score/<int:score>/", views.quiz_score, name="quiz_score"),
     path("search/", views.search, name="search"),
+
+    path("manage/<int:quiz_order>", views.manage, name='manage'),
     path('robots.txt', TemplateView.as_view(template_name="list/robots.txt", content_type='text/plain')),
 ]

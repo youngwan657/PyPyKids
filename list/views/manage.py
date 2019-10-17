@@ -1,9 +1,13 @@
+from django.http import Http404
 from django.shortcuts import render
 
 from list.views.common import *
 
 
 def manage(request, quiz_order):
+    if is_superuser(request) == False:
+        raise Http404("No permission")
+
     quizzes = Quiz.objects.all()
 
     quiz = Quiz.objects.get(order=quiz_order)

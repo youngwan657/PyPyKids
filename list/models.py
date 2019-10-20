@@ -86,7 +86,7 @@ class Quiz(SortableMixin):
     <tbody>
         <tr>
             <td>
-                <p><strong>Block</strong></p>
+                <strong>Block</strong>
             </td>
         </tr>
     </tbody>

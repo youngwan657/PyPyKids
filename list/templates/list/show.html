@@ -159,13 +159,13 @@
             <h6>Do you like this quiz?</h6>
             <div class="d-flex justify-content-center mb-2">
                 <a href="#" id="quiz-like-yes" class="btn btn-outline-success mx-1">
-                    <img class="icon bg-success" src="{% static 'assets/img/icons/interface/heart.svg' %}"
+                    <img class="icon bg-success" src="{% static 'assets/img/icons/theme/general/heart.svg' %}"
                          alt="like icon"
                          data-inject-svg/>
                     <span>Like</span>
                 </a>
                 <a href="#" id="quiz-like-no" class="btn btn-outline-danger mx-1">
-                    <img class="icon bg-danger" src="{% static 'assets/img/icons/interface/cross.svg' %}"
+                    <img class="icon bg-danger" src="{% static 'assets/img/icons/theme/general/half-heart.svg' %}"
                          alt="dislike icon"
                          data-inject-svg/>
                     <span>Dislike</span>
@@ -194,9 +194,9 @@
                     <h4 class="mb-2">{{ next.title|safe }}</h4>
                     <span>{{ next.question|safe }}</span>
                     <div class="d-flex justify-content-between align-items-center mt-3">
-                        <span class="badge bg-primary-alt text-primary">
-                            <img class="icon bg-primary" src="{% static 'assets/img/icons/interface/heart.svg' %}"
-                                 alt="heart interface icon" data-inject-svg/>{{ next.score }}</span>
+                        <span class="badge bg-primary-alt text-success">
+                            <img class="icon bg-success" src="{% static 'assets/img/icons/theme/general/heart.svg' %}"
+                                 alt="heart interface icon" data-inject-svg/> {{ next.score }}</span>
                     </div>
                 </a>
             </div>

@@ -95,7 +95,6 @@
                 {% elif quiz.quiz_type.name == "MultipleChoice" %}
                 <form id = "editor_multiple" class="p-3">
                     {% csrf_token %}
-                    {% if quiz.option1 != None %}
                     <div class="custom-control custom-radio">
                         {% if user_answer == "" or user_answer == "1" %}
                         <input class="custom-control-input" name="answer" type="radio" value="1" id="radio1" checked>
@@ -106,8 +105,6 @@
                             <pre><code>{{ quiz.option1|safe }}</code></pre>
                         </label>
                     </div>
-                    {% endif %}
-                    {% if quiz.option2 != None %}
                     <div class="custom-control custom-radio">
                         {% if user_answer == "2" %}
                         <input class="custom-control-input" name="answer" type="radio" value="2" id="radio2" checked>
@@ -118,8 +115,6 @@
                             <pre><code>{{ quiz.option2|safe }}</code></pre>
                         </label>
                     </div>
-                    {% endif %}
-                    {% if quiz.option3 != None %}
                     <div class="custom-control custom-radio">
                         {% if user_answer == "3" %}
                         <input class="custom-control-input" name="answer" type="radio" value="3" id="radio3" checked>
@@ -130,8 +125,6 @@
                             <pre><code>{{ quiz.option3|safe }}</code></pre>
                         </label>
                     </div>
-                    {% endif %}
-                    {% if quiz.option4 != None %}
                     <div class="custom-control custom-radio">
                         {% if user_answer == "4" %}
                         <input class="custom-control-input" name="answer" type="radio" value="4" id="radio4" checked>
@@ -142,7 +135,6 @@
                             <pre><code>{{ quiz.option4|safe }}</code></pre>
                         </label>
                     </div>
-                    {% endif %}
                     <br/>
                     {% if username %}
                     <button id="submit" class="btn btn-primary btn-block" type="submit">Submit</button>

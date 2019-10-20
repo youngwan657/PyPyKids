@@ -40,8 +40,8 @@ class Badge(SortableMixin):
     name = models.CharField(max_length=20)
     type = models.ForeignKey(BadgeType, on_delete=models.CASCADE, default=None, blank=True, null=True)
     value = models.IntegerField(default=0)
-    html = models.TextField(default=None, blank=True, null=True)
-    desc = models.TextField(default=None, blank=True, null=True)
+    html = models.TextField(default="")
+    desc = models.TextField(default="")
 
     class Meta:
         ordering = ['order']
@@ -55,8 +55,8 @@ class Category(SortableMixin):
     difficulty = models.ForeignKey(Difficulty, on_delete=models.CASCADE, default=None, blank=True, null=True)
     order = models.PositiveIntegerField(default=0, editable=False, db_index=True)
     name = models.CharField(max_length=20)
-    image = models.CharField(max_length=200, default=None, blank=True, null=True)
-    desc = models.TextField(default=None, blank=True, null=True)
+    image = models.CharField(max_length=200, default="")
+    desc = models.TextField(default="")
     visible = models.BooleanField(default=False)
     total_quiz = 0
     solved_quiz = 0
@@ -122,17 +122,17 @@ class Quiz(SortableMixin):
     title = models.CharField(max_length=100, unique=True)
     video = models.CharField(max_length=100, default=None, blank=True, null=True)
     explanation = RichTextField(default=default_explanation, blank=True, null=True)
-    question = RichTextField(default=None, blank=True, null=True)
-    example = RichTextField(default=default_example, blank=True, null=True)
-    hint = RichTextField(default=None, blank=True, null=True)
+    question = RichTextField(default="")
+    example = RichTextField(default=default_example)
+    hint = RichTextField(default="")
     quiz_type = models.ForeignKey(QuizType, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     visible = models.BooleanField(default=True)
-    answer_header = models.TextField(default="def solve(num):", blank=True, null=True)
-    option1 = models.TextField(default=None, blank=True, null=True)
-    option2 = models.TextField(default=None, blank=True, null=True)
-    option3 = models.TextField(default=None, blank=True, null=True)
-    option4 = models.TextField(default=None, blank=True, null=True)
+    answer_header = models.TextField(default="def solve(num):")
+    option1 = models.TextField(default="")
+    option2 = models.TextField(default="")
+    option3 = models.TextField(default="")
+    option4 = models.TextField(default="")
     date = models.DateTimeField(default=timezone.now)
 
     right = Right.NOT_TRY.value
@@ -212,8 +212,8 @@ class Quiz(SortableMixin):
 class Testcase(models.Model):
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
     input = models.TextField(default=None, blank=True, null=True)
-    expected_output = models.TextField(default=None, blank=True, null=True)
-    expected_stdout = models.TextField(default=None, blank=True, null=True)
+    expected_output = models.TextField(default="")
+    expected_stdout = models.TextField(default="")
 
     def __str__(self):
         return str(self.quiz.order) + "(" + str(
@@ -231,14 +231,14 @@ class CustomUser(models.Model):
 
 class Answer(models.Model):
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE, blank=True, null=True)
-    answer = models.TextField(default=None, blank=True, null=True)
+    answer = models.TextField(default="")
     customuser = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     right = models.IntegerField(default=Right.NOT_TRY.value)
-    input = models.TextField(default=None, blank=True, null=True)
-    stdout = models.TextField(default=None, blank=True, null=True)
-    expected_stdout = models.TextField(default=None, blank=True, null=True)
-    output = models.TextField(default=None, blank=True, null=True)
-    expected_output = models.TextField(default=None, blank=True, null=True)
+    input = models.TextField(default="")
+    stdout = models.TextField(default="")
+    expected_stdout = models.TextField(default="")
+    output = models.TextField(default="")
+    expected_output = models.TextField(default="")
     date = models.DateField(default=timezone.now)
     modified_date = models.DateField(default=timezone.now)
 

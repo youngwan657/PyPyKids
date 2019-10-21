@@ -7,7 +7,7 @@ def about(request):
     quiz_count = Quiz.objects.count()
     video_count = 0
     for quiz in Quiz.objects.all():
-        if quiz.video != None:
+        if quiz.video != "":
             video_count += 1
 
     badge_count = Badge.objects.count()

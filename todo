@@ -22,3 +22,7 @@ pip install django-admin-sortable
 # <img class="icon icon-lg bg-primary"
 #     src="{% static 'list/badge/17940.svg' %}" alt="unlock icon" width="400" />
 # </div>
+
+# TODO:: quiz - max value per horizontal from 1. dynamic
+# TODO:: quiz - max of vertical and horizontal of 2d list. dynamic
+# TODO:: quiz - 0/1 knapsack

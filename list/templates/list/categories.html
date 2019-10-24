@@ -21,7 +21,7 @@
 </section>
 
 <!-- Badge -->
-<section>
+<section class="has-divider">
     <div class="container">
         <div class="row mb-4">
             <div class="col">
@@ -39,84 +39,89 @@
             {% endfor %}
         </div>
     </div>
+    <div class="divider">
+        <img class="bg-primary-alt" src="{% static 'assets/img/dividers/divider-2.svg' %}" alt="divider graphic"
+             data-inject-svg/>
+    </div>
 </section>
 
-<!-- Counter -->
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-6 mb-3 col-lg-3 mb-lg-0">
-            <span class="display-4 text-primary d-block" data-countup data-start="0" data-end="{{ total_quiz }}"
-                  data-duration="3" data-grouping="true"></span>
-            <span class="h6">Total Quiz</span>
-        </div>
-        {% if accepted_quiz %}
-        <div class="col-6 mb-3 col-lg-3 mb-lg-0">
-            <span class="display-4 text-success d-block" data-countup data-start="0" data-end="{{ accepted_quiz }}"
-                  data-duration="3" data-grouping="true"></span>
-            <span class="h6">Accepted</span>
-        </div>
-        {% endif %}
+<section class="bg-primary-alt has-divider">
+    <!-- Counter -->
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-6 mb-3 col-lg-3 mb-lg-0">
+                <span class="display-4 text-primary d-block" data-countup data-start="0" data-end="{{ total_quiz }}"
+                      data-duration="3" data-grouping="true"></span>
+                <span class="h6">Total Quiz</span>
+            </div>
+            {% if accepted_quiz %}
+            <div class="col-6 mb-3 col-lg-3 mb-lg-0">
+                <span class="display-4 text-success d-block" data-countup data-start="0" data-end="{{ accepted_quiz }}"
+                      data-duration="3" data-grouping="true"></span>
+                <span class="h6">Accepted</span>
+            </div>
+            {% endif %}
 
-        {% if wrong_quiz %}
-        <div class="col-6 mb-3 col-lg-3 mb-lg-0">
-            <span class="display-4 text-primary-2 d-block" data-countup data-start="0" data-end="{{ wrong_quiz }}"
-                  data-duration="3" data-grouping="true"></span>
-            <span class="h6">Wrong</span>
+            {% if wrong_quiz %}
+            <div class="col-6 mb-3 col-lg-3 mb-lg-0">
+                <span class="display-4 text-primary-2 d-block" data-countup data-start="0" data-end="{{ wrong_quiz }}"
+                      data-duration="3" data-grouping="true"></span>
+                <span class="h6">Wrong</span>
+            </div>
+            {% endif %}
+
+            {% if not_try_quiz %}
+            <div class="col-6 mb-3 col-lg-3 mb-lg-0">
+                <span class="display-4 text-secondary d-block" data-countup data-start="0" data-end="{{ not_try_quiz }}"
+                      data-duration="3" data-grouping="true"></span>
+                <span class="h6">Not Try</span>
+            </div>
+            {% endif %}
         </div>
-        {% endif %}
 
-        {% if not_try_quiz %}
-        <div class="col-6 mb-3 col-lg-3 mb-lg-0">
-            <span class="display-4 text-secondary d-block" data-countup data-start="0" data-end="{{ not_try_quiz }}"
-                  data-duration="3" data-grouping="true"></span>
-            <span class="h6">Not Try</span>
-        </div>
-        {% endif %}
-    </div>
-</div>
-<br/>
-
-
-<!-- Line Chart -->
-<div class="container">
-    <canvas id="myChart"></canvas>
-    <script>
-                    var ctx = document.getElementById('myChart').getContext('2d');
-                    var myChart = new Chart(ctx, {
-                        type: 'line',
-                        data: {
-                            labels: {{ labels|safe }},
-                            datasets: [{
-                                label: 'Solved Quiz',
-                                data: {{ counts|safe }},
-                            backgroundColor: [
-                              'rgba(64,224,208, .2)'
-                            ],
-                            borderColor: [
-                              'rgba(0,206,209, .7)',
-                            ],
-                            borderWidth: 2
-                            }]
-                        },
-                        options: {
-                            scales: {
-                                yAxes: [{
-                                    ticks: {
-                                        beginAtZero: true,
-                                        precision: 0
-                                    }
+        <canvas id="myChart"></canvas>
+        <script>
+                        var ctx = document.getElementById('myChart').getContext('2d');
+                        var myChart = new Chart(ctx, {
+                            type: 'line',
+                            data: {
+                                labels: {{ labels|safe }},
+                                datasets: [{
+                                    label: 'Solved Quiz',
+                                    data: {{ counts|safe }},
+                                backgroundColor: [
+                                  'rgba(64,224,208, .2)'
+                                ],
+                                borderColor: [
+                                  'rgba(0,206,209, .7)',
+                                ],
+                                borderWidth: 2
                                 }]
                             },
-                            responsive: true
-                        }
-                    });
+                            options: {
+                                scales: {
+                                    yAxes: [{
+                                        ticks: {
+                                            beginAtZero: true,
+                                            precision: 0
+                                        }
+                                    }]
+                                },
+                                responsive: true
+                            }
+                        });
 
 
-    </script>
-</div>
+        </script>
+    </div>
+    <div class="divider">
+        <img src="{% static 'assets/img/dividers/divider-1.svg' %}" alt="divider graphic"
+             data-inject-svg/>
+    </div>
+</section>
 
 <!-- Today's Quiz -->
-<section class="has-divider bg-primary-alt">
+<section class="has-divider">
     {% include "list/quiz.html" %}
     <div class="divider">
         <img class="bg-primary-3" src="{% static 'assets/img/dividers/divider-2.svg' %}" alt="divider graphic"

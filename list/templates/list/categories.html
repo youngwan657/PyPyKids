@@ -79,6 +79,7 @@
             {% endif %}
         </div>
 
+        <br/>
         <canvas id="myChart"></canvas>
         <script>
                         var ctx = document.getElementById('myChart').getContext('2d');
@@ -87,7 +88,7 @@
                             data: {
                                 labels: {{ labels|safe }},
                                 datasets: [{
-                                    label: 'Solved Quiz',
+                                    label: 'Quizzes',
                                     data: {{ counts|safe }},
                                 backgroundColor: [
                                   'rgba(64,224,208, .2)'

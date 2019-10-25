@@ -200,12 +200,7 @@ def create_checking_code(username):
     return """
 import sys, ast, os
 
-from solution_%s import solve
-
-class Node:
-    def __init__(self, val):
-        self.val = val
-        self.next = None
+from solution_%s import *
 
 def main(argv):
     if len(argv) == 1:
@@ -226,12 +221,13 @@ def input(param):
 
 def output(param):
     if type(param) == Node:
-        list = []
+        ans = str(param.val)
+        param = param.next
         while param != None:
-            list.append(param.val)
+            ans += " -> " + str(param.val)
             param = param.next
 
-        return "Node" + str(list)
+        return ans
     else:
         return param
 

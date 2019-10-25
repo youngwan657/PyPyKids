@@ -240,7 +240,7 @@ class Answer(models.Model):
     output = models.TextField(default="", blank=True)
     expected_output = models.TextField(default="", blank=True)
     date = models.DateField(default=timezone.now)
-    modified_date = models.DateField(default=timezone.now)
+    modified_date = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         if self.quiz == None:
@@ -251,8 +251,10 @@ class Answer(models.Model):
             self.right)
 
     class Meta:
+        ordering = ['-modified_date']
         index_together = [
-            ('date', 'right'),
+            ['date', 'right'],
+            ['modified_date']
         ]
 
 
@@ -263,7 +265,7 @@ class QuizScore(models.Model):
 
     class Meta:
         unique_together = [
-            ('customuser', 'quiz',)
+            ['customuser', 'quiz']
         ]
 
     def __str__(self):
@@ -286,7 +288,7 @@ class UserPoint(models.Model):
 
     class Meta:
         index_together = [
-            ('customuser', 'date', 'pointtype'),
+            ['customuser', 'date', 'pointtype'],
         ]
 
     def __str__(self):

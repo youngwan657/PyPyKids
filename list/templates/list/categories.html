@@ -20,31 +20,6 @@
     </div>
 </section>
 
-<!-- Badge -->
-<section class="has-divider">
-    <div class="container">
-        <div class="row mb-4">
-            <div class="col">
-                <h3 class="h3">My badges</h3>
-            </div>
-        </div>
-        <div class="row">
-            {% for badge in badges %}
-            <div class="col-sm-6 col-md-4 col-lg-3">
-                <button type="button" class="card card-sm card-body flex-row align-items-center hover-shadow-3d"
-                        data-toggle="tooltip" data-placement="top" title="{{ badge.desc }}">
-                    {{ badge.html|safe }}
-                </button>
-            </div>
-            {% endfor %}
-        </div>
-    </div>
-    <div class="divider">
-        <img class="bg-primary-alt" src="{% static 'assets/img/dividers/divider-2.svg' %}" alt="divider graphic"
-             data-inject-svg/>
-    </div>
-</section>
-
 <section class="bg-primary-alt has-divider">
     <!-- Counter -->
     <div class="container">

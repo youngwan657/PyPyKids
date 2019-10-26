@@ -1,16 +1,9 @@
-* Google App Engine
-pip install django-ckeditor
-pip install django-admin-sortable
-
-
-
 # TODO:: Refer Kotlin page for English sentence
 # TODO:: local mysql
 # TODO:: limit app engine server to 3 (?)
 # TODO:: github page for main static page
 # TODO:: copy the code
 # TODO:: share the badge? score? in facebook
-# TODO:: badge re-new
 # TODO:: pre test for level checking.
 # TODO:: message box
 # TODO:: memo, star

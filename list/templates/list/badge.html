@@ -23,10 +23,17 @@
 <section>
     <div class="container">
         <div class="row">
-            {% for badge in badges %}
+            {% for badge in my_badges %}
             <div class="col-sm-6 col-md-4 col-lg-3">
                 <button type="button" class="card card-sm card-body flex-row align-items-center hover-shadow-3d" data-toggle="tooltip" data-placement="top" title="{{ badge.desc }}">
                     {{ badge.html|safe }}
+                </button>
+            </div>
+            {% endfor %}
+            {% for badge in gray_badges %}
+            <div class="col-sm-6 col-md-4 col-lg-3">
+                <button type="button" class="card card-sm card-body flex-row align-items-center hover-shadow-3d" data-toggle="tooltip" data-placement="top" title="{{ badge.desc }}">
+                    {{ badge.gray_html|safe }}
                 </button>
             </div>
             {% endfor %}

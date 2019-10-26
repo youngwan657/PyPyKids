@@ -64,9 +64,6 @@ def categories(request):
         context['wrong_quiz'] = wrong_quizzes
         context['not_try_quiz'] = total_quizzes - right_quizzes - wrong_quizzes
 
-        # Badge
-        context['badges'] = Badge.objects.filter(customuser__name=username)
-
     # Today's Quiz
     today_quiz = unsolved_quizzes.order_by('order').first()
     context['quiz'] = today_quiz.set_title_url().set_pretty_code()

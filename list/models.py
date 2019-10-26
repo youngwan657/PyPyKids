@@ -41,6 +41,7 @@ class Badge(SortableMixin):
     type = models.ForeignKey(BadgeType, on_delete=models.CASCADE, default=None, blank=True, null=True)
     value = models.IntegerField(default=0)
     html = models.TextField(default="", blank=True)
+    gray_html = models.TextField(default="", blank=True)
     desc = models.TextField(default="", blank=True)
 
     class Meta:

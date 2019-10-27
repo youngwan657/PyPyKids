@@ -72,7 +72,7 @@ def categories(request):
 
     # New Video for non-login user
     if username == "":
-        new_video = Quiz.objects.get(id=106)
+        new_video = Quiz.objects.get(id=139)
         context['quiz'] = new_video.set_title_url()
 
     score = QuizScore.objects.filter(quiz__order=today_quiz.order).aggregate(Sum('score'))['score__sum']

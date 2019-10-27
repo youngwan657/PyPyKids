@@ -202,6 +202,11 @@ import sys, ast, os
 
 from solution_%s import *
 
+class Node:
+    def __init__(self, val):
+        self.val = val
+        self.next = None
+
 def main(argv):
     if len(argv) == 1:
         return output(solve(input(argv[0])))

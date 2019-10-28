@@ -1,3 +1,4 @@
+import ast
 import json
 import subprocess
 from datetime import datetime
@@ -9,6 +10,18 @@ from django.shortcuts import get_object_or_404, render
 
 from list.views.common import *
 from django.utils.html import strip_tags
+
+
+def convert_node(input):
+    if input.startswith("Node"):
+        nodes = ast.literal_eval(input[4:])
+        ans = str(nodes[0])
+        del nodes[0]
+        while nodes:
+            ans += " -> " + str(nodes[0])
+            del nodes[0]
+        return ans
+    return input
 
 
 def show(request, title):
@@ -170,7 +183,7 @@ def check_answer(username, testcases, answer):
                     answer.right = Right.WAS_RIGHT.value
                 else:
                     answer.right = Right.WRONG.value
-                answer.input = testcase.input
+                answer.input = convert_node(testcase.input)
                 answer.output = stdout
                 answer.expected_output = testcase.expected_stdout
                 break
@@ -188,7 +201,7 @@ def check_answer(username, testcases, answer):
                     answer.right = Right.WAS_RIGHT.value
                 else:
                     answer.right = Right.WRONG.value
-                answer.input = testcase.input
+                answer.input = convert_node(testcase.input)
                 answer.stdout = stdout
                 answer.output = output
                 answer.expected_stdout = ""
@@ -201,11 +214,6 @@ def create_checking_code(username):
 import sys, ast, os
 
 from solution_%s import *
-
-class Node:
-    def __init__(self, val):
-        self.val = val
-        self.next = None
 
 def main(argv):
     if len(argv) == 1:
@@ -225,6 +233,11 @@ def input(param):
         return ast.literal_eval(param)
 
 def output(param):
+    try:
+        var = Node(0)
+    except:
+        return param
+        
     if type(param) == Node:
         ans = str(param.val)
         param = param.next

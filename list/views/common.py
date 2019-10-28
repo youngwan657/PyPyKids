@@ -14,13 +14,16 @@ def get_description(desc):
         description += line + " "
     return description.strip()
 
+
 def is_superuser(request):
     return request.user.is_superuser
+
 
 def get_username(request):
     if request.user.is_authenticated:
         return request.user.username
     return ""
+
 
 def get_profile(request, context):
     username = get_username(request)
@@ -31,6 +34,7 @@ def get_profile(request, context):
         context['profile_badge_count'] = get_badge_count(username)
 
     return username
+
 
 def get_unsolved_quizzes(username, quiz_order=-1):
     quizzes = Quiz.objects.filter(visible=True, order__gt=quiz_order).order_by('order')
@@ -96,10 +100,12 @@ def add_badge(username):
 
     return new_badges
 
+
 def remove_unsafe_code(code):
     return code\
         .replace("import os\r\n", "")\
         .replace("import os\n", "")
+
 
 
 def get_badge_count(username):

@@ -342,10 +342,10 @@ $(function(){
                     $('#wrong-alert').slideDown("slow");
                     $('#info-alert').hide();
                     $('#wrong-table').slideDown("slow");
-                    $('#input').html(response['input'].replace(/\n/g, "<br\>"));
-                    $('#stdout').html(response['stdout'].replace(/\n/g, "<br\>"));
-                    $('#output').html(response['output'].replace(/\n/g, "<br\>"));
-                    $('#expected_output').html(response['expected_output'].replace(/\n/g, "<br\>"));
+                    $('#input').html(response['input'].replace(/&/g, '&amp;').replace(/>/g, '&gt;').replace(/</g, '&lt;').replace(/\n/g, "<br\>"));
+                    $('#stdout').html(response['stdout'].replace(/&/g, '&amp;').replace(/>/g, '&gt;').replace(/</g, '&lt;').replace(/\n/g, "<br\>"));
+                    $('#output').html(response['output'].replace(/&/g, '&amp;').replace(/>/g, '&gt;').replace(/</g, '&lt;').replace(/\n/g, "<br\>"));
+                    $('#expected_output').html(response['expected_output'].replace(/&/g, '&amp;').replace(/>/g, '&gt;').replace(/</g, '&lt;').replace(/\n/g, "<br\>"));
                     $('#wrong-modal').modal('show');
                     setTimeout(function() { $('#wrong-modal').modal('hide');}, 2000);
                 }

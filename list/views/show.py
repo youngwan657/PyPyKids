@@ -246,8 +246,8 @@ def output(param):
             param = param.next
 
         return ans
-    else:
-        return param
+
+    return param
 
 def next(nodes, i):
     if len(nodes) <= i:

@@ -229,25 +229,38 @@ def input(param):
     if param.startswith("Node"):
         nodes = ast.literal_eval(param[4:])
         return next(nodes, 0)
+    elif param.startswith("Tree"):
+        tree = ast.literal_eval(param[4:]) 
+        return convert_list_to_tree(tree)
     else:
         return ast.literal_eval(param)
 
 def output(param):
     try:
-        var = Node(0)
-    except:
-        return param
-        
-    if type(param) == Node:
-        ans = str(param.val)
-        param = param.next
-        while param != None:
-            ans += " -> " + str(param.val)
+        if type(param) == Node:
+            ans = str(param.val)
             param = param.next
-
-        return ans
-
-    return param
+            while param != None:
+                ans += " -> " + str(param.val)
+                param = param.next
+            return ans
+        else:
+            return param
+    except:
+        try:
+            if type(param) == Tree:
+                list = []
+                convert_tree_to_list(param, list)
+                    
+                while list[-1] == None:
+                    del list[-1]
+                    
+                print(list)
+                return "Tree" + str(list)
+            else:
+                return param
+        except:
+            return param
 
 def next(nodes, i):
     if len(nodes) <= i:
@@ -256,6 +269,28 @@ def next(nodes, i):
     n = Node(nodes[i])
     n.next = next(nodes, i + 1)
     return n
+    
+# TODO:: inorder to level order
+def convert_tree_to_list(tree, list):
+    if tree != None:
+        list.append(tree.val)
+        convert_tree_to_list(tree.left, list)
+        convert_tree_to_list(tree.right, list)
+    
+    
+def convert_list_to_tree(list):
+    tree = Tree(list[0])
+    store = [tree]
+    for i in range(1, len(list)):
+        if store[int((i - 1) / 2)] != None:
+            node = Tree(list[i])
+            store.append(node)
+            if i %% 2 == 1:
+                store[int(i / 2)].left = node
+            else:
+                store[int(i / 2)].right = node
+    
+    return tree
 
 if __name__ == "__main__":
     answer = main(sys.argv[1:])

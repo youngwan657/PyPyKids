@@ -249,8 +249,7 @@ def output(param):
     except:
         try:
             if type(param) == Tree:
-                list = []
-                convert_tree_to_list(param, list)
+                list = convert_tree_to_list(param)
                     
                 while list[-1] == None:
                     del list[-1]
@@ -262,6 +261,7 @@ def output(param):
         except:
             return param
 
+
 def next(nodes, i):
     if len(nodes) <= i:
         return None
@@ -270,12 +270,19 @@ def next(nodes, i):
     n.next = next(nodes, i + 1)
     return n
     
-# TODO:: inorder to level order
-def convert_tree_to_list(tree, list):
-    if tree != None:
-        list.append(tree.val)
-        convert_tree_to_list(tree.left, list)
-        convert_tree_to_list(tree.right, list)
+    
+def convert_tree_to_list(tree):
+    ans = []
+    queue = [[tree, 0]]
+    while queue:
+        t = queue.pop(0)
+        if t[0] != None:
+            if len(ans) < t[1] + 1:
+                ans.append([])
+            ans[t[1]].append(t[0].val)
+            queue.append([t[0].left, t[1] + 1])
+            queue.append([t[0].right, t[1] + 1])
+    return ans
     
     
 def convert_list_to_tree(list):
@@ -286,9 +293,9 @@ def convert_list_to_tree(list):
             node = Tree(list[i])
             store.append(node)
             if i %% 2 == 1:
-                store[int(i / 2)].left = node
+                store[int((i - 1) / 2)].left = node
             else:
-                store[int(i / 2)].right = node
+                store[int((i - 1) / 2)].right = node
     
     return tree
 

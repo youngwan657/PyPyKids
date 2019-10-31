@@ -216,7 +216,9 @@ import sys, ast, os
 from solution_%s import *
 
 def main(argv):
-    if len(argv) == 1:
+    if len(argv[0]) == 0:
+        return output(solve())
+    elif len(argv) == 1:
         return output(solve(input(argv[0])))
     elif len(argv) == 2:
         return output(solve(input(argv[0]), input(argv[1])))
@@ -251,10 +253,6 @@ def output(param):
             if type(param) == Tree:
                 list = convert_tree_to_list(param)
                     
-                while list[-1] == None:
-                    del list[-1]
-                    
-                print(list)
                 return "Tree" + str(list)
             else:
                 return param
@@ -272,16 +270,31 @@ def next(nodes, i):
     
     
 def convert_tree_to_list(tree):
-    ans = []
+    level = []
     queue = [[tree, 0]]
-    while queue:
+    while True:
         t = queue.pop(0)
+        if len(level) < t[1] + 1:
+            level.append([])
+        
         if t[0] != None:
-            if len(ans) < t[1] + 1:
-                ans.append([])
-            ans[t[1]].append(t[0].val)
+            level[t[1]].append(t[0].val)
             queue.append([t[0].left, t[1] + 1])
             queue.append([t[0].right, t[1] + 1])
+        else:
+            level[t[1]].append(None)
+            queue.append([None, t[1] + 1])
+            queue.append([None, t[1] + 1])
+            
+        for q in queue:
+            if q[0] != None:
+                break
+        else:
+            break
+    
+    ans = []
+    for l in level:
+        ans += l
     return ans
     
     
@@ -290,7 +303,10 @@ def convert_list_to_tree(list):
     store = [tree]
     for i in range(1, len(list)):
         if store[int((i - 1) / 2)] != None:
-            node = Tree(list[i])
+            if list[i] == None:
+                node = None
+            else:
+                node = Tree(list[i])
             store.append(node)
             if i %% 2 == 1:
                 store[int((i - 1) / 2)].left = node

@@ -84,7 +84,7 @@ def answer(request, quiz_order):
                 answer.right = Right.WAS_RIGHT.value
             else:
                 answer.right = Right.WRONG.value
-            answer.output = answer.answer
+            answer.output = testcases[0].expected_output
 
     answer.save()
 

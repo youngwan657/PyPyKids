@@ -14,13 +14,18 @@ from django.utils.html import strip_tags
 
 def convert_node(input):
     if input.startswith("Node"):
-        nodes = ast.literal_eval(input[4:])
+        inputs = input.split("\n")
+        nodes = ast.literal_eval(inputs[0][4:])
         ans = str(nodes[0])
         del nodes[0]
         while nodes:
             ans += " -> " + str(nodes[0])
             del nodes[0]
-        return ans
+
+        if len(inputs) == 1:
+            return ans
+        else:
+            return '\n'.join([ans, '\n'.join(inputs[1:])])
     return input
 
 

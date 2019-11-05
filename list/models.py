@@ -147,13 +147,13 @@ class Quiz(SortableMixin):
     def __str__(self):
         visible = "  "
         if self.visible == False:
-            visible = "x "
+            visible = "--"
 
         title = ""
         if self.title != None:
             title = self.title
 
-        return '{} - {} {} {} {}({})'.format(title, visible, self.category.difficulty.id, self.category.name, self.order, self.id)
+        return '{} {} {} {} {}({})'.format(visible, title, self.category.difficulty.id, self.category.name, self.order, self.id)
 
     def get_title_url(self):
         return self.title.replace(" ", "-")

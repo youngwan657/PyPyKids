@@ -178,16 +178,16 @@
                 {% for category in level1 %}
                 <a href="/category/{{ category.name_url }}"
                    class="card card-body flex-row align-items-center hover-shadow-sm">
-                    {% if category.unsolved_quiz == 0 %}
-                    <div class="icon-round icon-round-lg bg-primary mx-md-4">
-                        <img class="icon" src="{% static 'list/img/lock-red-done.svg' %}"
-                             alt="done icon" data-inject-svg/>
-                    </div>
-                    {% elif category.solved_quiz == 0 %}
+                    {% if category.solved_quiz == 0 %}
                     <div class="icon-round icon-round-lg bg-primary mx-md-4">
                         <img class="icon icon-lg bg-primary"
                              src="{% static 'list/img/lock-red-lock.svg' %}"
                              alt="lock icon" data-inject-svg/>
+                    </div>
+                    {% elif category.unsolved_quiz == 0 %}
+                    <div class="icon-round icon-round-lg bg-primary mx-md-4">
+                        <img class="icon" src="{% static 'list/img/lock-red-done.svg' %}"
+                             alt="done icon" data-inject-svg/>
                     </div>
                     {% else %}
                     <div class="icon-round icon-round-lg bg-primary mx-md-4">
@@ -200,7 +200,9 @@
                         <h4 class="mb-2">{{ category.name }}</h4>
                         <span>{{ category.desc }} </span>
                         <div class="d-flex align-items-center mt-3">
-                            {% if category.unsolved_quiz == 0 %}
+                            {% if not username %}
+                                <div class="text-small"></div>
+                            {% elif category.unsolved_quiz == 0 %}
                             <div class="text-small">
                                 <span class="d-block text-success">COMPLETED</span>
                             </div>
@@ -236,16 +238,16 @@
                 {% for category in level2 %}
                 <a href="/category/{{ category.name_url }}"
                    class="card card-body flex-row align-items-center hover-shadow-sm">
-                    {% if category.unsolved_quiz == 0 %}
-                    <div class="icon-round icon-round-lg bg-primary mx-md-4">
-                        <img class="icon" src="{% static 'list/img/lock-pink-done.svg' %}"
-                             alt="done icon" data-inject-svg/>
-                    </div>
-                    {% elif category.solved_quiz == 0 %}
+                    {% if category.solved_quiz == 0 %}
                     <div class="icon-round icon-round-lg bg-primary mx-md-4">
                         <img class="icon icon-lg bg-primary"
                              src="{% static 'list/img/lock-pink-lock.svg' %}"
                              alt="lock icon" data-inject-svg/>
+                    </div>
+                    {% elif category.unsolved_quiz == 0 %}
+                    <div class="icon-round icon-round-lg bg-primary mx-md-4">
+                        <img class="icon" src="{% static 'list/img/lock-pink-done.svg' %}"
+                             alt="done icon" data-inject-svg/>
                     </div>
                     {% else %}
                     <div class="icon-round icon-round-lg bg-primary mx-md-4">
@@ -258,7 +260,9 @@
                         <h4 class="mb-2">{{ category.name }}</h4>
                         <span>{{ category.desc }} </span>
                         <div class="d-flex align-items-center mt-3">
-                            {% if category.unsolved_quiz == 0 %}
+                            {% if not username %}
+                                <div class="text-small"></div>
+                            {% elif category.unsolved_quiz == 0 %}
                             <div class="text-small">
                                 <span class="d-block text-success">COMPLETED</span>
                             </div>
@@ -295,16 +299,16 @@
                 {% for category in level3 %}
                 <a href="/category/{{ category.name_url }}"
                    class="card card-body flex-row align-items-center hover-shadow-sm">
-                    {% if category.unsolved_quiz == 0 %}
-                    <div class="icon-round icon-round-lg bg-primary mx-md-4">
-                        <img class="icon" src="{% static 'list/img/lock-green-done.svg' %}"
-                             alt="done icon" data-inject-svg/>
-                    </div>
-                    {% elif category.solved_quiz == 0 %}
+                    {% if category.solved_quiz == 0 %}
                     <div class="icon-round icon-round-lg bg-primary mx-md-4">
                         <img class="icon icon-lg bg-primary"
                              src="{% static 'list/img/lock-green-lock.svg' %}"
                              alt="lock icon" data-inject-svg/>
+                    </div>
+                    {% elif category.unsolved_quiz == 0 %}
+                    <div class="icon-round icon-round-lg bg-primary mx-md-4">
+                        <img class="icon" src="{% static 'list/img/lock-green-done.svg' %}"
+                             alt="done icon" data-inject-svg/>
                     </div>
                     {% else %}
                     <div class="icon-round icon-round-lg bg-primary mx-md-4">
@@ -317,7 +321,9 @@
                         <h4 class="mb-2">{{ category.name }}</h4>
                         <span>{{ category.desc }} </span>
                         <div class="d-flex align-items-center mt-3">
-                            {% if category.unsolved_quiz == 0 %}
+                            {% if not username %}
+                                <div class="text-small"></div>
+                            {% elif category.unsolved_quiz == 0 %}
                             <div class="text-small">
                                 <span class="d-block text-success">COMPLETED</span>
                             </div>
@@ -354,16 +360,16 @@
                 {% for category in level4 %}
                 <a href="/category/{{ category.name_url }}"
                    class="card card-body flex-row align-items-center hover-shadow-sm">
-                    {% if category.unsolved_quiz == 0 %}
-                    <div class="icon-round icon-round-lg bg-primary mx-md-4">
-                        <img class="icon" src="{% static 'list/img/lock-orange-done.svg' %}"
-                             alt="done icon" data-inject-svg/>
-                    </div>
-                    {% elif category.solved_quiz == 0 %}
+                    {% if category.solved_quiz == 0 %}
                     <div class="icon-round icon-round-lg bg-primary mx-md-4">
                         <img class="icon icon-lg bg-primary"
                              src="{% static 'list/img/lock-orange-lock.svg' %}"
                              alt="lock icon" data-inject-svg/>
+                    </div>
+                    {% elif category.unsolved_quiz == 0 %}
+                    <div class="icon-round icon-round-lg bg-primary mx-md-4">
+                        <img class="icon" src="{% static 'list/img/lock-orange-done.svg' %}"
+                             alt="done icon" data-inject-svg/>
                     </div>
                     {% else %}
                     <div class="icon-round icon-round-lg bg-primary mx-md-4">
@@ -376,7 +382,9 @@
                         <h4 class="mb-2">{{ category.name }}</h4>
                         <span>{{ category.desc }} </span>
                         <div class="d-flex align-items-center mt-3">
-                            {% if category.unsolved_quiz == 0 %}
+                            {% if not username %}
+                                <div class="text-small"></div>
+                            {% elif category.unsolved_quiz == 0 %}
                             <div class="text-small">
                                 <span class="d-block text-success">COMPLETED</span>
                             </div>
@@ -412,16 +420,16 @@
                 {% for category in level5 %}
                 <a href="/category/{{ category.name_url }}"
                    class="card card-body flex-row align-items-center hover-shadow-sm">
-                    {% if category.unsolved_quiz == 0 %}
-                    <div class="icon-round icon-round-lg bg-primary mx-md-4">
-                        <img class="icon" src="{% static 'list/img/lock-blue-done.svg' %}"
-                             alt="done icon" data-inject-svg/>
-                    </div>
-                    {% elif category.solved_quiz == 0 %}
+                    {% if category.solved_quiz == 0 %}
                     <div class="icon-round icon-round-lg bg-primary mx-md-4">
                         <img class="icon icon-lg bg-primary"
                              src="{% static 'list/img/lock-blue-lock.svg' %}"
                              alt="lock icon" data-inject-svg/>
+                    </div>
+                    {% elif category.unsolved_quiz == 0 %}
+                    <div class="icon-round icon-round-lg bg-primary mx-md-4">
+                        <img class="icon" src="{% static 'list/img/lock-blue-done.svg' %}"
+                             alt="done icon" data-inject-svg/>
                     </div>
                     {% else %}
                     <div class="icon-round icon-round-lg bg-primary mx-md-4">
@@ -434,7 +442,9 @@
                         <h4 class="mb-2">{{ category.name }}</h4>
                         <span>{{ category.desc }} </span>
                         <div class="d-flex align-items-center mt-3">
-                            {% if category.unsolved_quiz == 0 %}
+                            {% if not username %}
+                                <div class="text-small"></div>
+                            {% elif category.unsolved_quiz == 0 %}
                             <div class="text-small">
                                 <span class="d-block text-success">COMPLETED</span>
                             </div>

@@ -19,3 +19,8 @@
 # TODO:: quiz - max value per horizontal from 1. dynamic
 # TODO:: quiz - max of vertical and horizontal of 2d list. dynamic
 # TODO:: quiz - 0/1 knapsack
+# TODO:: quiz - ransom note
+# TODO:: quiz - float('inf') > float('-inf')
+# TODO:: quiz - longest common string
+# TODO:: quiz - reversed=''.join(reversed(str)) 
+# TODO:: quiz - list = sorted(list, key = lambda l: (l[0], l[1]), reverse = True)

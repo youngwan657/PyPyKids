@@ -1,4 +1,4 @@
-pip==19.0.3
+pip==19.2
 Django==2.2.6
 PyMySQL==0.9.3
 django-admin-sortable==2.1.18
